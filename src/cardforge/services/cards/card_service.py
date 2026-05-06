@@ -10,8 +10,9 @@ from cardforge.domain.ids import next_key, slugify
 from cardforge.files.asset_store import AssetStore
 from cardforge.schemas.card import CardCost, CardRecord, CardStats
 from cardforge.schemas.card_batch import ParsedCardDraft
-from cardforge.services.cards.card_markdown import card_to_markdown
+from cardforge.services.cards.card_file_writer import CardFileWriter
 from cardforge.services.cards.card_validation import CardValidationService
+from cardforge.services.cards.card_version_service import CardVersionService
 from cardforge.services.projects.project_service import ProjectService
 from cardforge.services.review.review_service import ReviewService
 from cardforge.services.sets.set_service import SetService
@@ -24,6 +25,8 @@ class CardService:
         self.projects = ProjectService(self.db)
         self.sets = SetService(self.db)
         self.validator = CardValidationService(self.asset_store)
+        self.files = CardFileWriter(self.asset_store)
+        self.versions = CardVersionService()
 
     def create_card(
         self,
@@ -129,10 +132,10 @@ class CardService:
                 ),
             )
             card = self.get_card(project_slug, card_key, conn=conn)
-            version_id = self._append_version(conn, card, source=source, change_reason="Initial card creation", raw_payload=draft.raw)
+            version_id = self.versions.append_version(conn, card, source=source, change_reason="Initial card creation", raw_payload=draft.raw)
             conn.execute("UPDATE cards SET current_version_id = ? WHERE id = ?", (version_id, card["id"]))
             card = self.get_card(project_slug, card_key, conn=conn)
-            self._write_card_files(project_slug, card)
+            self.files.write_card_files(project_slug, card)
             ReviewService(self.db).enqueue(
                 project_id=project["id"],
                 set_id=set_row["id"],
@@ -238,10 +241,10 @@ class CardService:
                 (*values, card["id"]),
             )
             updated = self.get_card(project_slug, card_key, conn=conn)
-            version_id = self._append_version(conn, updated, source=source, change_reason=change_reason, raw_payload=updates)
+            version_id = self.versions.append_version(conn, updated, source=source, change_reason=change_reason, raw_payload=updates)
             conn.execute("UPDATE cards SET current_version_id = ? WHERE id = ?", (version_id, updated["id"]))
             updated = self.get_card(project_slug, card_key, conn=conn)
-            self._write_card_files(project_slug, updated)
+            self.files.write_card_files(project_slug, updated)
             if close:
                 conn.commit()
             return updated
@@ -309,43 +312,6 @@ class CardService:
         if art_direction is not None:
             updates["art_direction"] = art_direction
         return self.update_card_fields(project_slug, card_key, source=source, change_reason=change_reason, **updates)
-
-    def _append_version(
-        self,
-        conn: Connection,
-        card: Row,
-        *,
-        source: str,
-        change_reason: str = "",
-        raw_payload: dict[str, Any] | None = None,
-    ) -> int:
-        current = conn.execute("SELECT MAX(version_number) AS max_version FROM card_versions WHERE card_id = ?", (card["id"],)).fetchone()
-        next_version = int(current["max_version"] or 0) + 1
-        conn.execute(
-            """
-            INSERT INTO card_versions(
-                card_id, version_number, source, name, type_line, cost_json, stats_json, rules_text,
-                flavor_text, keywords_json, mechanics_json, design_notes, art_direction, change_reason, raw_payload_json
-            ) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
-            """,
-            (
-                card["id"], next_version, source, card["name"], card["type_line"], card["cost_json"],
-                card["stats_json"], card["rules_text"], card["flavor_text"], card["keywords_json"],
-                card["mechanics_json"], card["design_notes"], card["art_direction"], change_reason,
-                json.dumps(raw_payload or {}),
-            ),
-        )
-        return int(conn.execute("SELECT last_insert_rowid() AS id").fetchone()["id"])
-
-    def _write_card_files(self, project_slug: str, card: Row) -> None:
-        root = self.asset_store.project_root(project_slug) / "cards" / card["card_key"]
-        payload = {key: card[key] for key in card.keys()}
-        for json_field in ["cost_json", "stats_json", "keywords_json", "mechanics_json"]:
-            target_key = json_field.removesuffix("_json")
-            default = "[]" if json_field in {"keywords_json", "mechanics_json"} else "{}"
-            payload[target_key] = json.loads(card[json_field] or default)
-        self.asset_store.write_json(root / "card.json", payload)
-        self.asset_store.write_text(root / "card.md", card_to_markdown(card))
 
     def _dedupe_slug(self, conn: Connection, set_id: int, base_slug: str) -> str:
         slug = base_slug

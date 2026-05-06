@@ -73,3 +73,16 @@ python -m cardforge project status gravebound_test
 - Full web UI pages.
 - PDF/PNG sheet exporters beyond current JSON export foundation.
 - Worker queue/resume execution layer.
+
+## Completed in the refactoring/cleanup pass
+
+- Split the Typer CLI into focused command modules under `cli/commands`.
+- Extracted card file writing and card version appending out of `CardService`.
+- Extracted card payload coercion out of `CardBatchService`.
+- Split project scaffold defaults from scaffold behavior.
+- Split auto-review into orchestration, deterministic heuristics, and report persistence.
+- Split the robust parser into packet core, section normalization, card-record salvage, and a compatibility facade.
+- Moved SQL table definitions out of the migration executor.
+- Added structural regression tests for the CLI composition and parser extraction.
+
+Current automated tests after cleanup: `18 passed`.
