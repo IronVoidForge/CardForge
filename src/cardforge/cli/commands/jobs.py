@@ -137,3 +137,25 @@ def enqueue_export(project_slug: str, set_code: str, export_type: str = typer.Op
             payload={"set_code": set_code},
         )
     )
+
+
+@app.command("enqueue-comfy-art")
+def enqueue_comfy_art(
+    project_slug: str,
+    card_key: str,
+    workflow_key: str = typer.Option("stub.card_art.t2i.v1", "--workflow-key"),
+    submit: bool = typer.Option(False, "--submit/--prepare-only", help="Submit to live ComfyUI instead of only preparing a patched workflow."),
+    seed: int | None = typer.Option(None, "--seed"),
+    width: int | None = typer.Option(None, "--width"),
+    height: int | None = typer.Option(None, "--height"),
+) -> None:
+    ensure_db()
+    echo_json(
+        JobService().enqueue(
+            project_slug,
+            job_type=JobType.ART_SUBMIT_COMFY if submit else JobType.ART_PREPARE_COMFY,
+            target_type="card",
+            target_id=card_key,
+            payload={"card_key": card_key, "workflow_key": workflow_key, "seed": seed, "width": width, "height": height},
+        )
+    )

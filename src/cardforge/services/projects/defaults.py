@@ -324,14 +324,6 @@ score_100: 75
 """,
 }
 
-DEFAULT_TEMPLATE_REGISTRY = {
-    "schema_version": "2026-05-template-registry-v1",
-    "templates": {
-        "default_creature_front_v1": {"template_type": "front", "card_type": "creature"},
-        "default_spell_front_v1": {"template_type": "front", "card_type": "spell"},
-        "default_equipment_front_v1": {"template_type": "front", "card_type": "equipment"},
-        "default_location_front_v1": {"template_type": "front", "card_type": "location"},
-        "default_legendary_front_v1": {"template_type": "front", "card_type": "legendary"},
-        "default_card_back_v1": {"template_type": "back", "card_type": "any"},
-    },
-}
+# Keep template defaults in a focused module because render templates are
+# much larger than the other small registries.
+from cardforge.services.templates.template_defaults import DEFAULT_TEMPLATE_REGISTRY

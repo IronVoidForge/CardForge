@@ -203,6 +203,64 @@ class UIDashboardService:
             "open_count": sum(1 for row in rows if row["status"] == "open"),
         }
 
+    def template_library(self, project_slug: str) -> dict[str, Any]:
+        from cardforge.services.templates.template_service import TemplateService
+
+        with self.db.connection() as conn:
+            project = self.projects.get_project(project_slug, conn=conn)
+        templates = TemplateService(self.db).list_templates(project_slug)
+        return {
+            "project": _row_to_dict(project),
+            "templates": templates,
+            "front_count": sum(1 for item in templates if item["template_type"] == "front"),
+            "back_count": sum(1 for item in templates if item["template_type"] == "back"),
+        }
+
+    def template_detail(self, project_slug: str, template_key: str) -> dict[str, Any]:
+        from cardforge.services.templates.template_service import TemplateService
+
+        service = TemplateService(self.db)
+        with self.db.connection() as conn:
+            project = self.projects.get_project(project_slug, conn=conn)
+            row = service.get_template_row(project_slug, template_key, conn=conn)
+        summary = {key: row[key] for key in row.keys()}
+        template = _json_loads(row["template_json"], {})
+        return {
+            "project": _row_to_dict(project),
+            "template": summary,
+            "template_json": json.dumps(template, indent=2, ensure_ascii=False),
+            "layer_count": len(template.get("layers", [])) if isinstance(template.get("layers"), list) else 0,
+        }
+
+
+
+    def integration_status(self, project_slug: str) -> dict[str, Any]:
+        from cardforge.services.comfy.workflow_registry_service import WorkflowRegistryService
+
+        with self.db.connection() as conn:
+            project = self.projects.get_project(project_slug, conn=conn)
+            comfy_jobs = [self._comfy_job_summary(row) for row in conn.execute(
+                """
+                SELECT cj.*, cw.workflow_key FROM comfy_jobs cj
+                LEFT JOIN comfy_workflows cw ON cw.id = cj.workflow_id
+                ORDER BY cj.id DESC LIMIT 20
+                """
+            )]
+        workflows = WorkflowRegistryService(self.db).list_workflows()
+        settings = self.db.settings
+        return {
+            "project": _row_to_dict(project),
+            "settings": {
+                "lmstudio_base_url": settings.lmstudio_base_url,
+                "lmstudio_model": settings.lmstudio_model,
+                "lmstudio_review_model": settings.lmstudio_review_model,
+                "comfy_base_url": settings.comfy_base_url,
+                "comfy_input_dir": str(settings.comfy_input_dir),
+                "comfy_output_dir": str(settings.comfy_output_dir),
+            },
+            "workflows": workflows,
+            "comfy_jobs": comfy_jobs,
+        }
 
     def job_queue(self, project_slug: str) -> dict[str, Any]:
         with self.db.connection() as conn:
@@ -298,6 +356,12 @@ class UIDashboardService:
         if summary:
             summary["findings"] = _json_loads(row["findings_json"], [])
             summary["recommendations"] = _json_loads(row["recommendations_json"], [])
+        return summary
+
+
+    def _comfy_job_summary(self, row: Row) -> dict[str, Any]:
+        summary = _row_to_dict(row) or {}
+        summary["settings"] = _json_loads(row["settings_json"], {})
         return summary
 
     def _job_summary(self, row: Row) -> dict[str, Any]:

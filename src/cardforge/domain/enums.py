@@ -72,6 +72,8 @@ class JobType(StrEnum):
     CARD_REFINE = "card_refine"
     CARD_AUTO_REVIEW = "card_auto_review"
     ART_GENERATE_DUMMY = "art_generate_dummy"
+    ART_PREPARE_COMFY = "art_prepare_comfy"
+    ART_SUBMIT_COMFY = "art_submit_comfy"
     ART_AUTO_REVIEW = "art_auto_review"
     RENDER_CARD = "render_card"
     EXPORT_JSON = "export_json"

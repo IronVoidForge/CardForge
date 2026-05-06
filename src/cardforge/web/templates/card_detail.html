@@ -5,6 +5,8 @@
   <a href="/">All projects</a>
   <a href="/projects/{{ project.slug }}">Dashboard</a>
   <a href="/projects/{{ project.slug }}/sets/{{ card.set_code }}">{{ card.set_code }}</a>
+  <a href="/projects/{{ project.slug }}/templates">Templates</a>
+  <a href="/projects/{{ project.slug }}/integrations">Integrations</a>
   <a href="/projects/{{ project.slug }}/review">Review queue</a>
   <a href="/projects/{{ project.slug }}/jobs">Jobs</a>
 </nav>
@@ -92,6 +94,10 @@
     <form method="post" action="/projects/{{ project.slug }}/cards/{{ card.card_key }}/art/generate-dummy" class="inline-form">
       <label>Count <input type="number" name="count" value="4" min="1" max="8"></label>
       <button class="primary-button" type="submit">Generate dummy art</button>
+    </form>
+    <form method="post" action="/projects/{{ project.slug }}/cards/{{ card.card_key }}/art/prepare-comfy" class="inline-form">
+      <label>Workflow <input name="workflow_key" value="stub.card_art.t2i.v1"></label>
+      <button class="secondary-button" type="submit">Prepare Comfy workflow</button>
     </form>
     {% if art_candidates %}
     <div class="art-grid">

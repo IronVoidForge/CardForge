@@ -124,3 +124,20 @@ PYTEST_DISABLE_PLUGIN_AUTOLOAD=1 python scripts/quality_check.py
 ```
 
 This environment does not have `ruff` installed, so the local quality script skips Ruff. CI installs dev dependencies and runs the strict quality gate.
+
+## v8 Live integration preparation and workflow registry
+
+Added the next offline-safe integration phase:
+
+- Comfy workflow registry service backed by SQL and workspace JSON
+- declarative Comfy patch points and safe workflow patcher
+- default stub Card Art T2I API workflow
+- prepare-only Comfy card art job service
+- optional live submit path behind explicit `submit=True`
+- job queue support for `art_prepare_comfy` and `art_submit_comfy`
+- CLI commands for Comfy workflow sync/list/validate/prepare
+- integrations dashboard page for LM Studio/ComfyUI configuration, workflows, and prepared jobs
+- card detail action to prepare a Comfy workflow without running ComfyUI
+- tests for workflow sync, patching, prepare-only jobs, job dispatch, and integration UI
+
+The default test path still requires no LM Studio or ComfyUI connection.

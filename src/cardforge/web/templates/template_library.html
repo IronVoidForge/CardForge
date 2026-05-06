@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+{% block title %}Templates — {{ project.name }}{% endblock %}
+{% block sidebar %}
+<nav class="nav-list">
+  <a href="/">All projects</a>
+  <a href="/projects/{{ project.slug }}">Dashboard</a>
+  <a href="/projects/{{ project.slug }}/templates">Templates</a>
+  <a href="/projects/{{ project.slug }}/integrations">Integrations</a>
+  <a href="/projects/{{ project.slug }}/review">Review queue</a>
+  <a href="/projects/{{ project.slug }}/jobs">Jobs</a>
+</nav>
+{% endblock %}
+{% block content %}
+<section class="topbar">
+  <div>
+    <p class="eyebrow">Template studio</p>
+    <h1>Card templates</h1>
+    <p class="muted">Manage front/back layout JSON used by deterministic renders.</p>
+  </div>
+  <form method="post" action="/projects/{{ project.slug }}/templates/sync">
+    <button class="secondary-button" type="submit">Sync registry</button>
+  </form>
+</section>
+
+<section class="stat-grid small">
+  <div class="stat-card"><span>Total templates</span><strong>{{ templates|length }}</strong></div>
+  <div class="stat-card"><span>Fronts</span><strong>{{ front_count }}</strong></div>
+  <div class="stat-card"><span>Backs</span><strong>{{ back_count }}</strong></div>
+  <div class="stat-card"><span>Status</span><strong>OK</strong></div>
+</section>
+
+<section class="panel">
+  <div class="panel-heading"><h2>Template library</h2></div>
+  <div class="template-grid">
+    {% for item in templates %}
+    <a class="template-card" href="/projects/{{ project.slug }}/templates/{{ item.template_key }}">
+      {% if item.preview_path %}<img src="{{ item.preview_path|asset_url }}" alt="{{ item.name }} preview">{% else %}<div class="template-preview-empty">Preview</div>{% endif %}
+      <strong>{{ item.name }}</strong>
+      <small>{{ item.template_key }} · {{ item.template_type }} · {{ item.card_type }}</small>
+      <span class="pill {{ item.status|status_class }}">{{ item.canvas_width }}×{{ item.canvas_height }}</span>
+    </a>
+    {% endfor %}
+  </div>
+</section>
+{% endblock %}

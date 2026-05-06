@@ -6,6 +6,7 @@ from cardforge.db.session import Database
 from cardforge.domain.enums import JobType
 from cardforge.services.art.art_candidate_service import ArtCandidateService
 from cardforge.services.batches.card_batch_service import CardBatchService
+from cardforge.services.comfy.comfy_art_service import ComfyArtService
 from cardforge.services.export.export_service import ExportService
 from cardforge.services.generation.card_autofill_service import CardAutofillService
 from cardforge.services.refinement.card_refinement_service import CardRefinementService
@@ -35,6 +36,8 @@ class JobDispatcher:
             JobType.CARD_REFINE.value: self._card_refine,
             JobType.CARD_AUTO_REVIEW.value: self._card_auto_review,
             JobType.ART_GENERATE_DUMMY.value: self._art_generate_dummy,
+            JobType.ART_PREPARE_COMFY.value: self._art_prepare_comfy,
+            JobType.ART_SUBMIT_COMFY.value: self._art_submit_comfy,
             JobType.ART_AUTO_REVIEW.value: self._art_auto_review,
             JobType.RENDER_CARD.value: self._render_card,
             JobType.EXPORT_JSON.value: self._export_json,
@@ -92,6 +95,28 @@ class JobDispatcher:
             self._required(payload, "card_key"),
             count=int(payload.get("count", 4)),
             seed=int(payload["seed"]) if payload.get("seed") not in {None, ""} else None,
+        )
+
+    def _art_prepare_comfy(self, payload: dict[str, Any]) -> dict[str, Any]:
+        return ComfyArtService(self.db).prepare_card_art(
+            self._required(payload, "project_slug"),
+            self._required(payload, "card_key"),
+            workflow_key=str(payload.get("workflow_key") or "stub.card_art.t2i.v1"),
+            seed=int(payload["seed"]) if payload.get("seed") not in {None, ""} else None,
+            width=int(payload["width"]) if payload.get("width") not in {None, ""} else None,
+            height=int(payload["height"]) if payload.get("height") not in {None, ""} else None,
+            submit=False,
+        )
+
+    def _art_submit_comfy(self, payload: dict[str, Any]) -> dict[str, Any]:
+        return ComfyArtService(self.db).prepare_card_art(
+            self._required(payload, "project_slug"),
+            self._required(payload, "card_key"),
+            workflow_key=str(payload.get("workflow_key") or "stub.card_art.t2i.v1"),
+            seed=int(payload["seed"]) if payload.get("seed") not in {None, ""} else None,
+            width=int(payload["width"]) if payload.get("width") not in {None, ""} else None,
+            height=int(payload["height"]) if payload.get("height") not in {None, ""} else None,
+            submit=True,
         )
 
     def _art_auto_review(self, payload: dict[str, Any]) -> dict[str, Any]:

@@ -17,6 +17,8 @@ from cardforge.services.batches.card_batch_service import CardBatchService
 from cardforge.services.export.export_service import ExportService
 from cardforge.services.cards.card_service import CardService
 from cardforge.services.generation.card_autofill_service import CardAutofillService
+from cardforge.services.comfy.comfy_art_service import ComfyArtService
+from cardforge.services.comfy.workflow_registry_service import WorkflowRegistryService
 from cardforge.services.jobs.job_service import JobService
 from cardforge.services.observability.diagnostics_service import DiagnosticsService
 from cardforge.services.projects.project_service import ProjectService
@@ -26,6 +28,7 @@ from cardforge.services.render.card_renderer import CardRenderer
 from cardforge.services.review.auto_review_service import AutoReviewService
 from cardforge.services.review.review_service import ReviewService
 from cardforge.services.sets.set_service import SetService
+from cardforge.services.templates.template_service import TemplateService, TemplateValidationError
 from cardforge.services.ui.dashboard_service import UIDashboardService
 
 PACKAGE_ROOT = Path(__file__).resolve().parent
@@ -93,6 +96,21 @@ def create_app(db: Database | None = None) -> FastAPI:
         return _redirect(f"/projects/{project_slug}/sets/{row['set_code']}")
 
 
+
+    @app.get("/projects/{project_slug}/integrations", response_class=HTMLResponse)
+    def integrations_page(request: Request, project_slug: str) -> HTMLResponse:
+        try:
+            payload = ui.integration_status(project_slug)
+        except KeyError as exc:
+            raise HTTPException(status_code=404, detail=str(exc)) from exc
+        return templates.TemplateResponse(request, "integrations.html", payload)
+
+    @app.post("/projects/{project_slug}/integrations/comfy/sync-workflows")
+    def sync_comfy_workflows(project_slug: str) -> RedirectResponse:
+        WorkflowRegistryService(database).sync_defaults()
+        return _redirect(f"/projects/{project_slug}/integrations")
+
+
     @app.get("/projects/{project_slug}/jobs", response_class=HTMLResponse)
     def job_queue(request: Request, project_slug: str) -> HTMLResponse:
         try:
@@ -131,6 +149,41 @@ def create_app(db: Database | None = None) -> FastAPI:
                 payload=first.get("payload", {}),
             )
         return _redirect(f"/projects/{project_slug}/jobs")
+
+
+    @app.get("/projects/{project_slug}/templates", response_class=HTMLResponse)
+    def template_library(request: Request, project_slug: str) -> HTMLResponse:
+        try:
+            payload = ui.template_library(project_slug)
+        except KeyError as exc:
+            raise HTTPException(status_code=404, detail=str(exc)) from exc
+        return templates.TemplateResponse(request, "template_library.html", payload)
+
+    @app.post("/projects/{project_slug}/templates/sync")
+    def sync_templates(project_slug: str) -> RedirectResponse:
+        TemplateService(database).sync_project_templates(project_slug)
+        return _redirect(f"/projects/{project_slug}/templates")
+
+    @app.get("/projects/{project_slug}/templates/{template_key}", response_class=HTMLResponse)
+    def template_detail(request: Request, project_slug: str, template_key: str) -> HTMLResponse:
+        try:
+            payload = ui.template_detail(project_slug, template_key)
+        except KeyError as exc:
+            raise HTTPException(status_code=404, detail=str(exc)) from exc
+        return templates.TemplateResponse(request, "template_detail.html", payload)
+
+    @app.post("/projects/{project_slug}/templates/{template_key}/preview")
+    def template_preview(project_slug: str, template_key: str) -> RedirectResponse:
+        TemplateService(database).render_preview(project_slug, template_key)
+        return _redirect(f"/projects/{project_slug}/templates/{template_key}")
+
+    @app.post("/projects/{project_slug}/templates/{template_key}/update")
+    def template_update(project_slug: str, template_key: str, template_json: str = Form(...)) -> RedirectResponse:
+        try:
+            TemplateService(database).update_template(project_slug, template_key, template_json)
+        except (ValueError, TemplateValidationError) as exc:
+            raise HTTPException(status_code=400, detail=str(exc)) from exc
+        return _redirect(f"/projects/{project_slug}/templates/{template_key}")
 
     @app.get("/projects/{project_slug}/sets/{set_code}", response_class=HTMLResponse)
     def set_detail(request: Request, project_slug: str, set_code: str) -> HTMLResponse:
@@ -268,6 +321,12 @@ def create_app(db: Database | None = None) -> FastAPI:
     @app.post("/projects/{project_slug}/cards/{card_key}/auto-review")
     def auto_review_card(project_slug: str, card_key: str) -> RedirectResponse:
         AutoReviewService(database).review_card_text(project_slug, card_key)
+        return _redirect(f"/projects/{project_slug}/cards/{card_key}")
+
+
+    @app.post("/projects/{project_slug}/cards/{card_key}/art/prepare-comfy")
+    def prepare_comfy_art(project_slug: str, card_key: str, workflow_key: str = Form("stub.card_art.t2i.v1")) -> RedirectResponse:
+        ComfyArtService(database).prepare_card_art(project_slug, card_key, workflow_key=workflow_key, submit=False)
         return _redirect(f"/projects/{project_slug}/cards/{card_key}")
 
     @app.post("/projects/{project_slug}/cards/{card_key}/art/generate-dummy")

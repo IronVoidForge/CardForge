@@ -1,0 +1,53 @@
+{% extends "base.html" %}
+{% block title %}{{ template.template_key }} — CardForge{% endblock %}
+{% block sidebar %}
+<nav class="nav-list">
+  <a href="/">All projects</a>
+  <a href="/projects/{{ project.slug }}">Dashboard</a>
+  <a href="/projects/{{ project.slug }}/templates">Templates</a>
+  <a href="/projects/{{ project.slug }}/integrations">Integrations</a>
+  <a href="/projects/{{ project.slug }}/review">Review queue</a>
+  <a href="/projects/{{ project.slug }}/jobs">Jobs</a>
+</nav>
+{% endblock %}
+{% block content %}
+<section class="topbar">
+  <div>
+    <p class="eyebrow">Template detail</p>
+    <h1>{{ template.name }}</h1>
+    <p class="muted mono">{{ template.template_key }} · {{ template.template_type }} · {{ template.card_type }} · {{ layer_count }} layers</p>
+  </div>
+  <div class="button-row">
+    <form method="post" action="/projects/{{ project.slug }}/templates/{{ template.template_key }}/preview">
+      <button class="secondary-button" type="submit">Render preview</button>
+    </form>
+    <a class="ghost-button" href="/projects/{{ project.slug }}/templates">Back to library</a>
+  </div>
+</section>
+
+<div class="grid two-col wide-left">
+  <section class="panel form-panel">
+    <div class="panel-heading"><h2>Template JSON</h2></div>
+    <form method="post" action="/projects/{{ project.slug }}/templates/{{ template.template_key }}/update" class="stacked-form">
+      <label>JSON definition
+        <textarea name="template_json" rows="28" spellcheck="false" class="code-input">{{ template_json }}</textarea>
+      </label>
+      <button class="primary-button" type="submit">Validate and save template</button>
+    </form>
+  </section>
+
+  <aside class="panel">
+    <div class="panel-heading"><h2>Preview</h2></div>
+    {% if template.preview_path %}
+      <img class="render-preview" src="{{ template.preview_path|asset_url }}" alt="{{ template.name }} layout preview">
+    {% else %}
+      <div class="empty-state">No preview yet. Render one to inspect layer boxes.</div>
+    {% endif %}
+    <div class="info-list">
+      <p><strong>Canvas</strong><br>{{ template.canvas_width }}×{{ template.canvas_height }}</p>
+      <p><strong>Usage</strong><br>Front templates drive title, art, type line, rules, flavor, and stats. Back templates drive card backs.</p>
+      <p><strong>Safety</strong><br>Invalid JSON or missing required layers is rejected before it reaches the renderer.</p>
+    </div>
+  </aside>
+</div>
+{% endblock %}

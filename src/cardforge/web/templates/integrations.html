@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+{% block title %}Integrations — {{ project.name }}{% endblock %}
+{% block sidebar %}
+<nav class="nav-list">
+  <a href="/">All projects</a>
+  <a href="/projects/{{ project.slug }}">Dashboard</a>
+  <a href="/projects/{{ project.slug }}/templates">Templates</a>
+  <a href="/projects/{{ project.slug }}/integrations">Integrations</a>
+  <a href="/projects/{{ project.slug }}/review">Review queue</a>
+  <a href="/projects/{{ project.slug }}/jobs">Jobs</a>
+</nav>
+{% endblock %}
+{% block content %}
+<section class="topbar"><div><p class="eyebrow">Live integration prep</p><h1>LM Studio and ComfyUI</h1><p class="muted">This page exposes configuration and prepared workflow records. Health checks are manual so dashboards stay fast.</p></div><form method="post" action="/projects/{{ project.slug }}/integrations/comfy/sync-workflows"><button class="secondary-button">Sync default Comfy workflows</button></form></section>
+<section class="stat-grid small"><div class="stat-card"><span>LM Studio URL</span><strong class="url-text">{{ settings.lmstudio_base_url }}</strong></div><div class="stat-card"><span>LLM model</span><strong>{{ settings.lmstudio_model }}</strong></div><div class="stat-card"><span>ComfyUI URL</span><strong class="url-text">{{ settings.comfy_base_url }}</strong></div><div class="stat-card"><span>Workflows</span><strong>{{ workflows|length }}</strong></div></section>
+<section class="panel"><div class="panel-heading"><h2>Comfy workflow registry</h2><span class="pill neutral">prepare-only safe</span></div>{% if workflows %}<div class="table-wrap"><table><thead><tr><th>Workflow</th><th>Job type</th><th>Enabled</th><th>File</th></tr></thead><tbody>{% for workflow in workflows %}<tr><td><strong>{{ workflow.workflow_key }}</strong><br><small>{{ workflow.name }}</small></td><td>{{ workflow.supported_job_type }}</td><td>{{ workflow.enabled }}</td><td class="mono small-text">{{ workflow.workflow_path }}</td></tr>{% endfor %}</tbody></table></div>{% else %}<div class="empty-state">No workflows registered yet.</div>{% endif %}</section>
+<section class="panel"><div class="panel-heading"><h2>Prepared Comfy jobs</h2><span class="pill neutral">{{ comfy_jobs|length }}</span></div>{% if comfy_jobs %}<div class="table-wrap"><table><thead><tr><th>ID</th><th>Workflow</th><th>Status</th><th>Prompt ID</th><th>Patched workflow</th></tr></thead><tbody>{% for job in comfy_jobs %}<tr><td>{{ job.id }}</td><td>{{ job.workflow_key or "—" }}</td><td><span class="pill {{ job.status|status_class }}">{{ job.status }}</span></td><td>{{ job.prompt_id or "—" }}</td><td class="mono small-text">{{ job.patched_workflow_path }}</td></tr>{% endfor %}</tbody></table></div>{% else %}<div class="empty-state">No prepared Comfy jobs yet. Open a card and choose “Prepare Comfy workflow”.</div>{% endif %}</section>
+<section class="panel"><div class="panel-heading"><h2>Manual health commands</h2></div><pre class="code-block">cardforge llm health
+cardforge comfy health
+cardforge comfy sync-workflows
+cardforge comfy validate-workflow stub.card_art.t2i.v1</pre></section>
+{% endblock %}
