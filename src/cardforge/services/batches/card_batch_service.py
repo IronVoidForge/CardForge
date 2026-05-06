@@ -17,6 +17,7 @@ from cardforge.services.llm.llm_request_log import LLMRequestLog
 from cardforge.services.llm.mock_responses import build_mock_card_batch_packet
 from cardforge.services.llm.packet_parser import PacketParseError, PacketRecord, parse_card_records
 from cardforge.services.projects.project_service import ProjectService
+from cardforge.services.prompts.prompt_package import PromptTemplateService
 from cardforge.services.review.review_service import ReviewService
 from cardforge.services.sets.set_service import SetService
 
@@ -29,6 +30,7 @@ class CardBatchService:
         self.sets = SetService(self.db)
         self.cards = CardService(self.db)
         self.llm_log = LLMRequestLog(self.db)
+        self.prompts = PromptTemplateService(self.db)
 
     def generate_simulated_batch(
         self,
@@ -74,7 +76,22 @@ class CardBatchService:
                 ),
             )
             batch = self.get_batch(project_slug, batch_key, conn=conn)
-            system_prompt, user_prompt = self._build_batch_prompt(set_row=set_row, count=count, request_text=request_text)
+            prompt_package = self.prompts.render_package(
+                project_slug,
+                template_key="card_batch_generation_v1",
+                task_type="card_batch",
+                set_id=set_row["id"],
+                batch_id=batch["id"],
+                conn=conn,
+                context={
+                    "project_slug": project_slug,
+                    "set_code": set_row["set_code"],
+                    "set_name": set_row["name"],
+                    "count": count,
+                    "request_text": request_text,
+                },
+            )
+            system_prompt, user_prompt = prompt_package.system_prompt, prompt_package.user_prompt
             llm_request_id = self.llm_log.create(
                 conn,
                 project_id=project["id"],
@@ -147,6 +164,8 @@ class CardBatchService:
                 "llm_request_id": llm_request_id,
                 "raw_response_path": self.asset_store.relative_to_workspace(raw_path),
                 "parsed_json_path": self.asset_store.relative_to_workspace(parsed_path),
+                "prompt_package_key": prompt_package.package_key,
+                "prompt_package_path": prompt_package.package_markdown_path,
                 "validation_summary": validation_summary,
                 "cards": [card["card_key"] for card in created_cards],
             }

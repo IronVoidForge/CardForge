@@ -52,6 +52,19 @@ python -m cardforge render card gravebound_test CARD_0001 --no-placeholder-art
 python -m cardforge project status gravebound_test
 ```
 
+
+## Completed in the prompt/autofill/auto-review pass
+
+- Project-scaffolded prompt format guide and prompt templates.
+- Prompt package renderer with markdown section parsing and reproducible package files.
+- SQL state for prompt packages and auto reviews.
+- Batch generation now uses the prompt-template/package layer before simulated or live LLM calls.
+- Card autofill service for missing type line, rules, flavor, design notes, art direction, template, keywords, and creature stats.
+- Card auto-review service with score, findings, recommendations, JSON/markdown reports, and review queue creation.
+- Art candidate auto-review service with score JSON stored on candidates.
+- Card refinement service that runs autofill, auto-review, and a model-shaped repair packet.
+- CLI commands for `prompt`, `card autofill`, `card refine`, `card auto-review`, `batch auto-review`, `art auto-review`, and `auto refine-card`.
+
 ## Still intentionally deferred until live integrations
 
 - Live LM Studio card generation and review prompts.

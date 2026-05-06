@@ -8,10 +8,10 @@ CardForge is intentionally useful without LM Studio or ComfyUI running. The app 
 - **Phase 1: Database schema and migrations/bootstrap** — all durable state tables and service boundaries.
 - **Phase 2: Project, set, and registry foundation** — default card type, keyword, template, and export registries.
 - **Phase 3: Card schema, markdown, and manual creation** — canonical JSON, human markdown, versions, validation.
-- **Phase 4 offline part: LLM request logging and parsers** — prompt/response logs, robust packet parser, JSON salvage, markdown table/headed-block salvage. Real LM Studio calls remain a manual integration test.
+- **Phase 4 offline part: LLM request logging, prompt packages, and parsers** — prompt templates, rendered prompt packages, prompt/response logs, robust packet parser, JSON salvage, markdown table/headed-block salvage. Real LM Studio calls remain a manual integration test.
 - **Phase 5 offline part: Batch generation** — deterministic simulated card batches produce the same packet shape real LM Studio will produce later.
-- **Phase 6: Deterministic validation and text repair** — required fields, registry checks, keyword checks, text length warnings, offline rules text repair.
-- **Phase 7 offline part: Balance/rules review** — curve, type mix, rarity mix, keyword density, stat sanity, rules wording lint.
+- **Phase 6: Deterministic validation, autofill, and text repair** — required fields, registry checks, keyword checks, text length warnings, offline autofill, offline rules text repair.
+- **Phase 7 offline part: Balance/rules/auto review** — curve, type mix, rarity mix, keyword density, stat sanity, rules wording lint, card text auto-review, art candidate auto-review, and auto-refinement using simulated LLM packets.
 - **Phase 8: Placeholder/locked-art renderer** — Pillow front/back rendering, previews, layout reports.
 - **Phase 9 offline part: API/UI can be developed against DB/files** — no model service needed, because batches/art can be simulated.
 - **Phase 10 offline part: Art prompt/candidate pipeline** — art prompts, dummy image candidates, candidate manifests, review queue. Real ComfyUI execution remains a manual integration test.
@@ -33,6 +33,9 @@ cardforge batch generate gravebound_test SET001 --count 12 --request "Generate g
 cardforge batch validate gravebound_test BATCH_0001
 cardforge batch balance-review gravebound_test BATCH_0001
 cardforge batch rules-review gravebound_test BATCH_0001
+cardforge batch auto-review gravebound_test BATCH_0001
+cardforge card autofill gravebound_test CARD_0001
+cardforge card refine gravebound_test CARD_0001
 cardforge rework repair-rules gravebound_test CARD_0001 --reason "shorten for template"
 cardforge art prompt gravebound_test CARD_0001
 cardforge art generate-dummy gravebound_test CARD_0001 --count 4

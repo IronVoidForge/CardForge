@@ -23,6 +23,9 @@ class StatusService:
             art_candidates = conn.execute("SELECT COUNT(*) AS n FROM art_candidates ac JOIN cards c ON c.id = ac.card_id JOIN sets s ON s.id = c.set_id WHERE s.project_id = ?", (project_id,)).fetchone()["n"]
             locked_art = conn.execute("SELECT COUNT(*) AS n FROM art_candidates ac JOIN cards c ON c.id = ac.card_id JOIN sets s ON s.id = c.set_id WHERE s.project_id = ? AND ac.status = 'locked'", (project_id,)).fetchone()["n"]
             locked_cards = conn.execute("SELECT COUNT(*) AS n FROM cards c JOIN sets s ON s.id = c.set_id WHERE s.project_id = ? AND c.status = 'locked'", (project_id,)).fetchone()["n"]
+            prompt_packages = conn.execute("SELECT COUNT(*) AS n FROM prompt_packages WHERE project_id = ?", (project_id,)).fetchone()["n"]
+            auto_reviews = conn.execute("SELECT COUNT(*) AS n FROM auto_reviews WHERE project_id = ?", (project_id,)).fetchone()["n"]
+            needs_rework_auto = conn.execute("SELECT COUNT(*) AS n FROM auto_reviews WHERE project_id = ? AND auto_status = 'needs_rework'", (project_id,)).fetchone()["n"]
             return {
                 "project": {"slug": project["slug"], "name": project["name"], "status": project["status"], "root_path": project["root_path"]},
                 "counts": {
@@ -34,13 +37,18 @@ class StatusService:
                     "locked_art": locked_art,
                     "renders": rendered,
                     "locked_cards": locked_cards,
+                    "prompt_packages": prompt_packages,
+                    "auto_reviews": auto_reviews,
+                    "auto_needs_rework": needs_rework_auto,
                 },
-                "next_action": self._next_action(card_count, batch_count, art_candidates, locked_art, rendered, open_reviews),
+                "next_action": self._next_action(card_count, batch_count, art_candidates, locked_art, rendered, open_reviews, needs_rework_auto),
             }
 
-    def _next_action(self, card_count: int, batch_count: int, art_candidates: int, locked_art: int, rendered: int, open_reviews: int) -> str:
+    def _next_action(self, card_count: int, batch_count: int, art_candidates: int, locked_art: int, rendered: int, open_reviews: int, needs_rework_auto: int = 0) -> str:
         if card_count == 0:
             return "Generate a simulated batch or manually create cards."
+        if needs_rework_auto:
+            return "Run auto refinement or manually resolve auto-review rework findings."
         if batch_count and open_reviews:
             return "Review generated card text and validation issues."
         if art_candidates == 0:

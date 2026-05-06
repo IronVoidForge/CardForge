@@ -16,8 +16,8 @@ This repo now contains the first offline-safe production slice:
 - Robust CardForge/FilmCreator-style packet parsing plus JSON/table/heading markdown salvage.
 - Deterministic simulated batch generation for 10-15 card tests without LM Studio.
 - Raw response, parsed JSON, LLM request logs, batch manifests, validation reports, balance reports, and rules review reports.
-- Deterministic validation, text repair/rework, balance review, and rules wording review.
-- Art prompt creation and dummy image candidate generation without ComfyUI.
+- Deterministic validation, text repair/rework, balance review, rules wording review, prompt-package rendering, autofill, refinement, and auto-review.
+- Art prompt creation, dummy image candidate generation without ComfyUI, and art candidate auto-review.
 - Approve/reject/lock lifecycle for art candidates.
 - Placeholder or locked-art card front/back rendering with Pillow.
 - Review item creation and decisions.
@@ -44,9 +44,15 @@ cardforge set create gravebound_test --name "Gravebound Dominion"
 cardforge batch generate gravebound_test SET001 --count 12 --request "Generate gothic necromancer cards."
 cardforge batch balance-review gravebound_test BATCH_0001
 cardforge batch rules-review gravebound_test BATCH_0001
+cardforge batch auto-review gravebound_test BATCH_0001
+
+# Offline prompt/refinement path.
+cardforge card autofill gravebound_test CARD_0001
+cardforge card refine gravebound_test CARD_0001
 
 # Offline simulated ComfyUI art candidates through the real review/render path.
 cardforge art generate-dummy gravebound_test CARD_0001 --count 4
+cardforge art auto-review gravebound_test ART_CAND_0001
 cardforge art approve gravebound_test ART_CAND_0001
 cardforge art lock gravebound_test ART_CAND_0001
 cardforge render card gravebound_test CARD_0001 --no-placeholder-art
@@ -63,7 +69,7 @@ export CARDFORGE_WORKSPACE=/path/to/workspace
 
 ## Planned phases
 
-See `docs/PHASE_PLAN.md` for the full implementation roadmap, and `docs/OFFLINE_PHASES.md` for exactly which phases can be built and tested without live LM Studio or ComfyUI.
+See `docs/PHASE_PLAN.md` for the full implementation roadmap, `docs/OFFLINE_PHASES.md` for exactly which phases can be built and tested without live LM Studio or ComfyUI, and `docs/PROMPT_FORMAT_AND_AUTO_REVIEW.md` for the prompt package/autofill/refinement/auto-review contract.
 
 ## Local integrations
 

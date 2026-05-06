@@ -17,8 +17,12 @@ from cardforge.services.balance.balance_review_service import BalanceReviewServi
 from cardforge.services.batches.card_batch_service import CardBatchService
 from cardforge.services.cards.card_service import CardService
 from cardforge.services.generation.card_repair_service import CardRepairService
+from cardforge.services.generation.card_autofill_service import CardAutofillService
 from cardforge.services.generation.rules_review_service import RulesReviewService
 from cardforge.services.projects.project_service import ProjectService
+from cardforge.services.prompts.prompt_package import PromptTemplateService
+from cardforge.services.refinement.card_refinement_service import CardRefinementService
+from cardforge.services.review.auto_review_service import AutoReviewService
 from cardforge.services.render.card_renderer import CardRenderer
 from cardforge.services.review.review_service import ReviewService
 from cardforge.services.rework.card_rework_service import CardReworkService
@@ -39,6 +43,8 @@ review_app = typer.Typer(help="Review commands")
 llm_app = typer.Typer(help="LM Studio commands")
 comfy_app = typer.Typer(help="ComfyUI commands")
 export_app = typer.Typer(help="Export commands")
+prompt_app = typer.Typer(help="Prompt template/package commands")
+auto_app = typer.Typer(help="Offline auto-review and refinement commands")
 
 app.add_typer(db_app, name="db")
 app.add_typer(project_app, name="project")
@@ -52,6 +58,8 @@ app.add_typer(review_app, name="review")
 app.add_typer(llm_app, name="llm")
 app.add_typer(comfy_app, name="comfy")
 app.add_typer(export_app, name="export")
+app.add_typer(prompt_app, name="prompt")
+app.add_typer(auto_app, name="auto")
 
 
 @db_app.command("init")
@@ -159,6 +167,25 @@ def card_validate(project_slug: str, card_key: str) -> None:
     typer.echo(json.dumps(CardService().validate_card(project_slug, card_key), indent=2))
 
 
+
+
+@card_app.command("autofill")
+def card_autofill(project_slug: str, card_key: str, force: bool = typer.Option(False, "--force"), live: bool = typer.Option(False, "--live")) -> None:
+    _ensure_db()
+    typer.echo(json.dumps(CardAutofillService().autofill_card(project_slug, card_key, use_mock=not live, force=force), indent=2))
+
+
+@card_app.command("refine")
+def card_refine(project_slug: str, card_key: str, live: bool = typer.Option(False, "--live"), no_autofill: bool = typer.Option(False, "--no-autofill")) -> None:
+    _ensure_db()
+    typer.echo(json.dumps(CardRefinementService().refine_card(project_slug, card_key, use_mock=not live, autofill_first=not no_autofill), indent=2))
+
+
+@card_app.command("auto-review")
+def card_auto_review(project_slug: str, card_key: str) -> None:
+    _ensure_db()
+    typer.echo(json.dumps(AutoReviewService().review_card_text(project_slug, card_key), indent=2))
+
 @card_app.command("versions")
 def card_versions(project_slug: str, card_key: str) -> None:
     _ensure_db()
@@ -207,6 +234,13 @@ def batch_validate(project_slug: str, batch_key: str) -> None:
     typer.echo(json.dumps(CardBatchService().validate_batch(project_slug, batch_key), indent=2))
 
 
+
+
+@batch_app.command("auto-review")
+def batch_auto_review(project_slug: str, batch_key: str) -> None:
+    _ensure_db()
+    typer.echo(json.dumps(AutoReviewService().review_batch_text(project_slug, batch_key), indent=2))
+
 @batch_app.command("balance-review")
 def batch_balance_review(project_slug: str, batch_key: str) -> None:
     _ensure_db()
@@ -249,6 +283,13 @@ def art_reject(project_slug: str, candidate_key: str, reason: str = "") -> None:
     _ensure_db()
     typer.echo(json.dumps(ArtCandidateService().reject(project_slug, candidate_key, reason=reason), indent=2))
 
+
+
+
+@art_app.command("auto-review")
+def art_auto_review(project_slug: str, candidate_key: str) -> None:
+    _ensure_db()
+    typer.echo(json.dumps(AutoReviewService().review_art_candidate(project_slug, candidate_key), indent=2))
 
 @art_app.command("lock")
 def art_lock(project_slug: str, candidate_key: str) -> None:
@@ -314,6 +355,45 @@ def review_decide(review_item_id: int, decision: ReviewDecision, reason: str = "
     )
     typer.echo(f"Review {row['id']} now {row['status']}")
 
+
+
+
+@prompt_app.command("list")
+def prompt_list(project_slug: str) -> None:
+    _ensure_db()
+    for row in PromptTemplateService().list_templates(project_slug):
+        typer.echo(f"{row['template_key']}\t{row['task']}\t{row['title']}")
+
+
+@prompt_app.command("show")
+def prompt_show(project_slug: str, template_key: str) -> None:
+    _ensure_db()
+    template = PromptTemplateService().load_template(project_slug, template_key)
+    typer.echo(json.dumps({
+        "template_key": template.template_key,
+        "title": template.title,
+        "task": template.task,
+        "path": str(template.path),
+        "inputs": PromptTemplateService().parse_inputs_from_template(project_slug, template_key),
+    }, indent=2))
+
+
+@auto_app.command("review-card")
+def auto_review_card(project_slug: str, card_key: str) -> None:
+    _ensure_db()
+    typer.echo(json.dumps(AutoReviewService().review_card_text(project_slug, card_key), indent=2))
+
+
+@auto_app.command("review-batch")
+def auto_review_batch(project_slug: str, batch_key: str) -> None:
+    _ensure_db()
+    typer.echo(json.dumps(AutoReviewService().review_batch_text(project_slug, batch_key), indent=2))
+
+
+@auto_app.command("refine-card")
+def auto_refine_card(project_slug: str, card_key: str, live: bool = typer.Option(False, "--live")) -> None:
+    _ensure_db()
+    typer.echo(json.dumps(CardRefinementService().refine_card(project_slug, card_key, use_mock=not live), indent=2))
 
 @llm_app.command("health")
 def llm_health() -> None:

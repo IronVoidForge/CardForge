@@ -2,7 +2,7 @@ from __future__ import annotations
 
 from sqlite3 import Connection
 
-SCHEMA_VERSION = 1
+SCHEMA_VERSION = 2
 
 SCHEMA_SQL = [
     """
@@ -188,6 +188,44 @@ SCHEMA_SQL = [
     )
     """,
     """
+    CREATE TABLE IF NOT EXISTS prompt_templates (
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      project_id INTEGER REFERENCES projects(id) ON DELETE CASCADE,
+      template_key TEXT NOT NULL,
+      name TEXT NOT NULL,
+      task_type TEXT NOT NULL,
+      prompt_format_json TEXT NOT NULL DEFAULT '{}',
+      system_template TEXT NOT NULL DEFAULT '',
+      user_template TEXT NOT NULL DEFAULT '',
+      output_contract TEXT NOT NULL DEFAULT '',
+      markdown_path TEXT NOT NULL DEFAULT '',
+      status TEXT NOT NULL DEFAULT 'active',
+      created_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP,
+      updated_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP,
+      UNIQUE(project_id, template_key)
+    )
+    """,
+    """
+    CREATE TABLE IF NOT EXISTS prompt_packages (
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      project_id INTEGER NOT NULL REFERENCES projects(id) ON DELETE CASCADE,
+      set_id INTEGER REFERENCES sets(id) ON DELETE SET NULL,
+      card_id INTEGER REFERENCES cards(id) ON DELETE SET NULL,
+      batch_id INTEGER REFERENCES card_batches(id) ON DELETE SET NULL,
+      package_key TEXT NOT NULL,
+      task_type TEXT NOT NULL,
+      template_key TEXT NOT NULL,
+      package_markdown_path TEXT NOT NULL DEFAULT '',
+      system_prompt_path TEXT NOT NULL DEFAULT '',
+      user_prompt_path TEXT NOT NULL DEFAULT '',
+      input_payload_json TEXT NOT NULL DEFAULT '{}',
+      output_contract_json TEXT NOT NULL DEFAULT '{}',
+      status TEXT NOT NULL DEFAULT 'rendered',
+      created_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP,
+      UNIQUE(project_id, package_key)
+    )
+    """,
+    """
     CREATE TABLE IF NOT EXISTS generation_jobs (
       id INTEGER PRIMARY KEY AUTOINCREMENT,
       project_id INTEGER NOT NULL REFERENCES projects(id) ON DELETE CASCADE,
@@ -360,6 +398,26 @@ SCHEMA_SQL = [
     )
     """,
     """
+    CREATE TABLE IF NOT EXISTS auto_reviews (
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      project_id INTEGER NOT NULL REFERENCES projects(id) ON DELETE CASCADE,
+      set_id INTEGER REFERENCES sets(id) ON DELETE SET NULL,
+      card_id INTEGER REFERENCES cards(id) ON DELETE SET NULL,
+      target_type TEXT NOT NULL,
+      target_id TEXT NOT NULL,
+      review_type TEXT NOT NULL,
+      auto_status TEXT NOT NULL,
+      score_100 INTEGER NOT NULL DEFAULT 0,
+      findings_json TEXT NOT NULL DEFAULT '[]',
+      recommendations_json TEXT NOT NULL DEFAULT '[]',
+      report_json_path TEXT NOT NULL DEFAULT '',
+      report_markdown_path TEXT NOT NULL DEFAULT '',
+      source_model TEXT NOT NULL DEFAULT 'offline_heuristic',
+      status TEXT NOT NULL DEFAULT 'completed',
+      created_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP
+    )
+    """,
+    """
     CREATE TABLE IF NOT EXISTS exports (
       id INTEGER PRIMARY KEY AUTOINCREMENT,
       set_id INTEGER NOT NULL REFERENCES sets(id) ON DELETE CASCADE,
@@ -397,8 +455,8 @@ def migrate(conn: Connection) -> None:
 
 def reset(conn: Connection) -> None:
     tables = [
-        "audit_events", "exports", "rework_requests", "review_decisions", "review_items", "renders", "templates",
-        "art_candidates", "art_prompts", "comfy_jobs", "comfy_workflows", "generation_jobs", "llm_requests",
+        "audit_events", "exports", "auto_reviews", "rework_requests", "review_decisions", "review_items", "renders", "templates",
+        "art_candidates", "art_prompts", "comfy_jobs", "comfy_workflows", "generation_jobs", "prompt_packages", "prompt_templates", "llm_requests",
         "card_versions", "cards", "card_batches", "factions", "keywords", "card_types", "set_briefs", "sets",
         "projects", "schema_meta",
     ]
