@@ -1,0 +1,145 @@
+{% extends "base.html" %}
+{% block title %}{{ card.name }} — CardForge{% endblock %}
+{% block sidebar %}
+<nav class="nav-list">
+  <a href="/">All projects</a>
+  <a href="/projects/{{ project.slug }}">Dashboard</a>
+  <a href="/projects/{{ project.slug }}/sets/{{ card.set_code }}">{{ card.set_code }}</a>
+  <a href="/projects/{{ project.slug }}/review">Review queue</a>
+</nav>
+{% endblock %}
+{% block content %}
+<section class="topbar card-topbar">
+  <div>
+    <p class="eyebrow">{{ card.card_key }} · {{ card.card_type }} · {{ card.rarity }}</p>
+    <h1>{{ card.name }}</h1>
+    <p class="muted">{{ card.type_line or "No type line yet" }}</p>
+  </div>
+  <span class="pill {{ card.status|status_class }}">{{ card.status }}</span>
+</section>
+
+<div class="card-workbench">
+  <section class="preview-column">
+    <div class="panel sticky-panel">
+      <div class="panel-heading"><h2>Preview</h2></div>
+      {% if card.latest_render %}
+        <img class="large-preview" src="{{ card.latest_render.preview_path|asset_url }}" alt="{{ card.name }} rendered preview">
+        <div class="metric-strip">
+          <span>{{ card.latest_render.render_key }}</span>
+          <span class="pill {{ card.latest_render.status|status_class }}">{{ card.latest_render.status }}</span>
+        </div>
+      {% else %}
+        <div class="large-placeholder">No render yet</div>
+      {% endif %}
+      <div class="action-grid">
+        <form method="post" action="/projects/{{ project.slug }}/cards/{{ card.card_key }}/render">
+          <input type="hidden" name="placeholder_art" value="yes">
+          <button class="secondary-button full">Render with placeholder</button>
+        </form>
+        <form method="post" action="/projects/{{ project.slug }}/cards/{{ card.card_key }}/render">
+          <input type="hidden" name="placeholder_art" value="no">
+          <button class="primary-button full">Render with locked art</button>
+        </form>
+      </div>
+    </div>
+  </section>
+
+  <section class="editor-column">
+    <div class="panel">
+      <div class="panel-heading"><h2>Card text</h2><span class="pill neutral">v{{ versions[0].version_number if versions else 1 }}</span></div>
+      <form method="post" action="/projects/{{ project.slug }}/cards/{{ card.card_key }}/edit" class="stacked-form">
+        <label>Name <input name="name" value="{{ card.name }}"></label>
+        <div class="form-row">
+          <label>Type line <input name="type_line" value="{{ card.type_line }}"></label>
+          <label>Rarity <input name="rarity" value="{{ card.rarity }}"></label>
+          <label>Faction <input name="faction" value="{{ card.faction }}"></label>
+        </div>
+        <label>Rules text <textarea name="rules_text" rows="7">{{ card.rules_text }}</textarea></label>
+        <label>Flavor text <textarea name="flavor_text" rows="3">{{ card.flavor_text }}</textarea></label>
+        <label>Art direction <textarea name="art_direction" rows="4">{{ card.art_direction }}</textarea></label>
+        <label>Design notes <textarea name="design_notes" rows="4">{{ card.design_notes }}</textarea></label>
+        <button class="primary-button" type="submit">Save new version</button>
+      </form>
+    </div>
+
+    <div class="panel">
+      <div class="panel-heading"><h2>Offline AI helpers</h2><span class="pill warn">simulated</span></div>
+      <div class="action-bar wrap">
+        <form method="post" action="/projects/{{ project.slug }}/cards/{{ card.card_key }}/autofill"><button class="secondary-button">Autofill missing fields</button></form>
+        <form method="post" action="/projects/{{ project.slug }}/cards/{{ card.card_key }}/refine"><button class="secondary-button">Auto refine</button></form>
+        <form method="post" action="/projects/{{ project.slug }}/cards/{{ card.card_key }}/auto-review"><button class="secondary-button">Auto review text</button></form>
+        <form method="post" action="/projects/{{ project.slug }}/cards/{{ card.card_key }}/validate"><button class="secondary-button">Validate</button></form>
+      </div>
+      {% if auto_reviews %}
+      <div class="review-list compact">
+        {% for review in auto_reviews[:3] %}
+          <div class="review-item">
+            <span class="pill {{ review.auto_status|status_class }}">{{ review.auto_status }}</span>
+            <strong>{{ review.review_type }} · score {{ review.score_100 }}</strong>
+            {% if review.findings %}<small>{{ review.findings[0].message if review.findings[0].message is defined else review.findings[0] }}</small>{% endif %}
+          </div>
+        {% endfor %}
+      </div>
+      {% endif %}
+    </div>
+  </section>
+</div>
+
+<div class="grid two-col">
+  <section class="panel">
+    <div class="panel-heading"><h2>Art candidates</h2><span class="pill neutral">{{ art_candidates|length }}</span></div>
+    <form method="post" action="/projects/{{ project.slug }}/cards/{{ card.card_key }}/art/generate-dummy" class="inline-form">
+      <label>Count <input type="number" name="count" value="4" min="1" max="8"></label>
+      <button class="primary-button" type="submit">Generate dummy art</button>
+    </form>
+    {% if art_candidates %}
+    <div class="art-grid">
+      {% for art in art_candidates %}
+      <article class="art-card">
+        <img src="{{ art.image_path|asset_url }}" alt="{{ art.candidate_key }}">
+        <div class="art-meta">
+          <strong>{{ art.candidate_key }}</strong>
+          <span class="pill {{ art.status|status_class }}">{{ art.status }}</span>
+        </div>
+        {% if art.score.auto_status %}<small>auto: {{ art.score.auto_status }} · {{ art.score.score_100|default(art.score.score) }}</small>{% endif %}
+        <div class="button-row">
+          <form method="post" action="/projects/{{ project.slug }}/art/{{ art.candidate_key }}/auto-review"><input type="hidden" name="card_key" value="{{ card.card_key }}"><button>Auto</button></form>
+          <form method="post" action="/projects/{{ project.slug }}/art/{{ art.candidate_key }}/approve"><input type="hidden" name="card_key" value="{{ card.card_key }}"><button>Approve</button></form>
+          <form method="post" action="/projects/{{ project.slug }}/art/{{ art.candidate_key }}/lock"><input type="hidden" name="card_key" value="{{ card.card_key }}"><button>Lock</button></form>
+          <form method="post" action="/projects/{{ project.slug }}/art/{{ art.candidate_key }}/reject"><input type="hidden" name="card_key" value="{{ card.card_key }}"><input type="hidden" name="reason" value="Rejected from card detail"><button>Reject</button></form>
+        </div>
+      </article>
+      {% endfor %}
+    </div>
+    {% else %}
+      <div class="empty-state">No art candidates yet. Generate dummy art or connect ComfyUI later.</div>
+    {% endif %}
+  </section>
+
+  <section class="panel">
+    <div class="panel-heading"><h2>Open review items</h2></div>
+    {% if open_reviews %}
+    <div class="review-list compact">
+      {% for item in open_reviews %}
+      <div class="review-item">
+        <span class="pill {{ item.severity|status_class }}">{{ item.severity }}</span>
+        <strong>{{ item.title }}</strong>
+        <small>{{ item.description }}</small>
+      </div>
+      {% endfor %}
+    </div>
+    {% else %}<div class="empty-state">No open review items directly tied to this card.</div>{% endif %}
+  </section>
+</div>
+
+<section class="panel">
+  <div class="panel-heading"><h2>Version history</h2></div>
+  {% if versions %}
+  <div class="table-wrap">
+    <table><thead><tr><th>Version</th><th>Source</th><th>Reason</th><th>Created</th></tr></thead><tbody>
+    {% for version in versions %}<tr><td>v{{ version.version_number }}</td><td>{{ version.source }}</td><td>{{ version.change_reason }}</td><td>{{ version.created_at }}</td></tr>{% endfor %}
+    </tbody></table>
+  </div>
+  {% endif %}
+</section>
+{% endblock %}

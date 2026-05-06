@@ -1,12 +1,9 @@
 from __future__ import annotations
 
-import json
-
 import typer
 
-from cardforge.cli.bootstrap import ensure_db
-from cardforge.config import load_settings
-from cardforge.services.cards.card_service import CardService
+from cardforge.cli.bootstrap import echo_json, ensure_db
+from cardforge.services.export.export_service import ExportService
 
 app = typer.Typer(help="Export commands")
 
@@ -14,11 +11,22 @@ app = typer.Typer(help="Export commands")
 @app.command("json")
 def export_json(project_slug: str, set_code: str) -> None:
     ensure_db()
-    cards = CardService().list_cards(project_slug, set_code)
-    settings = load_settings()
-    project_root = settings.workspace_root / "projects" / project_slug
-    out = project_root / "exports" / "json" / f"{set_code.lower()}_cards.json"
-    out.parent.mkdir(parents=True, exist_ok=True)
-    payload = [{key: card[key] for key in card.keys()} for card in cards]
-    out.write_text(json.dumps(payload, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
-    typer.echo(f"Wrote {out}")
+    echo_json(ExportService().export_json(project_slug, set_code))
+
+
+@app.command("csv")
+def export_csv(project_slug: str, set_code: str) -> None:
+    ensure_db()
+    echo_json(ExportService().export_csv(project_slug, set_code))
+
+
+@app.command("markdown")
+def export_markdown(project_slug: str, set_code: str) -> None:
+    ensure_db()
+    echo_json(ExportService().export_markdown_catalog(project_slug, set_code))
+
+
+@app.command("png")
+def export_png(project_slug: str, set_code: str) -> None:
+    ensure_db()
+    echo_json(ExportService().export_png_bundle(project_slug, set_code))

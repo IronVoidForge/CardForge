@@ -1,0 +1,129 @@
+{% extends "base.html" %}
+{% block title %}{{ set.name }} — CardForge
+<section class="panel">
+  <div class="panel-heading"><h2>Exports</h2><span class="pill neutral">offline files</span></div>
+  <p class="muted">Export the current set data and any latest rendered card images. PNG export copies only cards that already have renders.</p>
+  <div class="action-bar wrap">
+    <form method="post" action="/projects/{{ project.slug }}/sets/{{ set.set_code }}/export/json"><button class="secondary-button">JSON</button></form>
+    <form method="post" action="/projects/{{ project.slug }}/sets/{{ set.set_code }}/export/csv"><button class="secondary-button">CSV</button></form>
+    <form method="post" action="/projects/{{ project.slug }}/sets/{{ set.set_code }}/export/markdown"><button class="secondary-button">Markdown catalog</button></form>
+    <form method="post" action="/projects/{{ project.slug }}/sets/{{ set.set_code }}/export/png"><button class="primary-button">PNG bundle</button></form>
+  </div>
+</section>
+
+{% endblock %}
+{% block sidebar %}
+<nav class="nav-list">
+  <a href="/">All projects</a>
+  <a href="/projects/{{ project.slug }}">Dashboard</a>
+  <a href="/projects/{{ project.slug }}/review">Review queue</a>
+</nav>
+
+<section class="panel">
+  <div class="panel-heading"><h2>Exports</h2><span class="pill neutral">offline files</span></div>
+  <p class="muted">Export the current set data and any latest rendered card images. PNG export copies only cards that already have renders.</p>
+  <div class="action-bar wrap">
+    <form method="post" action="/projects/{{ project.slug }}/sets/{{ set.set_code }}/export/json"><button class="secondary-button">JSON</button></form>
+    <form method="post" action="/projects/{{ project.slug }}/sets/{{ set.set_code }}/export/csv"><button class="secondary-button">CSV</button></form>
+    <form method="post" action="/projects/{{ project.slug }}/sets/{{ set.set_code }}/export/markdown"><button class="secondary-button">Markdown catalog</button></form>
+    <form method="post" action="/projects/{{ project.slug }}/sets/{{ set.set_code }}/export/png"><button class="primary-button">PNG bundle</button></form>
+  </div>
+</section>
+
+{% endblock %}
+{% block content %}
+<section class="topbar">
+  <div>
+    <p class="eyebrow">Set {{ set.set_code }}</p>
+    <h1>{{ set.name }}</h1>
+    <p class="muted">{{ set.description or "Prototype set workspace" }}</p>
+  </div>
+  <a class="ghost-button" href="/projects/{{ project.slug }}">Back to project</a>
+</section>
+
+<section class="stat-grid small">
+  <div class="stat-card"><span>Cards</span><strong>{{ counts.cards }}</strong></div>
+  <div class="stat-card"><span>Batches</span><strong>{{ counts.batches }}</strong></div>
+  <div class="stat-card"><span>Open reviews</span><strong>{{ counts.open_reviews }}</strong></div>
+  <div class="stat-card"><span>Rendered</span><strong>{{ counts.rendered_cards }}</strong></div>
+</section>
+
+<div class="grid two-col">
+  <section class="panel form-panel">
+    <div class="panel-heading"><h2>Generate card batch</h2><span class="pill warn">offline simulation</span></div>
+    <form method="post" action="/projects/{{ project.slug }}/sets/{{ set.set_code }}/batches/generate" class="stacked-form">
+      <label>Card count <input type="number" min="1" max="30" name="count" value="12"></label>
+      <label>Design request <textarea name="request_text" rows="5">Generate 12 gothic necromancer cards with creatures, spells, equipment, locations, and a legendary boss. Make them readable and prototype-balanced.</textarea></label>
+      <button class="primary-button" type="submit">Generate simulated batch</button>
+    </form>
+  </section>
+
+  <section class="panel form-panel">
+    <div class="panel-heading"><h2>Create manual card</h2></div>
+    <form method="post" action="/projects/{{ project.slug }}/sets/{{ set.set_code }}/cards/create" class="stacked-form compact-form">
+      <label>Name <input required name="name" placeholder="Bone Lantern Warden"></label>
+      <div class="form-row">
+        <label>Type <select name="card_type"><option>creature</option><option>spell</option><option>equipment</option><option>location</option><option>legendary</option></select></label>
+        <label>Rarity <select name="rarity"><option>common</option><option>uncommon</option><option>rare</option><option>legendary</option></select></label>
+      </div>
+      <div class="form-row">
+        <label>Cost <input type="number" name="cost" value="2"></label>
+        <label>ATK <input name="attack" placeholder="2"></label>
+        <label>HP <input name="health" placeholder="3"></label>
+      </div>
+      <label>Rules <textarea name="rules_text" rows="3" placeholder="Guard. When this dies, draw a card."></textarea></label>
+      <button class="secondary-button" type="submit">Create card</button>
+    </form>
+  </section>
+</div>
+
+<section class="panel">
+  <div class="panel-heading"><h2>Batches</h2></div>
+  {% if batches %}
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>Batch</th><th>Cards</th><th>Target</th><th>Status</th><th>Validation</th></tr></thead>
+      <tbody>
+      {% for batch in batches %}
+        <tr>
+          <td><a href="/projects/{{ project.slug }}/batches/{{ batch.batch_key }}">{{ batch.batch_key }}</a></td>
+          <td>{{ batch.card_count }}</td>
+          <td>{{ batch.target_count }}</td>
+          <td><span class="pill {{ batch.status|status_class }}">{{ batch.status }}</span></td>
+          <td>{{ batch.validation_summary.valid_card_count|default("—") }}/{{ batch.validation_summary.card_count|default("—") }} valid</td>
+        </tr>
+      {% endfor %}
+      </tbody>
+    </table>
+  </div>
+  {% else %}<div class="empty-state">No generated batches yet.</div>{% endif %}
+</section>
+
+<section class="panel">
+  <div class="panel-heading"><h2>Cards</h2><span class="pill neutral">{{ cards|length }}</span></div>
+  {% if cards %}
+  <div class="card-grid">
+    {% for card in cards %}
+      <a class="mini-card" href="/projects/{{ project.slug }}/cards/{{ card.card_key }}">
+        {% if card.latest_render %}<img src="{{ card.latest_render.preview_path|asset_url }}" alt="{{ card.name }} preview">{% else %}<div class="mini-placeholder">No render</div>{% endif %}
+        <strong>{{ card.name }}</strong>
+        <small>{{ card.card_key }} · {{ card.card_type }} · cost {{ card.cost.display }}</small>
+        <span class="pill {{ card.status|status_class }}">{{ card.status }}</span>
+      </a>
+    {% endfor %}
+  </div>
+  {% else %}<div class="empty-state">No cards yet.</div>{% endif %}
+</section>
+
+<section class="panel">
+  <div class="panel-heading"><h2>Exports</h2><span class="pill neutral">offline files</span></div>
+  <p class="muted">Export the current set data and any latest rendered card images. PNG export copies only cards that already have renders.</p>
+  <div class="action-bar wrap">
+    <form method="post" action="/projects/{{ project.slug }}/sets/{{ set.set_code }}/export/json"><button class="secondary-button">JSON</button></form>
+    <form method="post" action="/projects/{{ project.slug }}/sets/{{ set.set_code }}/export/csv"><button class="secondary-button">CSV</button></form>
+    <form method="post" action="/projects/{{ project.slug }}/sets/{{ set.set_code }}/export/markdown"><button class="secondary-button">Markdown catalog</button></form>
+    <form method="post" action="/projects/{{ project.slug }}/sets/{{ set.set_code }}/export/png"><button class="primary-button">PNG bundle</button></form>
+  </div>
+</section>
+
+{% endblock %}

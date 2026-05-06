@@ -1,0 +1,52 @@
+{% extends "base.html" %}
+{% block title %}{{ batch.batch_key }} — CardForge{% endblock %}
+{% block sidebar %}
+<nav class="nav-list">
+  <a href="/">All projects</a>
+  <a href="/projects/{{ project.slug }}">Dashboard</a>
+  <a href="/projects/{{ project.slug }}/sets/{{ batch.set_code }}">{{ batch.set_code }}</a>
+  <a href="/projects/{{ project.slug }}/review">Review queue</a>
+</nav>
+{% endblock %}
+{% block content %}
+<section class="topbar">
+  <div>
+    <p class="eyebrow">Batch {{ batch.batch_key }}</p>
+    <h1>{{ batch.set_name }}</h1>
+    <p class="muted">{{ batch.card_count }} generated cards · target {{ batch.target_count }}</p>
+  </div>
+  <span class="pill {{ batch.status|status_class }}">{{ batch.status }}</span>
+</section>
+
+<div class="action-bar">
+  <form method="post" action="/projects/{{ project.slug }}/batches/{{ batch.batch_key }}/validate"><button class="secondary-button">Validate batch</button></form>
+  <form method="post" action="/projects/{{ project.slug }}/batches/{{ batch.batch_key }}/auto-review"><button class="primary-button">Run auto review</button></form>
+</div>
+
+<section class="panel">
+  <div class="panel-heading"><h2>Validation summary</h2></div>
+  {% if batch.validation_summary %}
+    <div class="metric-strip">
+      <span><strong>{{ batch.validation_summary.valid_card_count|default(0) }}</strong> valid</span>
+      <span><strong>{{ batch.validation_summary.error_count|default(0) }}</strong> errors</span>
+      <span><strong>{{ batch.validation_summary.warning_count|default(0) }}</strong> warnings</span>
+    </div>
+  {% else %}
+    <div class="empty-state">No validation summary yet.</div>
+  {% endif %}
+</section>
+
+<section class="panel">
+  <div class="panel-heading"><h2>Cards in batch</h2></div>
+  <div class="card-grid">
+    {% for card in cards %}
+      <a class="mini-card" href="/projects/{{ project.slug }}/cards/{{ card.card_key }}">
+        {% if card.latest_render %}<img src="{{ card.latest_render.preview_path|asset_url }}" alt="{{ card.name }} preview">{% else %}<div class="mini-placeholder">No render</div>{% endif %}
+        <strong>{{ card.name }}</strong>
+        <small>{{ card.card_key }} · {{ card.card_type }} · {{ card.rarity }}</small>
+        {% if card.latest_auto_review %}<span class="pill {{ card.latest_auto_review.auto_status|status_class }}">auto: {{ card.latest_auto_review.auto_status }}</span>{% else %}<span class="pill neutral">not reviewed</span>{% endif %}
+      </a>
+    {% endfor %}
+  </div>
+</section>
+{% endblock %}

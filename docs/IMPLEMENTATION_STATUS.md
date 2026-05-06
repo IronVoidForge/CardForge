@@ -86,3 +86,15 @@ python -m cardforge project status gravebound_test
 - Added structural regression tests for the CLI composition and parser extraction.
 
 Current automated tests after cleanup: `18 passed`.
+
+## V5 local UI and exports
+
+Added in the latest pass:
+
+- FastAPI/Jinja local operator UI with polished responsive styling.
+- Project dashboard, set detail, batch detail, card editor, art candidate review, render actions, and review queue pages.
+- Safe workspace asset serving for generated art and rendered cards.
+- CLI command: `cardforge ui serve --host 127.0.0.1 --port 8765`.
+- Export service and CLI commands for JSON, CSV, Markdown catalog, and PNG render bundles.
+- Tests for the web UI, simulated batch generation through the UI, locked-art rendering, review pages, and exports.
+

@@ -1,0 +1,54 @@
+{% extends "base.html" %}
+{% block title %}Review queue — CardForge{% endblock %}
+{% block sidebar %}
+<nav class="nav-list">
+  <a href="/">All projects</a>
+  <a href="/projects/{{ project.slug }}">Dashboard</a>
+  <a href="/projects/{{ project.slug }}/review">Review queue</a>
+</nav>
+{% endblock %}
+{% block content %}
+<section class="topbar">
+  <div>
+    <p class="eyebrow">Operator queue</p>
+    <h1>Review queue</h1>
+    <p class="muted">{{ open_count }} open item(s) for {{ project.name }}</p>
+  </div>
+</section>
+
+<section class="panel">
+  {% if reviews %}
+  <div class="review-list">
+    {% for item in reviews %}
+    <article class="review-card-wide">
+      {% if item.preview_path %}<img src="{{ item.preview_path|asset_url }}" alt="review preview">{% endif %}
+      <div class="review-main">
+        <div class="review-title-row">
+          <span class="pill {{ item.status|status_class }}">{{ item.status }}</span>
+          <span class="pill neutral">{{ item.review_type }}</span>
+          <span class="pill {{ item.severity|status_class }}">{{ item.severity }}</span>
+        </div>
+        <h2>{{ item.title }}</h2>
+        <p>{{ item.description or "No description supplied." }}</p>
+        <small class="mono">{{ item.target_type }}:{{ item.target_id }} · #{{ item.id }}</small>
+      </div>
+      {% if item.status == "open" %}
+      <form method="post" action="/projects/{{ project.slug }}/review/{{ item.id }}/decide" class="decision-form">
+        <label>Reason <input name="reason" placeholder="Looks good / needs rewrite / wrong art..."></label>
+        <label>Notes <textarea name="notes" rows="2"></textarea></label>
+        <div class="button-row">
+          <button name="decision" value="approve" class="primary-button">Approve</button>
+          <button name="decision" value="request_rework" class="secondary-button">Rework</button>
+          <button name="decision" value="reject" class="danger-button">Reject</button>
+          <button name="decision" value="defer" class="ghost-button">Defer</button>
+        </div>
+      </form>
+      {% endif %}
+    </article>
+    {% endfor %}
+  </div>
+  {% else %}
+  <div class="empty-state">No review items yet.</div>
+  {% endif %}
+</section>
+{% endblock %}

@@ -59,6 +59,12 @@ cardforge render card gravebound_test CARD_0001 --no-placeholder-art
 
 cardforge review list gravebound_test
 cardforge export json gravebound_test SET001
+cardforge export csv gravebound_test SET001
+cardforge export markdown gravebound_test SET001
+cardforge export png gravebound_test SET001
+
+# Optional local operator UI.
+cardforge ui serve --host 127.0.0.1 --port 8765
 ```
 
 The default workspace is `./workspace`. Override it with:
@@ -69,7 +75,7 @@ export CARDFORGE_WORKSPACE=/path/to/workspace
 
 ## Planned phases
 
-See `docs/PHASE_PLAN.md` for the full implementation roadmap, `docs/OFFLINE_PHASES.md` for exactly which phases can be built and tested without live LM Studio or ComfyUI, and `docs/PROMPT_FORMAT_AND_AUTO_REVIEW.md` for the prompt package/autofill/refinement/auto-review contract.
+See `docs/PHASE_PLAN.md` for the full implementation roadmap, `docs/OFFLINE_PHASES.md` for exactly which phases can be built and tested without live LM Studio or ComfyUI, `docs/PROMPT_FORMAT_AND_AUTO_REVIEW.md` for the prompt package/autofill/refinement/auto-review contract, and `docs/UI_AND_EXPORTS.md` for the local operator UI and export workflow.
 
 ## Local integrations
 

@@ -1,0 +1,100 @@
+{% extends "base.html" %}
+{% block title %}{{ status.project.name }} — CardForge{% endblock %}
+{% block sidebar %}
+<nav class="nav-list">
+  <a href="/">All projects</a>
+  <a href="/projects/{{ status.project.slug }}">Dashboard</a>
+  <a href="/projects/{{ status.project.slug }}/review">Review queue</a>
+</nav>
+{% endblock %}
+{% block content %}
+<section class="topbar">
+  <div>
+    <p class="eyebrow">Project dashboard</p>
+    <h1>{{ status.project.name }}</h1>
+    <p class="muted mono">{{ status.project.slug }}</p>
+  </div>
+  <a class="ghost-button" href="/projects/{{ status.project.slug }}/review">Open review queue</a>
+</section>
+
+<section class="next-action">
+  <span>Next best action</span>
+  <strong>{{ status.next_action }}</strong>
+</section>
+
+<section class="stat-grid">
+  {% for label, key in [("Sets", "sets"), ("Batches", "batches"), ("Cards", "cards"), ("Open reviews", "open_reviews"), ("Art candidates", "art_candidates"), ("Locked art", "locked_art"), ("Renders", "renders"), ("Auto reviews", "auto_reviews")] %}
+  <div class="stat-card">
+    <span>{{ label }}</span>
+    <strong>{{ status.counts[key] }}</strong>
+  </div>
+  {% endfor %}
+</section>
+
+<div class="grid two-col wide-left">
+  <section class="panel">
+    <div class="panel-heading">
+      <h2>Sets</h2>
+      <span class="pill neutral">{{ sets|length }}</span>
+    </div>
+    {% if sets %}
+      <div class="set-list">
+      {% for set in sets %}
+        <a class="set-card" href="/projects/{{ status.project.slug }}/sets/{{ set.set_code }}">
+          <strong>{{ set.name }}</strong>
+          <small>{{ set.set_code }} · {{ set.card_count }} cards · {{ set.batch_count }} batches</small>
+          <span class="pill {{ set.status|status_class }}">{{ set.status }}</span>
+        </a>
+      {% endfor %}
+      </div>
+    {% else %}
+      <div class="empty-state">No sets yet.</div>
+    {% endif %}
+  </section>
+
+  <section class="panel form-panel">
+    <div class="panel-heading"><h2>Create set</h2></div>
+    <form method="post" action="/projects/{{ status.project.slug }}/sets/create" class="stacked-form">
+      <label>Name <input required name="name" placeholder="Gravebound Dominion"></label>
+      <label>Target cards <input name="target_card_count" type="number" min="0" value="12"></label>
+      <label>Description <textarea name="description" rows="3" placeholder="A gothic necromancer faction prototype."></textarea></label>
+      <button class="primary-button" type="submit">Create set</button>
+    </form>
+  </section>
+</div>
+
+<section class="panel">
+  <div class="panel-heading"><h2>Recent cards</h2></div>
+  {% if recent_cards %}
+  <div class="card-grid">
+    {% for card in recent_cards %}
+      <a class="mini-card" href="/projects/{{ status.project.slug }}/cards/{{ card.card_key }}">
+        {% if card.latest_render %}<img src="{{ card.latest_render.preview_path|asset_url }}" alt="{{ card.name }} preview">{% else %}<div class="mini-placeholder">No render</div>{% endif %}
+        <strong>{{ card.name }}</strong>
+        <small>{{ card.card_key }} · {{ card.card_type }} · {{ card.rarity }}</small>
+        <span class="pill {{ card.status|status_class }}">{{ card.status }}</span>
+      </a>
+    {% endfor %}
+  </div>
+  {% else %}
+  <div class="empty-state">Generate a batch or create cards manually to populate this dashboard.</div>
+  {% endif %}
+</section>
+
+<section class="panel">
+  <div class="panel-heading"><h2>Recent open reviews</h2></div>
+  {% if open_reviews %}
+  <div class="review-list compact">
+    {% for item in open_reviews %}
+      <div class="review-item">
+        <span class="pill {{ item.severity|status_class }}">{{ item.severity }}</span>
+        <strong>{{ item.title }}</strong>
+        <small>{{ item.review_type }} · {{ item.target_type }}:{{ item.target_id }}</small>
+      </div>
+    {% endfor %}
+  </div>
+  {% else %}
+    <div class="empty-state">No open reviews.</div>
+  {% endif %}
+</section>
+{% endblock %}

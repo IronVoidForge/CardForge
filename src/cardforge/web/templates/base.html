@@ -1,0 +1,33 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{% block title %}CardForge{% endblock %}</title>
+  <link rel="stylesheet" href="/static/cardforge.css">
+</head>
+<body>
+  <div class="app-shell">
+    <aside class="sidebar">
+      <a class="brand" href="/">
+        <span class="brand-mark">◆</span>
+        <span>
+          <strong>CardForge</strong>
+          <small>local card pipeline</small>
+        </span>
+      </a>
+      {% block sidebar %}
+      <nav class="nav-list">
+        <a href="/">Projects</a>
+      </nav>
+      {% endblock %}
+      <div class="sidebar-note">
+        Offline-safe mode: simulated LM output, dummy art, deterministic review, no required LM Studio or ComfyUI.
+      </div>
+    </aside>
+    <main class="main-panel">
+      {% block content %}{% endblock %}
+    </main>
+  </div>
+</body>
+</html>

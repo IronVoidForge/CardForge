@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+{% block title %}CardForge Projects{% endblock %}
+{% block content %}
+<section class="hero">
+  <div>
+    <p class="eyebrow">Local-first game card production</p>
+    <h1>Build, review, render, and export prototype card sets.</h1>
+    <p class="hero-copy">Use the same pipeline discipline as FilmCreator: structured artifacts, prompt packages, simulated generation, review queues, rework, locked art, and deterministic renders.</p>
+  </div>
+</section>
+
+<div class="grid two-col">
+  <section class="panel">
+    <div class="panel-heading">
+      <h2>Projects</h2>
+      <span class="pill neutral">{{ projects|length }} total</span>
+    </div>
+    {% if projects %}
+      <div class="project-list">
+      {% for project in projects %}
+        <a class="project-row" href="/projects/{{ project['slug'] }}">
+          <span>
+            <strong>{{ project['name'] }}</strong>
+            <small>{{ project['slug'] }}</small>
+          </span>
+          <span class="pill {{ project['status']|status_class }}">{{ project['status'] }}</span>
+        </a>
+      {% endfor %}
+      </div>
+    {% else %}
+      <div class="empty-state">No projects yet. Create one to start a set.</div>
+    {% endif %}
+  </section>
+
+  <section class="panel form-panel">
+    <div class="panel-heading"><h2>Create project</h2></div>
+    <form method="post" action="/projects/create" class="stacked-form">
+      <label>Slug <input required name="slug" placeholder="gravebound_test"></label>
+      <label>Name <input name="name" placeholder="Gravebound Test"></label>
+      <label>Description <textarea name="description" rows="4" placeholder="Prototype gothic necromancer card set."></textarea></label>
+      <button class="primary-button" type="submit">Create project</button>
+    </form>
+  </section>
+</div>
+{% endblock %}

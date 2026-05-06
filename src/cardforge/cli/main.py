@@ -2,7 +2,7 @@ from __future__ import annotations
 
 import typer
 
-from cardforge.cli.commands import art, auto, batches, cards, db, exports, prompts, projects, render, review, rework, sets
+from cardforge.cli.commands import art, auto, batches, cards, db, exports, prompts, projects, render, review, rework, sets, ui
 from cardforge.cli.commands.integrations import comfy_app, llm_app
 
 app = typer.Typer(help="CardForge local card pipeline")
@@ -21,6 +21,7 @@ app.add_typer(comfy_app, name="comfy")
 app.add_typer(exports.app, name="export")
 app.add_typer(prompts.app, name="prompt")
 app.add_typer(auto.app, name="auto")
+app.add_typer(ui.app, name="ui")
 
 
 if __name__ == "__main__":
