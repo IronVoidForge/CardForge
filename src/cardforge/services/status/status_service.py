@@ -4,59 +4,123 @@ from typing import Any
 
 from cardforge.db.session import Database
 from cardforge.services.projects.project_service import ProjectService
+from cardforge.services.resume.resume_service import ResumeService
 
 
 class StatusService:
     def __init__(self, db: Database | None = None) -> None:
         self.db = db or Database()
         self.projects = ProjectService(self.db)
+        self.resume = ResumeService(self.db)
 
     def project_status(self, project_slug: str) -> dict[str, Any]:
         with self.db.connection() as conn:
             project = self.projects.get_project(project_slug, conn=conn)
-            project_id = project["id"]
-            set_count = conn.execute("SELECT COUNT(*) AS n FROM sets WHERE project_id = ?", (project_id,)).fetchone()["n"]
-            card_count = conn.execute("SELECT COUNT(*) AS n FROM cards c JOIN sets s ON s.id = c.set_id WHERE s.project_id = ?", (project_id,)).fetchone()["n"]
-            batch_count = conn.execute("SELECT COUNT(*) AS n FROM card_batches b JOIN sets s ON s.id = b.set_id WHERE s.project_id = ?", (project_id,)).fetchone()["n"]
-            open_reviews = conn.execute("SELECT COUNT(*) AS n FROM review_items WHERE project_id = ? AND status = 'open'", (project_id,)).fetchone()["n"]
-            rendered = conn.execute("SELECT COUNT(*) AS n FROM renders r JOIN cards c ON c.id = r.card_id JOIN sets s ON s.id = c.set_id WHERE s.project_id = ?", (project_id,)).fetchone()["n"]
-            art_candidates = conn.execute("SELECT COUNT(*) AS n FROM art_candidates ac JOIN cards c ON c.id = ac.card_id JOIN sets s ON s.id = c.set_id WHERE s.project_id = ?", (project_id,)).fetchone()["n"]
-            locked_art = conn.execute("SELECT COUNT(*) AS n FROM art_candidates ac JOIN cards c ON c.id = ac.card_id JOIN sets s ON s.id = c.set_id WHERE s.project_id = ? AND ac.status = 'locked'", (project_id,)).fetchone()["n"]
-            locked_cards = conn.execute("SELECT COUNT(*) AS n FROM cards c JOIN sets s ON s.id = c.set_id WHERE s.project_id = ? AND c.status = 'locked'", (project_id,)).fetchone()["n"]
-            prompt_packages = conn.execute("SELECT COUNT(*) AS n FROM prompt_packages WHERE project_id = ?", (project_id,)).fetchone()["n"]
-            auto_reviews = conn.execute("SELECT COUNT(*) AS n FROM auto_reviews WHERE project_id = ?", (project_id,)).fetchone()["n"]
-            needs_rework_auto = conn.execute("SELECT COUNT(*) AS n FROM auto_reviews WHERE project_id = ? AND auto_status = 'needs_rework'", (project_id,)).fetchone()["n"]
-            return {
-                "project": {"slug": project["slug"], "name": project["name"], "status": project["status"], "root_path": project["root_path"]},
-                "counts": {
-                    "sets": set_count,
-                    "batches": batch_count,
-                    "cards": card_count,
-                    "open_reviews": open_reviews,
-                    "art_candidates": art_candidates,
-                    "locked_art": locked_art,
-                    "renders": rendered,
-                    "locked_cards": locked_cards,
-                    "prompt_packages": prompt_packages,
-                    "auto_reviews": auto_reviews,
-                    "auto_needs_rework": needs_rework_auto,
-                },
-                "next_action": self._next_action(card_count, batch_count, art_candidates, locked_art, rendered, open_reviews, needs_rework_auto),
+            project_id = int(project["id"])
+            counts = {
+                "sets": self._count(conn, "SELECT COUNT(*) FROM sets WHERE project_id = ?", project_id),
+                "batches": self._count_project_join(conn, "card_batches", "b", project_id),
+                "cards": self._count_cards(conn, project_id),
+                "open_reviews": self._count(
+                    conn,
+                    "SELECT COUNT(*) FROM review_items WHERE project_id = ? AND status = 'open'",
+                    project_id,
+                ),
+                "art_candidates": self._count_art(conn, project_id),
+                "locked_art": self._count_art(conn, project_id, extra="AND ac.status = 'locked'"),
+                "renders": self._count_renders(conn, project_id),
+                "locked_cards": self._count(
+                    conn,
+                    """
+                    SELECT COUNT(*) FROM cards c
+                    JOIN sets s ON s.id = c.set_id
+                    WHERE s.project_id = ? AND c.status = 'locked'
+                    """,
+                    project_id,
+                ),
+                "prompt_packages": self._count(
+                    conn, "SELECT COUNT(*) FROM prompt_packages WHERE project_id = ?", project_id
+                ),
+                "auto_reviews": self._count(conn, "SELECT COUNT(*) FROM auto_reviews WHERE project_id = ?", project_id),
+                "auto_needs_rework": self._count(
+                    conn,
+                    "SELECT COUNT(*) FROM auto_reviews WHERE project_id = ? AND auto_status = 'needs_rework'",
+                    project_id,
+                ),
+                "jobs_pending": self._count(
+                    conn,
+                    "SELECT COUNT(*) FROM generation_jobs WHERE project_id = ? AND status = 'pending'",
+                    project_id,
+                ),
+                "jobs_running": self._count(
+                    conn,
+                    "SELECT COUNT(*) FROM generation_jobs WHERE project_id = ? AND status = 'running'",
+                    project_id,
+                ),
+                "jobs_failed": self._count(
+                    conn,
+                    "SELECT COUNT(*) FROM generation_jobs WHERE project_id = ? AND status = 'failed'",
+                    project_id,
+                ),
             }
+        resume_plan = self.resume.plan_project(project_slug)
+        return {
+            "project": {
+                "slug": project["slug"],
+                "name": project["name"],
+                "status": project["status"],
+                "root_path": project["root_path"],
+            },
+            "counts": counts,
+            "next_action": resume_plan["message"],
+            "resume_plan": resume_plan,
+        }
 
-    def _next_action(self, card_count: int, batch_count: int, art_candidates: int, locked_art: int, rendered: int, open_reviews: int, needs_rework_auto: int = 0) -> str:
-        if card_count == 0:
-            return "Generate a simulated batch or manually create cards."
-        if needs_rework_auto:
-            return "Run auto refinement or manually resolve auto-review rework findings."
-        if batch_count and open_reviews:
-            return "Review generated card text and validation issues."
-        if art_candidates == 0:
-            return "Generate dummy art candidates or connect ComfyUI for real art."
-        if locked_art == 0:
-            return "Approve and lock art candidates."
-        if rendered == 0:
-            return "Render cards using locked art or placeholder art."
-        if open_reviews:
-            return "Work through the review queue."
-        return "Export locked or reviewed cards."
+    def _count(self, conn: Any, sql: str, *params: Any) -> int:
+        return int(conn.execute(sql, params).fetchone()[0])
+
+    def _count_project_join(self, conn: Any, table: str, alias: str, project_id: int) -> int:
+        return self._count(
+            conn,
+            f"""
+            SELECT COUNT(*) FROM {table} {alias}
+            JOIN sets s ON s.id = {alias}.set_id
+            WHERE s.project_id = ?
+            """,
+            project_id,
+        )
+
+    def _count_cards(self, conn: Any, project_id: int) -> int:
+        return self._count(
+            conn,
+            """
+            SELECT COUNT(*) FROM cards c
+            JOIN sets s ON s.id = c.set_id
+            WHERE s.project_id = ?
+            """,
+            project_id,
+        )
+
+    def _count_art(self, conn: Any, project_id: int, *, extra: str = "") -> int:
+        return self._count(
+            conn,
+            f"""
+            SELECT COUNT(*) FROM art_candidates ac
+            JOIN cards c ON c.id = ac.card_id
+            JOIN sets s ON s.id = c.set_id
+            WHERE s.project_id = ? {extra}
+            """,
+            project_id,
+        )
+
+    def _count_renders(self, conn: Any, project_id: int) -> int:
+        return self._count(
+            conn,
+            """
+            SELECT COUNT(*) FROM renders r
+            JOIN cards c ON c.id = r.card_id
+            JOIN sets s ON s.id = c.set_id
+            WHERE s.project_id = ?
+            """,
+            project_id,
+        )

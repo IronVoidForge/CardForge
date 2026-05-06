@@ -4,20 +4,23 @@ from pathlib import Path
 from typing import Any
 
 from fastapi import FastAPI, Form, HTTPException, Request
-from fastapi.responses import FileResponse, HTMLResponse, RedirectResponse
+from fastapi.responses import FileResponse, HTMLResponse, JSONResponse, RedirectResponse
 from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
 
 from cardforge.db.schema import migrate
 from cardforge.db.session import Database
-from cardforge.domain.enums import ReviewDecision
+from cardforge.domain.enums import JobType, ReviewDecision
 from cardforge.files.asset_store import AssetStore
 from cardforge.services.art.art_candidate_service import ArtCandidateService
 from cardforge.services.batches.card_batch_service import CardBatchService
 from cardforge.services.export.export_service import ExportService
 from cardforge.services.cards.card_service import CardService
 from cardforge.services.generation.card_autofill_service import CardAutofillService
+from cardforge.services.jobs.job_service import JobService
+from cardforge.services.observability.diagnostics_service import DiagnosticsService
 from cardforge.services.projects.project_service import ProjectService
+from cardforge.services.resume.resume_service import ResumeService
 from cardforge.services.refinement.card_refinement_service import CardRefinementService
 from cardforge.services.render.card_renderer import CardRenderer
 from cardforge.services.review.auto_review_service import AutoReviewService
@@ -60,6 +63,12 @@ def create_app(db: Database | None = None) -> FastAPI:
 
     ui = UIDashboardService(database)
 
+
+    @app.get("/healthz")
+    def healthz() -> JSONResponse:
+        payload = DiagnosticsService(database).check()
+        return JSONResponse(payload, status_code=200 if payload["ok"] else 503)
+
     @app.get("/", response_class=HTMLResponse)
     def home(request: Request) -> HTMLResponse:
         projects = ProjectService(database).list_projects()
@@ -82,6 +91,46 @@ def create_app(db: Database | None = None) -> FastAPI:
     def create_set(project_slug: str, name: str = Form(...), description: str = Form(""), target_card_count: int = Form(0)) -> RedirectResponse:
         row = SetService(database).create_set(project_slug, name=name, description=description, target_card_count=target_card_count)
         return _redirect(f"/projects/{project_slug}/sets/{row['set_code']}")
+
+
+    @app.get("/projects/{project_slug}/jobs", response_class=HTMLResponse)
+    def job_queue(request: Request, project_slug: str) -> HTMLResponse:
+        try:
+            payload = ui.job_queue(project_slug)
+            payload["resume_plan"] = ResumeService(database).plan_project(project_slug)
+        except KeyError as exc:
+            raise HTTPException(status_code=404, detail=str(exc)) from exc
+        return templates.TemplateResponse(request, "jobs.html", payload)
+
+    @app.post("/projects/{project_slug}/jobs/run-next")
+    def run_next_job(project_slug: str) -> RedirectResponse:
+        JobService(database).run_next(project_slug)
+        return _redirect(f"/projects/{project_slug}/jobs")
+
+    @app.post("/projects/{project_slug}/jobs/run-all")
+    def run_all_jobs(project_slug: str) -> RedirectResponse:
+        JobService(database).run_all(project_slug, limit=20)
+        return _redirect(f"/projects/{project_slug}/jobs")
+
+    @app.post("/projects/{project_slug}/jobs/{job_id}/retry")
+    def retry_job(project_slug: str, job_id: int) -> RedirectResponse:
+        JobService(database).retry(project_slug, job_id)
+        return _redirect(f"/projects/{project_slug}/jobs")
+
+    @app.post("/projects/{project_slug}/jobs/enqueue-next")
+    def enqueue_next_job(project_slug: str) -> RedirectResponse:
+        plan = ResumeService(database).plan_project(project_slug)
+        suggested = plan.get("suggested_jobs", [])
+        if suggested:
+            first = suggested[0]
+            JobService(database).enqueue(
+                project_slug,
+                job_type=JobType(first["job_type"]),
+                target_type=first["target_type"],
+                target_id=first["target_id"],
+                payload=first.get("payload", {}),
+            )
+        return _redirect(f"/projects/{project_slug}/jobs")
 
     @app.get("/projects/{project_slug}/sets/{set_code}", response_class=HTMLResponse)
     def set_detail(request: Request, project_slug: str, set_code: str) -> HTMLResponse:

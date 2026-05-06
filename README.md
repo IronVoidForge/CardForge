@@ -21,6 +21,9 @@ This repo now contains the first offline-safe production slice:
 - Approve/reject/lock lifecycle for art candidates.
 - Placeholder or locked-art card front/back rendering with Pillow.
 - Review item creation and decisions.
+- Local job queue, resume planner, diagnostics, health endpoint, and audit events.
+- FastAPI/Jinja operator UI with jobs, review, card, batch, and export pages.
+- Quality gate scripts, Makefile targets, and GitHub Actions CI workflow.
 - CLI commands built with Typer.
 - Stubbed live LM Studio and ComfyUI integration classes for later manual integration.
 - Automated tests for DB, scaffolding, parsing, simulated generation, validation, balance, rework, art, rendering, and review flow.
@@ -42,6 +45,11 @@ cardforge set create gravebound_test --name "Gravebound Dominion"
 
 # Offline simulated LM output through the real parser/validation path.
 cardforge batch generate gravebound_test SET001 --count 12 --request "Generate gothic necromancer cards."
+
+# Queue-based equivalent for long-running work.
+cardforge job enqueue-batch-generate gravebound_test SET001 --count 12 --request "Generate gothic necromancer cards."
+cardforge job run-all gravebound_test
+cardforge resume plan gravebound_test
 cardforge batch balance-review gravebound_test BATCH_0001
 cardforge batch rules-review gravebound_test BATCH_0001
 cardforge batch auto-review gravebound_test BATCH_0001
@@ -63,6 +71,10 @@ cardforge export csv gravebound_test SET001
 cardforge export markdown gravebound_test SET001
 cardforge export png gravebound_test SET001
 
+# Diagnostics and quality gates.
+cardforge doctor check
+make quality
+
 # Optional local operator UI.
 cardforge ui serve --host 127.0.0.1 --port 8765
 ```
@@ -75,7 +87,7 @@ export CARDFORGE_WORKSPACE=/path/to/workspace
 
 ## Planned phases
 
-See `docs/PHASE_PLAN.md` for the full implementation roadmap, `docs/OFFLINE_PHASES.md` for exactly which phases can be built and tested without live LM Studio or ComfyUI, `docs/PROMPT_FORMAT_AND_AUTO_REVIEW.md` for the prompt package/autofill/refinement/auto-review contract, and `docs/UI_AND_EXPORTS.md` for the local operator UI and export workflow.
+See `docs/PHASE_PLAN.md` for the full implementation roadmap, `docs/OFFLINE_PHASES.md` for exactly which phases can be built and tested without live LM Studio or ComfyUI, `docs/PROMPT_FORMAT_AND_AUTO_REVIEW.md` for the prompt package/autofill/refinement/auto-review contract, `docs/UI_AND_EXPORTS.md` for the local operator UI and export workflow, and `docs/JOBS_RESUME_AND_QUALITY.md` for the queue/resume/quality-gate layer.
 
 ## Local integrations
 

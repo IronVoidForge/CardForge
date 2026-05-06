@@ -317,3 +317,45 @@ td a { color: var(--accent-dark); font-weight: 800; }
   .hero, .topbar { flex-direction: column; }
   .stat-grid, .stat-grid.small, .form-row { grid-template-columns: 1fr; }
 }
+
+.skip-link {
+  position: fixed;
+  left: 14px;
+  top: 14px;
+  z-index: 1000;
+  transform: translateY(-180%);
+  padding: 10px 14px;
+  border-radius: 12px;
+  background: #fff;
+  color: var(--accent-dark);
+  box-shadow: var(--shadow);
+}
+.skip-link:focus { transform: translateY(0); }
+.nav-list a.active { background: rgba(255,255,255,.18); color: #fff; }
+.small-button {
+  padding: 7px 10px;
+  border-radius: 10px;
+  border: 1px solid var(--line);
+  background: rgba(255,255,255,.82);
+  color: var(--accent-dark);
+  font-size: 12px;
+  font-weight: 850;
+}
+.data-table { min-width: 820px; }
+.detail-row td {
+  background: rgba(255, 226, 231, .55);
+  color: var(--bad);
+  font-size: 13px;
+}
+:focus-visible {
+  outline: 3px solid rgba(139, 75, 255, .72);
+  outline-offset: 3px;
+}
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: .01ms !important;
+    animation-iteration-count: 1 !important;
+    scroll-behavior: auto !important;
+    transition-duration: .01ms !important;
+  }
+}

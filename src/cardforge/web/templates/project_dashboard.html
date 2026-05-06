@@ -5,6 +5,7 @@
   <a href="/">All projects</a>
   <a href="/projects/{{ status.project.slug }}">Dashboard</a>
   <a href="/projects/{{ status.project.slug }}/review">Review queue</a>
+  <a href="/projects/{{ status.project.slug }}/jobs">Jobs</a>
 </nav>
 {% endblock %}
 {% block content %}
@@ -14,7 +15,10 @@
     <h1>{{ status.project.name }}</h1>
     <p class="muted mono">{{ status.project.slug }}</p>
   </div>
-  <a class="ghost-button" href="/projects/{{ status.project.slug }}/review">Open review queue</a>
+  <div class="button-row">
+    <a class="ghost-button" href="/projects/{{ status.project.slug }}/jobs">Jobs</a>
+    <a class="ghost-button" href="/projects/{{ status.project.slug }}/review">Open review queue</a>
+  </div>
 </section>
 
 <section class="next-action">
@@ -23,7 +27,7 @@
 </section>
 
 <section class="stat-grid">
-  {% for label, key in [("Sets", "sets"), ("Batches", "batches"), ("Cards", "cards"), ("Open reviews", "open_reviews"), ("Art candidates", "art_candidates"), ("Locked art", "locked_art"), ("Renders", "renders"), ("Auto reviews", "auto_reviews")] %}
+  {% for label, key in [("Sets", "sets"), ("Batches", "batches"), ("Cards", "cards"), ("Open reviews", "open_reviews"), ("Art candidates", "art_candidates"), ("Locked art", "locked_art"), ("Renders", "renders"), ("Auto reviews", "auto_reviews"), ("Jobs pending", "jobs_pending"), ("Jobs failed", "jobs_failed")] %}
   <div class="stat-card">
     <span>{{ label }}</span>
     <strong>{{ status.counts[key] }}</strong>

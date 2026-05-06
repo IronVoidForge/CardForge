@@ -1,0 +1,111 @@
+{% extends "base.html" %}
+{% block title %}Jobs — {{ project.name }} — CardForge{% endblock %}
+{% block sidebar %}
+<nav class="nav-list" aria-label="Project navigation">
+  <a href="/">All projects</a>
+  <a href="/projects/{{ project.slug }}">Dashboard</a>
+  <a href="/projects/{{ project.slug }}/review">Review queue</a>
+  <a class="active" href="/projects/{{ project.slug }}/jobs">Jobs</a>
+</nav>
+{% endblock %}
+{% block content %}
+<section class="topbar">
+  <div>
+    <p class="eyebrow">Local worker queue</p>
+    <h1>Jobs</h1>
+    <p class="muted">Queue long-running work, run it safely, retry failures, and inspect recent audit events.</p>
+  </div>
+  <div class="button-row">
+    <form method="post" action="/projects/{{ project.slug }}/jobs/run-next">
+      <button class="primary-button" type="submit">Run next</button>
+    </form>
+    <form method="post" action="/projects/{{ project.slug }}/jobs/run-all">
+      <button class="ghost-button" type="submit">Run all pending</button>
+    </form>
+  </div>
+</section>
+
+<section class="next-action" aria-live="polite">
+  <span>Resume planner</span>
+  <strong>{{ resume_plan.message }}</strong>
+  {% if resume_plan.suggested_jobs %}
+  <form method="post" action="/projects/{{ project.slug }}/jobs/enqueue-next">
+    <button class="small-button" type="submit">Queue suggested job</button>
+  </form>
+  {% endif %}
+</section>
+
+<section class="stat-grid">
+  <div class="stat-card"><span>Pending</span><strong>{{ pending_count }}</strong></div>
+  <div class="stat-card"><span>Running</span><strong>{{ running_count }}</strong></div>
+  <div class="stat-card"><span>Failed</span><strong>{{ failed_count }}</strong></div>
+  <div class="stat-card"><span>Total shown</span><strong>{{ jobs|length }}</strong></div>
+</section>
+
+<section class="panel">
+  <div class="panel-heading">
+    <h2>Queue</h2>
+    <span class="pill neutral">{{ jobs|length }}</span>
+  </div>
+  {% if jobs %}
+  <div class="table-wrap">
+    <table class="data-table">
+      <thead>
+        <tr>
+          <th scope="col">ID</th>
+          <th scope="col">Type</th>
+          <th scope="col">Target</th>
+          <th scope="col">Status</th>
+          <th scope="col">Attempts</th>
+          <th scope="col">Created</th>
+          <th scope="col">Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+      {% for job in jobs %}
+        <tr>
+          <td class="mono">{{ job.id }}</td>
+          <td>{{ job.job_type }}</td>
+          <td><span class="mono">{{ job.target_type }}:{{ job.target_id }}</span></td>
+          <td><span class="pill {{ job.status|status_class }}">{{ job.status }}</span></td>
+          <td>{{ job.attempt_count }}/{{ job.max_attempts }}</td>
+          <td>{{ job.created_at }}</td>
+          <td>
+            {% if job.status in ["failed", "cancelled"] %}
+            <form method="post" action="/projects/{{ project.slug }}/jobs/{{ job.id }}/retry">
+              <button class="small-button" type="submit">Retry</button>
+            </form>
+            {% else %}
+            <span class="muted">—</span>
+            {% endif %}
+          </td>
+        </tr>
+        {% if job.error_message %}
+        <tr class="detail-row"><td colspan="7"><strong>Error:</strong> {{ job.error_message }}</td></tr>
+        {% endif %}
+      {% endfor %}
+      </tbody>
+    </table>
+  </div>
+  {% else %}
+  <div class="empty-state">No jobs yet. Use the resume planner to queue the next safe action.</div>
+  {% endif %}
+</section>
+
+<section class="panel">
+  <div class="panel-heading"><h2>Recent audit events</h2></div>
+  {% if events %}
+  <div class="review-list compact">
+    {% for event in events %}
+    <div class="review-item">
+      <span class="pill neutral">{{ event.event_type }}</span>
+      <strong>{{ event.target_type }} {{ event.target_id }}</strong>
+      <small>{{ event.created_at }}</small>
+    </div>
+    {% endfor %}
+  </div>
+  {% else %}
+  <div class="empty-state">No audit events yet.</div>
+  {% endif %}
+</section>
+{% endblock %}

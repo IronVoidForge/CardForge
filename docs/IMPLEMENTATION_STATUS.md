@@ -98,3 +98,29 @@ Added in the latest pass:
 - Export service and CLI commands for JSON, CSV, Markdown catalog, and PNG render bundles.
 - Tests for the web UI, simulated batch generation through the UI, locked-art rendering, review pages, and exports.
 
+
+## V6 jobs, resume, observability, and quality gates
+
+Added in this pass:
+
+- Local `generation_jobs` queue with enqueue, run-next, run-all, retry, and stale requeue operations.
+- Offline job dispatcher for batch generation, validation, auto-review, card autofill/refinement, dummy art, art auto-review, rendering, and exports.
+- Read-only resume planner that recommends the next safe action and can queue one suggested job.
+- Job dashboard in the web UI at `/projects/<project_slug>/jobs`.
+- Health endpoint at `/healthz`.
+- CLI diagnostics via `cardforge doctor check`.
+- Append-only audit events for job enqueue/start/complete/fail/retry.
+- Project status now includes pending/running/failed job counts and the resume plan.
+- Accessibility/UI polish: skip link, focus-visible styling, jobs navigation, reduced-motion handling, and responsive data tables.
+- Quality gate scripts, Makefile targets, GitHub Actions CI workflow, and project `AGENTS.md` engineering guide.
+- Automated tests for jobs, retry, resume planning, diagnostics, health endpoint, and jobs UI.
+
+Current automated tests after this pass: `26 passed`.
+
+Current local quality gate:
+
+```bash
+PYTEST_DISABLE_PLUGIN_AUTOLOAD=1 python scripts/quality_check.py
+```
+
+This environment does not have `ruff` installed, so the local quality script skips Ruff. CI installs dev dependencies and runs the strict quality gate.

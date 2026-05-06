@@ -41,3 +41,11 @@ target-version = "py311"
 
 [tool.setuptools.package-data]
 cardforge = ["web/templates/*.html", "web/static/*.css"]
+
+[tool.ruff.lint]
+select = ["E9", "F"]
+
+[tool.mypy]
+python_version = "3.11"
+ignore_missing_imports = true
+warn_unused_configs = true

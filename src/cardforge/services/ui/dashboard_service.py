@@ -203,6 +203,41 @@ class UIDashboardService:
             "open_count": sum(1 for row in rows if row["status"] == "open"),
         }
 
+
+    def job_queue(self, project_slug: str) -> dict[str, Any]:
+        with self.db.connection() as conn:
+            project = self.projects.get_project(project_slug, conn=conn)
+            rows = list(
+                conn.execute(
+                    """
+                    SELECT * FROM generation_jobs
+                    WHERE project_id = ?
+                    ORDER BY status = 'pending' DESC, status = 'running' DESC, created_at DESC, id DESC
+                    LIMIT 100
+                    """,
+                    (project["id"],),
+                )
+            )
+            recent_events = list(
+                conn.execute(
+                    """
+                    SELECT * FROM audit_events
+                    WHERE project_id = ?
+                    ORDER BY created_at DESC, id DESC
+                    LIMIT 20
+                    """,
+                    (project["id"],),
+                )
+            )
+        return {
+            "project": _row_to_dict(project),
+            "jobs": [self._job_summary(row) for row in rows],
+            "events": [self._audit_summary(row) for row in recent_events],
+            "pending_count": sum(1 for row in rows if row["status"] == "pending"),
+            "running_count": sum(1 for row in rows if row["status"] == "running"),
+            "failed_count": sum(1 for row in rows if row["status"] == "failed"),
+        }
+
     def _set_summary(self, conn: Any, row: Row) -> dict[str, Any]:
         card_count = conn.execute("SELECT COUNT(*) AS n FROM cards WHERE set_id = ?", (row["id"],)).fetchone()["n"]
         batch_count = conn.execute("SELECT COUNT(*) AS n FROM card_batches WHERE set_id = ?", (row["id"],)).fetchone()["n"]
@@ -263,4 +298,15 @@ class UIDashboardService:
         if summary:
             summary["findings"] = _json_loads(row["findings_json"], [])
             summary["recommendations"] = _json_loads(row["recommendations_json"], [])
+        return summary
+
+    def _job_summary(self, row: Row) -> dict[str, Any]:
+        summary = _row_to_dict(row) or {}
+        summary["payload"] = _json_loads(row["payload_json"], {})
+        summary["result"] = _json_loads(row["result_json"], {})
+        return summary
+
+    def _audit_summary(self, row: Row) -> dict[str, Any]:
+        summary = _row_to_dict(row) or {}
+        summary["payload"] = _json_loads(row["payload_json"], {})
         return summary

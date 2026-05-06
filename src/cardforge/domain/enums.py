@@ -54,3 +54,39 @@ class RenderStatus(StrEnum):
     LOCKED = "locked"
     REJECTED = "rejected"
     SUPERSEDED = "superseded"
+
+
+class JobStatus(StrEnum):
+    PENDING = "pending"
+    RUNNING = "running"
+    COMPLETED = "completed"
+    FAILED = "failed"
+    CANCELLED = "cancelled"
+
+
+class JobType(StrEnum):
+    BATCH_GENERATE = "batch_generate"
+    BATCH_VALIDATE = "batch_validate"
+    BATCH_AUTO_REVIEW = "batch_auto_review"
+    CARD_AUTOFILL = "card_autofill"
+    CARD_REFINE = "card_refine"
+    CARD_AUTO_REVIEW = "card_auto_review"
+    ART_GENERATE_DUMMY = "art_generate_dummy"
+    ART_AUTO_REVIEW = "art_auto_review"
+    RENDER_CARD = "render_card"
+    EXPORT_JSON = "export_json"
+    EXPORT_CSV = "export_csv"
+    EXPORT_MARKDOWN = "export_markdown"
+    EXPORT_PNG = "export_png"
+
+
+class ResumeActionType(StrEnum):
+    GENERATE_BATCH = "generate_batch"
+    REVIEW_BATCH = "review_batch"
+    RESOLVE_AUTO_REVIEW = "resolve_auto_review"
+    GENERATE_ART = "generate_art"
+    LOCK_ART = "lock_art"
+    RENDER_CARDS = "render_cards"
+    REVIEW_QUEUE = "review_queue"
+    EXPORT = "export"
+    NONE = "none"

@@ -7,9 +7,10 @@
   <link rel="stylesheet" href="/static/cardforge.css">
 </head>
 <body>
+  <a class="skip-link" href="#main-content">Skip to main content</a>
   <div class="app-shell">
-    <aside class="sidebar">
-      <a class="brand" href="/">
+    <aside class="sidebar" aria-label="Application sidebar">
+      <a class="brand" href="/" aria-label="CardForge home">
         <span class="brand-mark">◆</span>
         <span>
           <strong>CardForge</strong>
@@ -25,7 +26,7 @@
         Offline-safe mode: simulated LM output, dummy art, deterministic review, no required LM Studio or ComfyUI.
       </div>
     </aside>
-    <main class="main-panel">
+    <main class="main-panel" id="main-content" tabindex="-1">
       {% block content %}{% endblock %}
     </main>
   </div>
