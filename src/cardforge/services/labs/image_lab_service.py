@@ -179,6 +179,7 @@ class ImageLabService:
                     "accepted_count": sum(1 for item in reviews.values() if isinstance(item, dict) and item.get("decision") == "accepted"),
                     "failure_tags": _tag_counts(reviews, "failure_tags"),
                     "success_tags": _tag_counts(reviews, "success_tags"),
+                    "score_100": _image_attempt_score(manifest, reviews),
                 })
             comparison = {"case_key": case_key, "attempt_count": len(rows), "attempts": rows, "accepted_attempt_key": case["accepted_attempt_key"]}
             case_dir = self.asset_store.safe_resolve(case["case_dir"])
@@ -194,6 +195,88 @@ class ImageLabService:
             path = case_dir / "workback_recommendation.md"
             self.asset_store.write_text(path, _recommendation_markdown(case, comparison, notes))
             return {"case_key": case_key, "recommendation_path": self.asset_store.relative_to_workspace(path), "accepted_attempt_key": case["accepted_attempt_key"]}
+
+    def propose_art_prompt_update(
+        self,
+        project_slug: str,
+        case_key: str,
+        *,
+        attempt_key: str | None = None,
+        notes: str = "",
+    ) -> dict[str, Any]:
+        """Create a reviewed promotion request from an accepted Image Lab attempt.
+
+        Image Lab promotions intentionally stop at a request/proposal.  The app
+        should not rewrite production art prompt templates automatically from an
+        image experiment; a human reviews the evidence and applies the lesson to
+        a prompt template or card art direction deliberately.
+        """
+        comparison = self.compare_attempts(project_slug, case_key)
+        with self.db.connection() as conn:
+            project = self.projects.get_project(project_slug, conn=conn)
+            case = self.get_case(project_slug, case_key, conn=conn)
+            selected_attempt = (attempt_key or case["accepted_attempt_key"] or "").strip()
+            if not selected_attempt:
+                raise ValueError("Image Lab attempt must be accepted before promotion.")
+            attempt = self.get_attempt(conn, case_id=case["id"], attempt_key=selected_attempt)
+            if attempt["status"] != "accepted":
+                raise ValueError("Image Lab attempt must be accepted before promotion.")
+            attempt_dir = self.asset_store.safe_resolve(attempt["prompt_markdown_path"]).parent
+            prompt_markdown = self.asset_store.safe_resolve(attempt["prompt_markdown_path"]).read_text(encoding="utf-8")
+            manifest = self.asset_store.read_json(self.asset_store.safe_resolve(attempt["candidate_manifest_path"]))
+            review_payload = self.asset_store.read_json(self.asset_store.safe_resolve(attempt["review_json_path"]))
+            request_key = next_key(conn, "lab_promotion_requests", "request_key", "PROMO", where="project_id = ?", params=(project["id"],))
+            request_dir = self.asset_store.project_root(project_slug) / "99_image_lab" / "promotion_requests"
+            proposal_path = request_dir / f"{request_key}_{case_key}_{selected_attempt}.md"
+            evidence_path = request_dir / f"{request_key}_{case_key}_{selected_attempt}_evidence.json"
+            evidence = {
+                "case_key": case_key,
+                "attempt_key": selected_attempt,
+                "target_type": case["target_type"],
+                "target_id": case["target_id"],
+                "notes": notes,
+                "prompt_markdown": prompt_markdown,
+                "candidate_manifest": manifest,
+                "operator_review": review_payload,
+                "comparison": comparison,
+            }
+            self.asset_store.write_json(evidence_path, evidence)
+            self.asset_store.write_text(proposal_path, _art_prompt_promotion_markdown(request_key, case, attempt, notes, evidence))
+            review_id = ReviewService(self.db).enqueue(
+                project_id=project["id"],
+                set_id=None,
+                target_type="lab_promotion_request",
+                target_id=request_key,
+                review_type="image_lab_promotion",
+                title=f"Review Image Lab art prompt promotion {request_key}",
+                description="Approve this request as reusable art-prompt guidance. Applying is manual for safety.",
+                metadata={"request_key": request_key, "case_key": case_key, "attempt_key": selected_attempt},
+                conn=conn,
+            )
+            conn.execute(
+                """
+                INSERT INTO lab_promotion_requests(
+                    project_id, request_key, lab_type, case_key, run_key, template_key, target_type, target_id,
+                    proposal_markdown_path, evidence_json_path, status, review_item_id, notes
+                ) VALUES(?, ?, 'image_lab', ?, ?, '', 'art_prompt', ?, ?, ?, 'requested', ?, ?)
+                """,
+                (
+                    project["id"], request_key, case_key, selected_attempt, case["target_id"],
+                    self.asset_store.relative_to_workspace(proposal_path), self.asset_store.relative_to_workspace(evidence_path),
+                    int(review_id), notes,
+                ),
+            )
+            return {
+                "project_slug": project_slug,
+                "request_key": request_key,
+                "case_key": case_key,
+                "attempt_key": selected_attempt,
+                "status": "requested",
+                "proposal_markdown_path": self.asset_store.relative_to_workspace(proposal_path),
+                "evidence_json_path": self.asset_store.relative_to_workspace(evidence_path),
+                "attempt_dir": self.asset_store.relative_to_workspace(attempt_dir),
+                "review_item_id": review_id,
+            }
 
     def get_case(self, project_slug: str, case_key: str, *, conn: Connection | None = None) -> Row:
         close = False
@@ -280,15 +363,60 @@ def _attempt_summary_markdown(manifest: dict[str, Any]) -> str:
 
 
 def _comparison_markdown(comparison: dict[str, Any]) -> str:
-    lines = ["# Image Lab Comparison", "", f"- Case: {comparison['case_key']}", f"- Attempts: {comparison['attempt_count']}", "", "| Attempt | Status | Candidates | Reviewed | Best Rating | Accepted |", "|---|---|---:|---:|---:|---:|"]
+    lines = ["# Image Lab Comparison", "", f"- Case: {comparison['case_key']}", f"- Attempts: {comparison['attempt_count']}", "", "| Attempt | Status | Score | Candidates | Reviewed | Best Rating | Accepted |", "|---|---|---:|---:|---:|---:|---:|"]
     for row in comparison["attempts"]:
-        lines.append(f"| {row['attempt_key']} | {row['status']} | {row['candidate_count']} | {row['reviewed_count']} | {row.get('best_rating') or ''} | {row['accepted_count']} |")
+        lines.append(f"| {row['attempt_key']} | {row['status']} | {row.get('score_100', '')} | {row['candidate_count']} | {row['reviewed_count']} | {row.get('best_rating') or ''} | {row['accepted_count']} |")
     return "\n".join(lines) + "\n"
 
 
 def _recommendation_markdown(case: Row, comparison: dict[str, Any], notes: str) -> str:
     return "\n".join([
         "# Image Lab Workback Recommendation", "", f"- Case: {case['case_key']}", f"- Target: {case['target_type']} / {case['target_id']}", f"- Accepted attempt: {case['accepted_attempt_key'] or '(none yet)'}", "", "## Recommendation", notes or "Compare accepted/rejected attempts and copy only the prompt wording that produced better card art candidates.", "", "## Comparison Summary", "```json", json.dumps(comparison, indent=2, ensure_ascii=False), "```", "",
+    ])
+
+
+def _image_attempt_score(manifest: dict[str, Any], reviews: dict[str, Any]) -> int:
+    candidate_count = len(manifest.get("candidates", [])) if isinstance(manifest, dict) else 0
+    score = min(25, candidate_count * 5)
+    reviewed = [item for item in reviews.values() if isinstance(item, dict)]
+    if reviewed:
+        score += min(25, len(reviewed) * 8)
+    ratings = [int(item["rating"]) for item in reviewed if item.get("rating")]
+    if ratings:
+        score += min(30, max(ratings) * 6)
+    accepted = sum(1 for item in reviewed if item.get("decision") == "accepted")
+    if accepted:
+        score += 20
+    return max(0, min(100, score))
+
+
+def _art_prompt_promotion_markdown(request_key: str, case: Row, attempt: Row, notes: str, evidence: dict[str, Any]) -> str:
+    comparison = evidence.get("comparison", {}) if isinstance(evidence, dict) else {}
+    score = next(
+        (row.get("score_100") for row in comparison.get("attempts", []) if row.get("attempt_key") == attempt["attempt_key"]),
+        "unknown",
+    )
+    return "\n".join([
+        "# Image Lab Art Prompt Promotion Request", "",
+        f"- Request: {request_key}",
+        f"- Case: {case['case_key']}",
+        f"- Attempt: {attempt['attempt_key']}",
+        f"- Target: {case['target_type']} / {case['target_id']}",
+        "",
+        "## Operator Notes",
+        notes or attempt["notes"] or "Review accepted art-prompt wording and promote only reusable guidance.",
+        "",
+        "## Attempt Score",
+        str(score),
+        "",
+        "## Gate",
+        "This request records reusable art-prompt guidance. It is reviewable, but automatic production application is intentionally disabled for image lab promotions.",
+        "",
+        "## Evidence",
+        "```json",
+        json.dumps(evidence, indent=2, ensure_ascii=False)[:12000],
+        "```",
+        "",
     ])
 
 

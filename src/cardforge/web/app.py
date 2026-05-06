@@ -21,6 +21,7 @@ from cardforge.services.comfy.comfy_art_service import ComfyArtService
 from cardforge.services.comfy.workflow_registry_service import WorkflowRegistryService
 from cardforge.services.jobs.job_service import JobService
 from cardforge.services.labs.image_lab_service import ImageLabService
+from cardforge.services.labs.lab_promotion_service import LabPromotionService
 from cardforge.services.labs.prompt_lab_service import PromptLabCaseSpec, PromptLabService
 from cardforge.services.observability.diagnostics_service import DiagnosticsService
 from cardforge.services.projects.project_service import ProjectService
@@ -130,6 +131,14 @@ def create_app(db: Database | None = None) -> FastAPI:
         PromptLabService(database).write_promotion_note(project_slug, case_key)
         return _redirect(f"/projects/{project_slug}/labs")
 
+    @app.post("/projects/{project_slug}/labs/prompt/{case_key}/promote-request")
+    def request_prompt_lab_promotion(project_slug: str, case_key: str, run_key: str = Form(""), notes: str = Form("")) -> RedirectResponse:
+        try:
+            LabPromotionService(database).create_prompt_template_request(project_slug, case_key, run_key=run_key or None, notes=notes)
+        except ValueError as exc:
+            raise HTTPException(status_code=400, detail=str(exc)) from exc
+        return _redirect(f"/projects/{project_slug}/labs")
+
     @app.post("/projects/{project_slug}/labs/image/create")
     def create_image_lab_case(project_slug: str, card_key: str = Form(...), notes: str = Form("")) -> RedirectResponse:
         ImageLabService(database).create_case(project_slug, card_key, notes=notes)
@@ -143,6 +152,32 @@ def create_app(db: Database | None = None) -> FastAPI:
     @app.post("/projects/{project_slug}/labs/image/{case_key}/recommend")
     def recommend_image_lab_case(project_slug: str, case_key: str, notes: str = Form("")) -> RedirectResponse:
         ImageLabService(database).write_recommendation(project_slug, case_key, notes=notes)
+        return _redirect(f"/projects/{project_slug}/labs")
+
+    @app.post("/projects/{project_slug}/labs/image/{case_key}/promote-request")
+    def request_image_lab_promotion(project_slug: str, case_key: str, attempt_key: str = Form(""), notes: str = Form("")) -> RedirectResponse:
+        try:
+            ImageLabService(database).propose_art_prompt_update(project_slug, case_key, attempt_key=attempt_key or None, notes=notes)
+        except ValueError as exc:
+            raise HTTPException(status_code=400, detail=str(exc)) from exc
+        return _redirect(f"/projects/{project_slug}/labs")
+
+    @app.post("/projects/{project_slug}/labs/promotions/{request_key}/approve")
+    def approve_lab_promotion(project_slug: str, request_key: str, notes: str = Form("")) -> RedirectResponse:
+        LabPromotionService(database).approve_request(project_slug, request_key, notes=notes)
+        return _redirect(f"/projects/{project_slug}/labs")
+
+    @app.post("/projects/{project_slug}/labs/promotions/{request_key}/reject")
+    def reject_lab_promotion(project_slug: str, request_key: str, notes: str = Form("")) -> RedirectResponse:
+        LabPromotionService(database).reject_request(project_slug, request_key, notes=notes)
+        return _redirect(f"/projects/{project_slug}/labs")
+
+    @app.post("/projects/{project_slug}/labs/promotions/{request_key}/apply")
+    def apply_lab_promotion(project_slug: str, request_key: str) -> RedirectResponse:
+        try:
+            LabPromotionService(database).apply_request(project_slug, request_key)
+        except ValueError as exc:
+            raise HTTPException(status_code=400, detail=str(exc)) from exc
         return _redirect(f"/projects/{project_slug}/labs")
 
     @app.get("/projects/{project_slug}/integrations", response_class=HTMLResponse)

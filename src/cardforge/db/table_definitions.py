@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-SCHEMA_VERSION = 4
+SCHEMA_VERSION = 5
 
 SCHEMA_SQL = [
     """
@@ -203,6 +203,47 @@ SCHEMA_SQL = [
       UNIQUE(project_id, template_key)
     )
     """,
+    """
+    CREATE TABLE IF NOT EXISTS prompt_template_versions (
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      project_id INTEGER NOT NULL REFERENCES projects(id) ON DELETE CASCADE,
+      template_key TEXT NOT NULL,
+      version_number INTEGER NOT NULL,
+      version_key TEXT NOT NULL,
+      source TEXT NOT NULL DEFAULT 'manual',
+      source_target_type TEXT NOT NULL DEFAULT '',
+      source_target_id TEXT NOT NULL DEFAULT '',
+      markdown_path TEXT NOT NULL DEFAULT '',
+      summary TEXT NOT NULL DEFAULT '',
+      status TEXT NOT NULL DEFAULT 'active',
+      created_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP,
+      UNIQUE(project_id, template_key, version_number),
+      UNIQUE(project_id, version_key)
+    )
+    """,
+    """
+    CREATE TABLE IF NOT EXISTS lab_promotion_requests (
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      project_id INTEGER NOT NULL REFERENCES projects(id) ON DELETE CASCADE,
+      request_key TEXT NOT NULL,
+      lab_type TEXT NOT NULL,
+      case_key TEXT NOT NULL,
+      run_key TEXT NOT NULL DEFAULT '',
+      template_key TEXT NOT NULL DEFAULT '',
+      target_type TEXT NOT NULL DEFAULT '',
+      target_id TEXT NOT NULL DEFAULT '',
+      proposal_markdown_path TEXT NOT NULL DEFAULT '',
+      evidence_json_path TEXT NOT NULL DEFAULT '',
+      status TEXT NOT NULL DEFAULT 'requested',
+      review_item_id INTEGER REFERENCES review_items(id) ON DELETE SET NULL,
+      applied_version_key TEXT NOT NULL DEFAULT '',
+      notes TEXT NOT NULL DEFAULT '',
+      created_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP,
+      updated_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP,
+      UNIQUE(project_id, request_key)
+    )
+    """,
+
     """
     CREATE TABLE IF NOT EXISTS prompt_packages (
       id INTEGER PRIMARY KEY AUTOINCREMENT,

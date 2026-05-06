@@ -15,15 +15,15 @@
   <div>
     <p class="eyebrow">Prompt Lab & Image Lab</p>
     <h1>Experiment safely before changing production</h1>
-    <p class="muted">Lab cases are read-only snapshots. Runs write under <code>99_prompt_lab</code> and <code>99_image_lab</code>.</p>
+    <p class="muted">Lab cases are read-only snapshots. Accepted evidence becomes review-gated promotion requests before it can affect prompt templates.</p>
   </div>
 </section>
 
 <section class="stat-grid">
   <div class="stat-card"><span>Prompt cases</span><strong>{{ prompt_cases|length }}</strong></div>
   <div class="stat-card"><span>Image cases</span><strong>{{ image_cases|length }}</strong></div>
-  <div class="stat-card"><span>Open prompt cases</span><strong>{{ open_prompt_cases }}</strong></div>
-  <div class="stat-card"><span>Open image cases</span><strong>{{ open_image_cases }}</strong></div>
+  <div class="stat-card"><span>Promotion requests</span><strong>{{ promotion_requests|length }}</strong></div>
+  <div class="stat-card"><span>Open promotions</span><strong>{{ open_promotions }}</strong></div>
 </section>
 
 <div class="grid two-col">
@@ -57,13 +57,53 @@
 </div>
 
 <section class="panel">
+  <div class="panel-heading"><h2>Prompt template promotion requests</h2><span class="pill neutral">{{ promotion_requests|length }}</span></div>
+  {% if promotion_requests %}
+  <div class="table-wrap"><table><thead><tr><th>Request</th><th>Lab</th><th>Target</th><th>Status</th><th>Applied version</th><th>Actions</th></tr></thead><tbody>
+  {% for request in promotion_requests %}
+  <tr>
+    <td class="mono">{{ request.request_key }}</td>
+    <td>{{ request.lab_type }}<br><span class="muted mono">{{ request.case_key }} / {{ request.run_key }}</span></td>
+    <td>{{ request.target_type }}<br><span class="muted mono">{{ request.target_id }}</span></td>
+    <td><span class="pill {{ request.status|status_class }}">{{ request.status }}</span></td>
+    <td class="mono">{{ request.applied_version_key or "—" }}</td>
+    <td class="button-row compact">
+      {% if request.status == "requested" %}
+      <form method="post" action="/projects/{{ project.slug }}/labs/promotions/{{ request.request_key }}/approve"><button type="submit">Approve</button></form>
+      <form method="post" action="/projects/{{ project.slug }}/labs/promotions/{{ request.request_key }}/reject"><button type="submit">Reject</button></form>
+      {% elif request.status == "approved" %}
+      <form method="post" action="/projects/{{ project.slug }}/labs/promotions/{{ request.request_key }}/apply"><button type="submit">Apply</button></form>
+      {% else %}<span class="muted">No action</span>{% endif %}
+    </td>
+  </tr>
+  {% endfor %}
+  </tbody></table></div>
+  {% else %}<div class="empty-state">No lab promotion requests yet.</div>{% endif %}
+</section>
+
+<section class="panel">
+  <div class="panel-heading"><h2>Prompt template versions</h2><span class="pill neutral">{{ prompt_versions|length }}</span></div>
+  {% if prompt_versions %}
+  <div class="table-wrap"><table><thead><tr><th>Template</th><th>Version</th><th>Status</th><th>Source</th><th>Summary</th></tr></thead><tbody>
+  {% for version in prompt_versions %}
+  <tr><td class="mono">{{ version.template_key }}</td><td class="mono">{{ version.version_key }}</td><td><span class="pill {{ version.status|status_class }}">{{ version.status }}</span></td><td>{{ version.source }}</td><td>{{ version.summary }}</td></tr>
+  {% endfor %}
+  </tbody></table></div>
+  {% else %}<div class="empty-state">No prompt template versions yet.</div>{% endif %}
+</section>
+
+<section class="panel">
   <div class="panel-heading"><h2>Prompt Lab cases</h2><span class="pill neutral">{{ prompt_cases|length }}</span></div>
   {% if prompt_cases %}
   <div class="table-wrap"><table><thead><tr><th>Case</th><th>Template</th><th>Target</th><th>Runs</th><th>Status</th><th>Actions</th></tr></thead><tbody>
   {% for case in prompt_cases %}
   <tr>
     <td class="mono">{{ case.case_key }}</td><td>{{ case.template_key }}</td><td>{{ case.target_type }}:{{ case.target_id }}</td><td>{{ case.run_count }}</td><td><span class="pill {{ case.status|status_class }}">{{ case.status }}</span></td>
-    <td class="button-row compact"><form method="post" action="/projects/{{ project.slug }}/labs/prompt/{{ case.case_key }}/run"><input name="variant_notes" placeholder="Variant notes" aria-label="Variant notes"><button type="submit">Run mock</button></form><form method="post" action="/projects/{{ project.slug }}/labs/prompt/{{ case.case_key }}/promote-note"><button type="submit">Promotion note</button></form></td>
+    <td class="button-row compact">
+      <form method="post" action="/projects/{{ project.slug }}/labs/prompt/{{ case.case_key }}/run"><input name="variant_notes" placeholder="Variant notes" aria-label="Variant notes"><button type="submit">Run mock</button></form>
+      <form method="post" action="/projects/{{ project.slug }}/labs/prompt/{{ case.case_key }}/promote-note"><button type="submit">Promotion note</button></form>
+      <form method="post" action="/projects/{{ project.slug }}/labs/prompt/{{ case.case_key }}/promote-request"><input name="notes" placeholder="Reusable guidance" aria-label="Promotion request notes"><button type="submit">Request promotion</button></form>
+    </td>
   </tr>
   {% endfor %}
   </tbody></table></div>
@@ -77,7 +117,11 @@
   {% for case in image_cases %}
   <tr>
     <td class="mono">{{ case.case_key }}</td><td>{{ case.target_type }}:{{ case.target_id }}</td><td>{{ case.attempt_count }}</td><td><span class="pill {{ case.status|status_class }}">{{ case.status }}</span></td>
-    <td class="button-row compact"><form method="post" action="/projects/{{ project.slug }}/labs/image/{{ case.case_key }}/run"><input name="prompt_append" placeholder="Prompt wording to test" aria-label="Prompt wording to test"><input name="count" type="number" min="1" max="12" value="4"><button type="submit">Run dummy</button></form><form method="post" action="/projects/{{ project.slug }}/labs/image/{{ case.case_key }}/recommend"><button type="submit">Recommendation</button></form></td>
+    <td class="button-row compact">
+      <form method="post" action="/projects/{{ project.slug }}/labs/image/{{ case.case_key }}/run"><input name="prompt_append" placeholder="Prompt wording to test" aria-label="Prompt wording to test"><input name="count" type="number" min="1" max="12" value="4"><button type="submit">Run dummy</button></form>
+      <form method="post" action="/projects/{{ project.slug }}/labs/image/{{ case.case_key }}/recommend"><button type="submit">Recommendation</button></form>
+      <form method="post" action="/projects/{{ project.slug }}/labs/image/{{ case.case_key }}/promote-request"><input name="notes" placeholder="Art prompt lesson" aria-label="Image promotion notes"><button type="submit">Request guidance review</button></form>
+    </td>
   </tr>
   {% endfor %}
   </tbody></table></div>

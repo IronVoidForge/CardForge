@@ -153,3 +153,25 @@ Added CardForge Prompt Lab and Image Lab. These are adapted from FilmCreator's l
 
 See `docs/LABS_AND_REMAINING_PIPELINE.md`.
 
+## v10 Lab promotion gates and prompt template versioning
+
+Added the next lab-to-production control layer:
+
+- Prompt template SQL/file versioning with seeded `v001` active versions.
+- `cardforge prompt sync` and `cardforge prompt version ...` commands.
+- Review-gated Prompt Lab promotion requests.
+- Approved Prompt Lab promotions can create and activate new prompt-template versions.
+- Image Lab art-prompt promotion requests with evidence bundles and manual-application safety.
+- Prompt Lab and Image Lab A/B `score_100` metrics.
+- Labs UI now shows promotion requests and prompt template versions.
+- Tests cover version seeding, promotion gating, promotion application, image-lab guidance requests, and UI visibility.
+
+Current quality gate result in this environment:
+
+```bash
+PYTEST_DISABLE_PLUGIN_AUTOLOAD=1 python scripts/quality_check.py
+# 42 passed; ruff skipped locally because it is not installed
+```
+
+See `docs/LAB_PROMOTION_AND_PROMPT_VERSIONING.md`.
+

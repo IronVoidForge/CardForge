@@ -236,6 +236,9 @@ class UIDashboardService:
 
 
     def lab_dashboard(self, project_slug: str) -> dict[str, Any]:
+        from cardforge.services.prompts.prompt_template_versioning import PromptTemplateVersionService
+
+        PromptTemplateVersionService(self.db).sync_project(project_slug)
         with self.db.connection() as conn:
             project = self.projects.get_project(project_slug, conn=conn)
             prompt_cases = [self._prompt_lab_case_summary(row) for row in conn.execute(
@@ -258,14 +261,30 @@ class UIDashboardService:
                 "SELECT template_key, name, task_type FROM prompt_templates WHERE project_id = ? ORDER BY template_key",
                 (project["id"],),
             )]
+            prompt_versions = [dict(row) for row in conn.execute(
+                """
+                SELECT template_key, version_key, version_number, status, source, summary, markdown_path
+                FROM prompt_template_versions
+                WHERE project_id = ?
+                ORDER BY template_key, version_number DESC
+                """,
+                (project["id"],),
+            )]
+            promotion_requests = [self._lab_promotion_summary(row) for row in conn.execute(
+                "SELECT * FROM lab_promotion_requests WHERE project_id = ? ORDER BY created_at DESC, id DESC",
+                (project["id"],),
+            )]
         return {
             "project": _row_to_dict(project),
             "prompt_cases": prompt_cases,
             "image_cases": image_cases,
             "cards": cards,
             "prompt_templates": templates,
+            "prompt_versions": prompt_versions,
+            "promotion_requests": promotion_requests,
             "open_prompt_cases": sum(1 for item in prompt_cases if item["status"] == "open"),
             "open_image_cases": sum(1 for item in image_cases if item["status"] == "open"),
+            "open_promotions": sum(1 for item in promotion_requests if item["status"] == "requested"),
         }
 
     def integration_status(self, project_slug: str) -> dict[str, Any]:
@@ -330,6 +349,12 @@ class UIDashboardService:
             "failed_count": sum(1 for row in rows if row["status"] == "failed"),
         }
 
+
+    def _lab_promotion_summary(self, row: Row) -> dict[str, Any]:
+        summary = _row_to_dict(row) or {}
+        summary["has_evidence"] = bool(str(summary.get("evidence_json_path") or ""))
+        summary["has_proposal"] = bool(str(summary.get("proposal_markdown_path") or ""))
+        return summary
 
     def _prompt_lab_case_summary(self, row: Row) -> dict[str, Any]:
         summary = _row_to_dict(row) or {}

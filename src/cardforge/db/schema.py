@@ -17,9 +17,9 @@ def migrate(conn: Connection) -> None:
 
 def reset(conn: Connection) -> None:
     tables = [
-        "image_lab_attempts", "image_lab_cases", "prompt_lab_runs", "prompt_lab_cases",
+        "lab_promotion_requests", "image_lab_attempts", "image_lab_cases", "prompt_lab_runs", "prompt_lab_cases",
         "audit_events", "exports", "auto_reviews", "rework_requests", "review_decisions", "review_items", "renders", "templates",
-        "art_candidates", "art_prompts", "comfy_jobs", "comfy_workflows", "generation_jobs", "prompt_packages", "prompt_templates", "llm_requests",
+        "art_candidates", "art_prompts", "comfy_jobs", "comfy_workflows", "generation_jobs", "prompt_packages", "prompt_template_versions", "prompt_templates", "llm_requests",
         "card_versions", "cards", "card_batches", "factions", "keywords", "card_types", "set_briefs", "sets",
         "projects", "schema_meta",
     ]

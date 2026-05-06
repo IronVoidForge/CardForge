@@ -66,15 +66,75 @@ class PromptTemplateService:
         self.asset_store = AssetStore(self.db.settings)
         self.projects = ProjectService(self.db)
 
+    def sync_templates(self, project_slug: str, *, conn: Connection | None = None) -> dict[str, Any]:
+        close = False
+        if conn is None:
+            conn = self.db.connect()
+            close = True
+        try:
+            project = self.projects.get_project(project_slug, conn=conn)
+            root = self.asset_store.project_root(project_slug) / "prompt_templates"
+            root.mkdir(parents=True, exist_ok=True)
+            synced: list[str] = []
+            for path in sorted(root.glob("*.md")):
+                if path.name == "CARDFORGE_PROMPT_FORMAT.md":
+                    continue
+                template = self.load_template(project_slug, path.stem)
+                conn.execute(
+                    """
+                    INSERT INTO prompt_templates(
+                        project_id, template_key, name, task_type, prompt_format_json,
+                        system_template, user_template, output_contract, markdown_path, status
+                    ) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, 'active')
+                    ON CONFLICT(project_id, template_key) DO UPDATE SET
+                      name = excluded.name,
+                      task_type = excluded.task_type,
+                      prompt_format_json = excluded.prompt_format_json,
+                      system_template = excluded.system_template,
+                      user_template = excluded.user_template,
+                      output_contract = excluded.output_contract,
+                      markdown_path = excluded.markdown_path,
+                      updated_at = CURRENT_TIMESTAMP
+                    """,
+                    (
+                        project["id"],
+                        template.template_key,
+                        template.title,
+                        template.task,
+                        json.dumps({"format": "cardforge_prompt_markdown_v1"}, ensure_ascii=False),
+                        template.system_template,
+                        template.user_template,
+                        template.output_contract,
+                        self.asset_store.relative_to_workspace(path),
+                    ),
+                )
+                synced.append(template.template_key)
+            if close:
+                conn.commit()
+            return {"project_slug": project_slug, "synced_count": len(synced), "templates": synced}
+        finally:
+            if close:
+                conn.close()
+
     def list_templates(self, project_slug: str) -> list[dict[str, Any]]:
-        root = self.asset_store.project_root(project_slug) / "prompt_templates"
-        items: list[dict[str, Any]] = []
-        for path in sorted(root.glob("*.md")):
-            if path.name == "CARDFORGE_PROMPT_FORMAT.md":
-                continue
-            template = self.load_template(project_slug, path.stem)
-            items.append({"template_key": template.template_key, "title": template.title, "task": template.task, "path": self.asset_store.relative_to_workspace(path)})
-        return items
+        with self.db.connection() as conn:
+            self.sync_templates(project_slug, conn=conn)
+            project = self.projects.get_project(project_slug, conn=conn)
+            rows = conn.execute(
+                "SELECT * FROM prompt_templates WHERE project_id = ? ORDER BY template_key",
+                (project["id"],),
+            ).fetchall()
+            return [
+                {
+                    "template_key": row["template_key"],
+                    "title": row["name"],
+                    "task": row["task_type"],
+                    "task_type": row["task_type"],
+                    "path": row["markdown_path"],
+                    "status": row["status"],
+                }
+                for row in rows
+            ]
 
     def load_template(self, project_slug: str, template_key: str) -> PromptTemplate:
         path = self.asset_store.project_root(project_slug) / "prompt_templates" / f"{template_key}.md"

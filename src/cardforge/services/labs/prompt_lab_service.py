@@ -292,9 +292,29 @@ Lab-tested illustration prompt, no text, no border, no logo.
                 "response_chars": len(raw_response),
                 "avg_rules_chars": round(sum(len(str(card.get("rules_text", ""))) for card in cards) / max(1, len(cards)), 2),
             }
+            metrics["score_100"] = _prompt_run_score(metrics)
             return {"cards": cards}, metrics
         except Exception as exc:
-            return {"error": str(exc), "raw_excerpt": raw_response[:1000]}, {"parse_status": "failed", "response_chars": len(raw_response), "error": str(exc)}
+            metrics = {"parse_status": "failed", "response_chars": len(raw_response), "error": str(exc), "score_100": 0}
+            return {"error": str(exc), "raw_excerpt": raw_response[:1000]}, metrics
+
+
+def _prompt_run_score(metrics: dict[str, Any]) -> int:
+    if metrics.get("parse_status") != "parsed":
+        return 0
+    score = 45
+    card_count = int(metrics.get("card_record_count") or 0)
+    if card_count:
+        score += min(25, card_count * 8)
+    avg_rules = float(metrics.get("avg_rules_chars") or 0)
+    if 20 <= avg_rules <= 260:
+        score += 20
+    elif avg_rules:
+        score += 8
+    response_chars = int(metrics.get("response_chars") or 0)
+    if response_chars > 120:
+        score += 10
+    return max(0, min(100, score))
 
 
 def _safe_format(template: str, context: dict[str, Any]) -> str:
