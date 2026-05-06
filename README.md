@@ -6,19 +6,24 @@ This repository is a new app inspired by the FilmCreator pipeline architecture: 
 
 ## Current vertical slice
 
-This initial repo contains the first working foundation:
+This repo now contains the first offline-safe production slice:
 
 - SQLite database with schema migration/bootstrap.
 - Project and set creation.
 - File scaffold under a workspace folder.
 - Manual card creation.
 - Card version history.
-- Deterministic validation.
-- Placeholder card front/back rendering with Pillow.
+- Robust CardForge/FilmCreator-style packet parsing plus JSON/table/heading markdown salvage.
+- Deterministic simulated batch generation for 10-15 card tests without LM Studio.
+- Raw response, parsed JSON, LLM request logs, batch manifests, validation reports, balance reports, and rules review reports.
+- Deterministic validation, text repair/rework, balance review, and rules wording review.
+- Art prompt creation and dummy image candidate generation without ComfyUI.
+- Approve/reject/lock lifecycle for art candidates.
+- Placeholder or locked-art card front/back rendering with Pillow.
 - Review item creation and decisions.
 - CLI commands built with Typer.
-- Stubbed LM Studio and ComfyUI integration classes.
-- Automated tests for DB, scaffolding, validation, rendering, and review flow.
+- Stubbed live LM Studio and ComfyUI integration classes for later manual integration.
+- Automated tests for DB, scaffolding, parsing, simulated generation, validation, balance, rework, art, rendering, and review flow.
 
 ## Install for local development
 
@@ -34,9 +39,18 @@ pip install -e ".[dev]"
 cardforge db init
 cardforge project create gravebound_test --name "Gravebound Test"
 cardforge set create gravebound_test --name "Gravebound Dominion"
-cardforge card create gravebound_test SET001 --name "Bone Lantern Warden" --type creature --rules-text "Guard. When this dies, draw a card." --attack 2 --health 4
-cardforge card validate gravebound_test CARD_0001
-cardforge render card gravebound_test CARD_0001 --placeholder-art
+
+# Offline simulated LM output through the real parser/validation path.
+cardforge batch generate gravebound_test SET001 --count 12 --request "Generate gothic necromancer cards."
+cardforge batch balance-review gravebound_test BATCH_0001
+cardforge batch rules-review gravebound_test BATCH_0001
+
+# Offline simulated ComfyUI art candidates through the real review/render path.
+cardforge art generate-dummy gravebound_test CARD_0001 --count 4
+cardforge art approve gravebound_test ART_CAND_0001
+cardforge art lock gravebound_test ART_CAND_0001
+cardforge render card gravebound_test CARD_0001 --no-placeholder-art
+
 cardforge review list gravebound_test
 cardforge export json gravebound_test SET001
 ```
@@ -49,7 +63,7 @@ export CARDFORGE_WORKSPACE=/path/to/workspace
 
 ## Planned phases
 
-See `docs/PHASE_PLAN.md` for the full implementation roadmap, including automated and manual test points.
+See `docs/PHASE_PLAN.md` for the full implementation roadmap, and `docs/OFFLINE_PHASES.md` for exactly which phases can be built and tested without live LM Studio or ComfyUI.
 
 ## Local integrations
 

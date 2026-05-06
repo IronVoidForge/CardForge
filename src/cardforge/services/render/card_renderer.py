@@ -15,6 +15,7 @@ from cardforge.services.cards.card_service import CardService
 from cardforge.services.projects.project_service import ProjectService
 from cardforge.services.render.text_layout import TextLayoutEngine
 from cardforge.services.review.review_service import ReviewService
+from cardforge.services.art.art_candidate_service import ArtCandidateService
 
 
 class CardRenderer:
@@ -24,6 +25,7 @@ class CardRenderer:
         self.cards = CardService(self.db)
         self.projects = ProjectService(self.db)
         self.text = TextLayoutEngine()
+        self.art_candidates = ArtCandidateService(self.db)
 
     def render_card(self, project_slug: str, card_key: str, *, placeholder_art: bool = True) -> dict[str, Any]:
         with self.db.connection() as conn:
@@ -35,7 +37,8 @@ class CardRenderer:
             front_path = render_root / f"front_{render_key.lower()}.png"
             back_path = render_root / f"back_{render_key.lower()}.png"
             preview_path = render_root / f"preview_{render_key.lower()}.png"
-            layout_report = self._draw_front(card, front_path, placeholder_art=placeholder_art)
+            locked_art_path = None if placeholder_art else self.art_candidates.locked_art_path(project_slug, card_key)
+            layout_report = self._draw_front(card, front_path, placeholder_art=placeholder_art, art_path=locked_art_path)
             self._draw_back(card, back_path)
             self._draw_preview(front_path, back_path, preview_path)
             status = RenderStatus.RENDERED.value if layout_report["all_text_fit"] else RenderStatus.LAYOUT_WARNING.value
@@ -74,7 +77,7 @@ class CardRenderer:
                 "status": status,
             }
 
-    def _draw_front(self, card: Row, path: Path, *, placeholder_art: bool) -> dict[str, Any]:
+    def _draw_front(self, card: Row, path: Path, *, placeholder_art: bool, art_path: Path | None = None) -> dict[str, Any]:
         width, height = 750, 1050
         img = Image.new("RGB", (width, height), (236, 232, 220))
         draw = ImageDraw.Draw(img)
@@ -90,8 +93,15 @@ class CardRenderer:
         draw.text((646, 94), str(cost.get("display", "")), fill=(20, 20, 20), font=self._font(30))
         art_box = (78, 170, 672, 520)
         draw.rectangle(art_box, fill=(135, 125, 145), outline=frame, width=4)
-        if placeholder_art:
+        if art_path and art_path.exists():
+            art = Image.open(art_path).convert("RGB")
+            art = self._cover_resize(art, art_box[2] - art_box[0], art_box[3] - art_box[1])
+            img.paste(art, (art_box[0], art_box[1]))
+            draw.rectangle(art_box, outline=frame, width=4)
+        elif placeholder_art:
             self._center_text(draw, "PLACEHOLDER ART", art_box, self._font(34), fill=(240, 235, 220))
+        else:
+            self._center_text(draw, "NO LOCKED ART", art_box, self._font(34), fill=(240, 235, 220))
         draw.rounded_rectangle((78, 535, 672, 590), radius=8, fill=(245, 241, 229), outline=frame, width=3)
         draw.text((96, 548), card["type_line"], fill=(25, 20, 20), font=self._font(28))
         rules_box = (92, 620, 658, 865)
@@ -117,6 +127,49 @@ class CardRenderer:
             draw.text((587, 944), f"{stats.get('attack', '-')}/{stats.get('health', '-')}", fill=(20, 20, 20), font=self._font(32))
         img.save(path)
         return {"rules_text_fit": rules_fit, "flavor_text_fit": flavor_fit, "all_text_fit": rules_fit and flavor_fit}
+
+
+    def _cover_resize(self, image: Image.Image, width: int, height: int) -> Image.Image:
+        src_w, src_h = image.size
+        scale = max(width / src_w, height / src_h)
+        new_size = (max(1, int(src_w * scale)), max(1, int(src_h * scale)))
+        resized = image.resize(new_size)
+        left = max(0, (resized.size[0] - width) // 2)
+        top = max(0, (resized.size[1] - height) // 2)
+        return resized.crop((left, top, left + width, top + height))
+
+
+    def _locked_art_path(self, conn, card: Row) -> Path | None:
+        row = conn.execute(
+            "SELECT image_path FROM art_candidates WHERE card_id = ? AND status = 'locked' ORDER BY updated_at DESC, id DESC LIMIT 1",
+            (card["id"],),
+        ).fetchone()
+        if row is None or not str(row["image_path"]).strip():
+            return None
+        return self.asset_store.safe_resolve(row["image_path"])
+
+    def _fit_cover(self, image: Image.Image, width: int, height: int) -> Image.Image:
+        src_w, src_h = image.size
+        scale = max(width / src_w, height / src_h)
+        resized = image.resize((int(src_w * scale), int(src_h * scale)))
+        left = max(0, (resized.width - width) // 2)
+        top = max(0, (resized.height - height) // 2)
+        return resized.crop((left, top, left + width, top + height))
+
+    def _locked_art_path(self, conn, card_id: int) -> str:
+        row = conn.execute(
+            "SELECT image_path FROM art_candidates WHERE card_id = ? AND status = 'locked' ORDER BY updated_at DESC LIMIT 1",
+            (card_id,),
+        ).fetchone()
+        return str(row["image_path"] or "") if row else ""
+
+    def _cover_resize(self, image: Image.Image, target_width: int, target_height: int) -> Image.Image:
+        width, height = image.size
+        scale = max(target_width / width, target_height / height)
+        resized = image.resize((int(width * scale), int(height * scale)))
+        left = max(0, (resized.width - target_width) // 2)
+        top = max(0, (resized.height - target_height) // 2)
+        return resized.crop((left, top, left + target_width, top + target_height))
 
     def _draw_back(self, card: Row, path: Path) -> None:
         width, height = 750, 1050

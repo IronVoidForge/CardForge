@@ -11,10 +11,18 @@ from cardforge.db.session import Database
 from cardforge.domain.enums import ReviewDecision
 from cardforge.integrations.comfyui import ComfyClient
 from cardforge.integrations.lmstudio import LMStudioClient
+from cardforge.services.art.art_candidate_service import ArtCandidateService
+from cardforge.services.art.art_prompt_service import ArtPromptService
+from cardforge.services.balance.balance_review_service import BalanceReviewService
+from cardforge.services.batches.card_batch_service import CardBatchService
 from cardforge.services.cards.card_service import CardService
+from cardforge.services.generation.card_repair_service import CardRepairService
+from cardforge.services.generation.rules_review_service import RulesReviewService
 from cardforge.services.projects.project_service import ProjectService
 from cardforge.services.render.card_renderer import CardRenderer
 from cardforge.services.review.review_service import ReviewService
+from cardforge.services.rework.card_rework_service import CardReworkService
+from cardforge.services.rework.rework_service import ReworkService
 from cardforge.services.sets.set_service import SetService
 from cardforge.services.status.status_service import StatusService
 
@@ -23,6 +31,9 @@ db_app = typer.Typer(help="Database commands")
 project_app = typer.Typer(help="Project commands")
 set_app = typer.Typer(help="Set commands")
 card_app = typer.Typer(help="Card commands")
+batch_app = typer.Typer(help="Batch generation commands")
+art_app = typer.Typer(help="Art prompt/candidate commands")
+rework_app = typer.Typer(help="Rework request commands")
 render_app = typer.Typer(help="Render commands")
 review_app = typer.Typer(help="Review commands")
 llm_app = typer.Typer(help="LM Studio commands")
@@ -33,6 +44,9 @@ app.add_typer(db_app, name="db")
 app.add_typer(project_app, name="project")
 app.add_typer(set_app, name="set")
 app.add_typer(card_app, name="card")
+app.add_typer(batch_app, name="batch")
+app.add_typer(art_app, name="art")
+app.add_typer(rework_app, name="rework")
 app.add_typer(render_app, name="render")
 app.add_typer(review_app, name="review")
 app.add_typer(llm_app, name="llm")
@@ -142,8 +156,132 @@ def card_show(project_slug: str, card_key: str) -> None:
 @card_app.command("validate")
 def card_validate(project_slug: str, card_key: str) -> None:
     _ensure_db()
-    report = CardService().validate_card(project_slug, card_key)
-    typer.echo(json.dumps(report, indent=2))
+    typer.echo(json.dumps(CardService().validate_card(project_slug, card_key), indent=2))
+
+
+@card_app.command("versions")
+def card_versions(project_slug: str, card_key: str) -> None:
+    _ensure_db()
+    for row in CardService().list_versions(project_slug, card_key):
+        typer.echo(f"v{row['version_number']:03d}\t{row['source']}\t{row['change_reason']}")
+
+
+@card_app.command("repair-rules")
+def card_repair_rules(project_slug: str, card_key: str, reason: str = "offline rules text repair") -> None:
+    _ensure_db()
+    typer.echo(json.dumps(CardRepairService().repair_rules_text_offline(project_slug, card_key, reason=reason), indent=2))
+
+
+@batch_app.command("generate")
+def batch_generate(
+    project_slug: str,
+    set_code: str,
+    count: int = typer.Option(12, "--count", help="Number of cards to generate."),
+    request: str = typer.Option("", "--request", help="Freeform batch request."),
+    request_file: Path | None = typer.Option(None, "--request-file", help="Read request from markdown/text file."),
+    live: bool = typer.Option(False, "--live", help="Call LM Studio instead of deterministic offline simulation."),
+) -> None:
+    _ensure_db()
+    request_text = _read_text_arg(request, request_file) or "Generate a balanced gothic fantasy card batch."
+    result = CardBatchService().generate_batch(project_slug, set_code, count=count, request_text=request_text, use_mock=not live)
+    typer.echo(json.dumps(result, indent=2))
+
+
+@batch_app.command("list")
+def batch_list(project_slug: str, set_code: str | None = None) -> None:
+    _ensure_db()
+    for row in CardBatchService().list_batches(project_slug, set_code):
+        typer.echo(f"{row['batch_key']}\t{row['target_count']}\t{row['status']}")
+
+
+@batch_app.command("show")
+def batch_show(project_slug: str, batch_key: str) -> None:
+    _ensure_db()
+    row = CardBatchService().get_batch(project_slug, batch_key)
+    typer.echo(json.dumps({key: row[key] for key in row.keys()}, indent=2))
+
+
+@batch_app.command("validate")
+def batch_validate(project_slug: str, batch_key: str) -> None:
+    _ensure_db()
+    typer.echo(json.dumps(CardBatchService().validate_batch(project_slug, batch_key), indent=2))
+
+
+@batch_app.command("balance-review")
+def batch_balance_review(project_slug: str, batch_key: str) -> None:
+    _ensure_db()
+    typer.echo(json.dumps(BalanceReviewService().review_batch(project_slug, batch_key), indent=2))
+
+
+@batch_app.command("rules-review")
+def batch_rules_review(project_slug: str, batch_key: str) -> None:
+    _ensure_db()
+    typer.echo(json.dumps(RulesReviewService().review_batch(project_slug, batch_key), indent=2))
+
+
+@art_app.command("prompt")
+def art_prompt(project_slug: str, card_key: str) -> None:
+    _ensure_db()
+    typer.echo(json.dumps(ArtPromptService().create_prompt(project_slug, card_key), indent=2))
+
+
+@art_app.command("generate-dummy")
+def art_generate_dummy(project_slug: str, card_key: str, count: int = typer.Option(4, "--count"), seed: int | None = None) -> None:
+    _ensure_db()
+    typer.echo(json.dumps(ArtCandidateService().generate_dummy_candidates(project_slug, card_key, count=count, seed=seed), indent=2))
+
+
+@art_app.command("list")
+def art_list(project_slug: str, card_key: str) -> None:
+    _ensure_db()
+    for row in ArtCandidateService().list_candidates(project_slug, card_key):
+        typer.echo(f"{row['candidate_key']}\t{row['status']}\t{row['image_path']}")
+
+
+@art_app.command("approve")
+def art_approve(project_slug: str, candidate_key: str) -> None:
+    _ensure_db()
+    typer.echo(json.dumps(ArtCandidateService().approve(project_slug, candidate_key), indent=2))
+
+
+@art_app.command("reject")
+def art_reject(project_slug: str, candidate_key: str, reason: str = "") -> None:
+    _ensure_db()
+    typer.echo(json.dumps(ArtCandidateService().reject(project_slug, candidate_key, reason=reason), indent=2))
+
+
+@art_app.command("lock")
+def art_lock(project_slug: str, candidate_key: str) -> None:
+    _ensure_db()
+    typer.echo(json.dumps(ArtCandidateService().lock(project_slug, candidate_key), indent=2))
+
+
+@rework_app.command("create")
+def rework_create(project_slug: str, target_type: str, target_id: str, rework_type: str, reason: str = "", notes: str = "", tags: str = "") -> None:
+    _ensure_db()
+    result = ReworkService().create_request(
+        project_slug,
+        target_type=target_type,
+        target_id=target_id,
+        rework_type=rework_type,
+        reason=reason,
+        operator_notes=notes,
+        failure_tags=[item.strip() for item in tags.split(",") if item.strip()],
+    )
+    typer.echo(json.dumps(result, indent=2))
+
+
+@rework_app.command("list")
+def rework_list(project_slug: str) -> None:
+    _ensure_db()
+    for row in ReworkService().list_requests(project_slug):
+        typer.echo(f"{row['id']}\t{row['target_type']}:{row['target_id']}\t{row['rework_type']}\t{row['status']}")
+
+
+@rework_app.command("repair-rules")
+def rework_repair_rules(project_slug: str, card_key: str, reason: str = "shorten for template") -> None:
+    _ensure_db()
+    typer.echo(json.dumps(CardReworkService().repair_rules_text(project_slug, card_key, reason=reason), indent=2))
 
 
 @render_app.command("card")
@@ -207,6 +345,12 @@ def export_json(project_slug: str, set_code: str) -> None:
     payload = [{key: card[key] for key in card.keys()} for card in cards]
     out.write_text(json.dumps(payload, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
     typer.echo(f"Wrote {out}")
+
+
+def _read_text_arg(inline: str, file_path: Path | None) -> str:
+    if file_path is not None:
+        return file_path.read_text(encoding="utf-8")
+    return inline.strip()
 
 
 def _ensure_db() -> None:
