@@ -8,6 +8,8 @@ from cardforge.services.art.art_candidate_service import ArtCandidateService
 from cardforge.services.batches.card_batch_service import CardBatchService
 from cardforge.services.comfy.comfy_art_service import ComfyArtService
 from cardforge.services.export.export_service import ExportService
+from cardforge.services.labs.image_lab_service import ImageLabService
+from cardforge.services.labs.prompt_lab_service import PromptLabService
 from cardforge.services.generation.card_autofill_service import CardAutofillService
 from cardforge.services.refinement.card_refinement_service import CardRefinementService
 from cardforge.services.render.card_renderer import CardRenderer
@@ -39,6 +41,8 @@ class JobDispatcher:
             JobType.ART_PREPARE_COMFY.value: self._art_prepare_comfy,
             JobType.ART_SUBMIT_COMFY.value: self._art_submit_comfy,
             JobType.ART_AUTO_REVIEW.value: self._art_auto_review,
+            JobType.PROMPT_LAB_RUN.value: self._prompt_lab_run,
+            JobType.IMAGE_LAB_RUN.value: self._image_lab_run,
             JobType.RENDER_CARD.value: self._render_card,
             JobType.EXPORT_JSON.value: self._export_json,
             JobType.EXPORT_CSV.value: self._export_csv,
@@ -123,6 +127,23 @@ class JobDispatcher:
         return AutoReviewService(self.db).review_art_candidate(
             self._required(payload, "project_slug"),
             self._required(payload, "candidate_key"),
+        )
+
+    def _prompt_lab_run(self, payload: dict[str, Any]) -> dict[str, Any]:
+        return PromptLabService(self.db).run_case(
+            self._required(payload, "project_slug"),
+            self._required(payload, "case_key"),
+            variant_notes=str(payload.get("variant_notes") or ""),
+            use_mock=True,
+        )
+
+    def _image_lab_run(self, payload: dict[str, Any]) -> dict[str, Any]:
+        return ImageLabService(self.db).run_attempt(
+            self._required(payload, "project_slug"),
+            self._required(payload, "case_key"),
+            prompt_append=str(payload.get("prompt_append") or ""),
+            count=int(payload.get("count", 4)),
+            seed=int(payload["seed"]) if payload.get("seed") not in {None, ""} else None,
         )
 
     def _render_card(self, payload: dict[str, Any]) -> dict[str, Any]:

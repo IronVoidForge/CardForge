@@ -234,6 +234,40 @@ class UIDashboardService:
 
 
 
+
+    def lab_dashboard(self, project_slug: str) -> dict[str, Any]:
+        with self.db.connection() as conn:
+            project = self.projects.get_project(project_slug, conn=conn)
+            prompt_cases = [self._prompt_lab_case_summary(row) for row in conn.execute(
+                "SELECT * FROM prompt_lab_cases WHERE project_id = ? ORDER BY id DESC", (project["id"],)
+            )]
+            image_cases = [self._image_lab_case_summary(row) for row in conn.execute(
+                "SELECT * FROM image_lab_cases WHERE project_id = ? ORDER BY id DESC", (project["id"],)
+            )]
+            cards = [self._card_summary(conn, row) for row in conn.execute(
+                """
+                SELECT c.* FROM cards c
+                JOIN sets s ON s.id = c.set_id
+                WHERE s.project_id = ?
+                ORDER BY c.updated_at DESC, c.id DESC
+                LIMIT 50
+                """,
+                (project["id"],),
+            )]
+            templates = [dict(row) for row in conn.execute(
+                "SELECT template_key, name, task_type FROM prompt_templates WHERE project_id = ? ORDER BY template_key",
+                (project["id"],),
+            )]
+        return {
+            "project": _row_to_dict(project),
+            "prompt_cases": prompt_cases,
+            "image_cases": image_cases,
+            "cards": cards,
+            "prompt_templates": templates,
+            "open_prompt_cases": sum(1 for item in prompt_cases if item["status"] == "open"),
+            "open_image_cases": sum(1 for item in image_cases if item["status"] == "open"),
+        }
+
     def integration_status(self, project_slug: str) -> dict[str, Any]:
         from cardforge.services.comfy.workflow_registry_service import WorkflowRegistryService
 
@@ -295,6 +329,19 @@ class UIDashboardService:
             "running_count": sum(1 for row in rows if row["status"] == "running"),
             "failed_count": sum(1 for row in rows if row["status"] == "failed"),
         }
+
+
+    def _prompt_lab_case_summary(self, row: Row) -> dict[str, Any]:
+        summary = _row_to_dict(row) or {}
+        with self.db.connection() as conn:
+            summary["run_count"] = conn.execute("SELECT COUNT(*) AS n FROM prompt_lab_runs WHERE case_id = ?", (row["id"],)).fetchone()["n"]
+        return summary
+
+    def _image_lab_case_summary(self, row: Row) -> dict[str, Any]:
+        summary = _row_to_dict(row) or {}
+        with self.db.connection() as conn:
+            summary["attempt_count"] = conn.execute("SELECT COUNT(*) AS n FROM image_lab_attempts WHERE case_id = ?", (row["id"],)).fetchone()["n"]
+        return summary
 
     def _set_summary(self, conn: Any, row: Row) -> dict[str, Any]:
         card_count = conn.execute("SELECT COUNT(*) AS n FROM cards WHERE set_id = ?", (row["id"],)).fetchone()["n"]

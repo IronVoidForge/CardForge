@@ -1,0 +1,86 @@
+{% extends "base.html" %}
+{% block title %}Labs — {{ project.name }}{% endblock %}
+{% block sidebar %}
+<nav class="nav-list">
+  <a href="/">All projects</a>
+  <a href="/projects/{{ project.slug }}">Dashboard</a>
+  <a href="/projects/{{ project.slug }}/labs">Labs</a>
+  <a href="/projects/{{ project.slug }}/templates">Templates</a>
+  <a href="/projects/{{ project.slug }}/review">Review queue</a>
+  <a href="/projects/{{ project.slug }}/jobs">Jobs</a>
+</nav>
+{% endblock %}
+{% block content %}
+<section class="topbar">
+  <div>
+    <p class="eyebrow">Prompt Lab & Image Lab</p>
+    <h1>Experiment safely before changing production</h1>
+    <p class="muted">Lab cases are read-only snapshots. Runs write under <code>99_prompt_lab</code> and <code>99_image_lab</code>.</p>
+  </div>
+</section>
+
+<section class="stat-grid">
+  <div class="stat-card"><span>Prompt cases</span><strong>{{ prompt_cases|length }}</strong></div>
+  <div class="stat-card"><span>Image cases</span><strong>{{ image_cases|length }}</strong></div>
+  <div class="stat-card"><span>Open prompt cases</span><strong>{{ open_prompt_cases }}</strong></div>
+  <div class="stat-card"><span>Open image cases</span><strong>{{ open_image_cases }}</strong></div>
+</section>
+
+<div class="grid two-col">
+  <section class="panel form-panel">
+    <div class="panel-heading"><h2>Create Prompt Lab case</h2></div>
+    <form method="post" action="/projects/{{ project.slug }}/labs/prompt/create" class="stacked-form">
+      <label>Prompt template
+        <select name="template_key">
+          {% for template in prompt_templates %}<option value="{{ template.template_key }}">{{ template.template_key }} · {{ template.task_type }}</option>{% endfor %}
+        </select>
+      </label>
+      <label>Target type <select name="target_type"><option>project</option><option>set</option><option>card</option><option>batch</option></select></label>
+      <label>Target ID <input name="target_id" placeholder="CARD_0001 or SET001"></label>
+      <label>Hypothesis / notes <textarea name="notes" rows="3" placeholder="Test shorter rules instructions, stronger type mix, or a different art prompt contract."></textarea></label>
+      <button class="primary-button" type="submit">Create Prompt Lab case</button>
+    </form>
+  </section>
+
+  <section class="panel form-panel">
+    <div class="panel-heading"><h2>Create Image Lab case</h2></div>
+    <form method="post" action="/projects/{{ project.slug }}/labs/image/create" class="stacked-form">
+      <label>Card
+        <select name="card_key">
+          {% for card in cards %}<option value="{{ card.card_key }}">{{ card.card_key }} · {{ card.name }}</option>{% endfor %}
+        </select>
+      </label>
+      <label>Goal / notes <textarea name="notes" rows="3" placeholder="Compare portrait vs action shot, lighting styles, or composition clauses."></textarea></label>
+      <button class="primary-button" type="submit">Create Image Lab case</button>
+    </form>
+  </section>
+</div>
+
+<section class="panel">
+  <div class="panel-heading"><h2>Prompt Lab cases</h2><span class="pill neutral">{{ prompt_cases|length }}</span></div>
+  {% if prompt_cases %}
+  <div class="table-wrap"><table><thead><tr><th>Case</th><th>Template</th><th>Target</th><th>Runs</th><th>Status</th><th>Actions</th></tr></thead><tbody>
+  {% for case in prompt_cases %}
+  <tr>
+    <td class="mono">{{ case.case_key }}</td><td>{{ case.template_key }}</td><td>{{ case.target_type }}:{{ case.target_id }}</td><td>{{ case.run_count }}</td><td><span class="pill {{ case.status|status_class }}">{{ case.status }}</span></td>
+    <td class="button-row compact"><form method="post" action="/projects/{{ project.slug }}/labs/prompt/{{ case.case_key }}/run"><input name="variant_notes" placeholder="Variant notes" aria-label="Variant notes"><button type="submit">Run mock</button></form><form method="post" action="/projects/{{ project.slug }}/labs/prompt/{{ case.case_key }}/promote-note"><button type="submit">Promotion note</button></form></td>
+  </tr>
+  {% endfor %}
+  </tbody></table></div>
+  {% else %}<div class="empty-state">No Prompt Lab cases yet.</div>{% endif %}
+</section>
+
+<section class="panel">
+  <div class="panel-heading"><h2>Image Lab cases</h2><span class="pill neutral">{{ image_cases|length }}</span></div>
+  {% if image_cases %}
+  <div class="table-wrap"><table><thead><tr><th>Case</th><th>Target</th><th>Attempts</th><th>Status</th><th>Actions</th></tr></thead><tbody>
+  {% for case in image_cases %}
+  <tr>
+    <td class="mono">{{ case.case_key }}</td><td>{{ case.target_type }}:{{ case.target_id }}</td><td>{{ case.attempt_count }}</td><td><span class="pill {{ case.status|status_class }}">{{ case.status }}</span></td>
+    <td class="button-row compact"><form method="post" action="/projects/{{ project.slug }}/labs/image/{{ case.case_key }}/run"><input name="prompt_append" placeholder="Prompt wording to test" aria-label="Prompt wording to test"><input name="count" type="number" min="1" max="12" value="4"><button type="submit">Run dummy</button></form><form method="post" action="/projects/{{ project.slug }}/labs/image/{{ case.case_key }}/recommend"><button type="submit">Recommendation</button></form></td>
+  </tr>
+  {% endfor %}
+  </tbody></table></div>
+  {% else %}<div class="empty-state">No Image Lab cases yet.</div>{% endif %}
+</section>
+{% endblock %}

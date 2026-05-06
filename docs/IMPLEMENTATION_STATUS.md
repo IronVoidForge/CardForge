@@ -141,3 +141,15 @@ Added the next offline-safe integration phase:
 - tests for workflow sync, patching, prepare-only jobs, job dispatch, and integration UI
 
 The default test path still requires no LM Studio or ComfyUI connection.
+
+## Latest: Labs
+
+Added CardForge Prompt Lab and Image Lab. These are adapted from FilmCreator's lab pattern: create isolated cases, run attempts, compare outputs, mark accepted/rejected work, and write promotion/recommendation notes without mutating production artifacts.
+
+- Prompt Lab: `cardforge lab prompt ...`
+- Image Lab: `cardforge lab image ...`
+- UI: `/projects/<project_slug>/labs`
+- Queue: `prompt_lab_run` and `image_lab_run` jobs
+
+See `docs/LABS_AND_REMAINING_PIPELINE.md`.
+

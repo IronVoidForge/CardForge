@@ -4,6 +4,7 @@
 <nav class="nav-list">
   <a href="/">All projects</a>
   <a href="/projects/{{ status.project.slug }}">Dashboard</a>
+  <a href="/projects/{{ status.project.slug }}/labs">Labs</a>
   <a href="/projects/{{ status.project.slug }}/templates">Templates</a>
   <a href="/projects/{{ status.project.slug }}/integrations">Integrations</a>
   <a href="/projects/{{ status.project.slug }}/review">Review queue</a>
@@ -18,6 +19,7 @@
     <p class="muted mono">{{ status.project.slug }}</p>
   </div>
   <div class="button-row">
+    <a class="ghost-button" href="/projects/{{ status.project.slug }}/labs">Labs</a>
     <a class="ghost-button" href="/projects/{{ status.project.slug }}/jobs">Jobs</a>
     <a class="ghost-button" href="/projects/{{ status.project.slug }}/review">Open review queue</a>
   </div>
@@ -29,7 +31,7 @@
 </section>
 
 <section class="stat-grid">
-  {% for label, key in [("Sets", "sets"), ("Batches", "batches"), ("Cards", "cards"), ("Open reviews", "open_reviews"), ("Art candidates", "art_candidates"), ("Locked art", "locked_art"), ("Renders", "renders"), ("Auto reviews", "auto_reviews"), ("Jobs pending", "jobs_pending"), ("Jobs failed", "jobs_failed")] %}
+  {% for label, key in [("Sets", "sets"), ("Batches", "batches"), ("Cards", "cards"), ("Open reviews", "open_reviews"), ("Art candidates", "art_candidates"), ("Locked art", "locked_art"), ("Renders", "renders"), ("Auto reviews", "auto_reviews"), ("Prompt Lab", "prompt_lab_cases"), ("Image Lab", "image_lab_cases"), ("Jobs pending", "jobs_pending"), ("Jobs failed", "jobs_failed")] %}
   <div class="stat-card">
     <span>{{ label }}</span>
     <strong>{{ status.counts[key] }}</strong>

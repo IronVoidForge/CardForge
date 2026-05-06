@@ -47,6 +47,8 @@ class StatusService:
                     "SELECT COUNT(*) FROM auto_reviews WHERE project_id = ? AND auto_status = 'needs_rework'",
                     project_id,
                 ),
+                "prompt_lab_cases": self._count(conn, "SELECT COUNT(*) FROM prompt_lab_cases WHERE project_id = ?", project_id),
+                "image_lab_cases": self._count(conn, "SELECT COUNT(*) FROM image_lab_cases WHERE project_id = ?", project_id),
                 "jobs_pending": self._count(
                     conn,
                     "SELECT COUNT(*) FROM generation_jobs WHERE project_id = ? AND status = 'pending'",

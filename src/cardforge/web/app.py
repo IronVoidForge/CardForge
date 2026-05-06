@@ -20,6 +20,8 @@ from cardforge.services.generation.card_autofill_service import CardAutofillServ
 from cardforge.services.comfy.comfy_art_service import ComfyArtService
 from cardforge.services.comfy.workflow_registry_service import WorkflowRegistryService
 from cardforge.services.jobs.job_service import JobService
+from cardforge.services.labs.image_lab_service import ImageLabService
+from cardforge.services.labs.prompt_lab_service import PromptLabCaseSpec, PromptLabService
 from cardforge.services.observability.diagnostics_service import DiagnosticsService
 from cardforge.services.projects.project_service import ProjectService
 from cardforge.services.resume.resume_service import ResumeService
@@ -96,6 +98,52 @@ def create_app(db: Database | None = None) -> FastAPI:
         return _redirect(f"/projects/{project_slug}/sets/{row['set_code']}")
 
 
+
+
+
+    @app.get("/projects/{project_slug}/labs", response_class=HTMLResponse)
+    def labs_page(request: Request, project_slug: str) -> HTMLResponse:
+        try:
+            payload = ui.lab_dashboard(project_slug)
+        except KeyError as exc:
+            raise HTTPException(status_code=404, detail=str(exc)) from exc
+        return templates.TemplateResponse(request, "labs.html", payload)
+
+    @app.post("/projects/{project_slug}/labs/prompt/create")
+    def create_prompt_lab_case(
+        project_slug: str,
+        template_key: str = Form(...),
+        target_type: str = Form("project"),
+        target_id: str = Form(""),
+        notes: str = Form(""),
+    ) -> RedirectResponse:
+        PromptLabService(database).create_case(PromptLabCaseSpec(project_slug=project_slug, template_key=template_key, target_type=target_type, target_id=target_id, notes=notes))
+        return _redirect(f"/projects/{project_slug}/labs")
+
+    @app.post("/projects/{project_slug}/labs/prompt/{case_key}/run")
+    def run_prompt_lab_case(project_slug: str, case_key: str, variant_notes: str = Form("")) -> RedirectResponse:
+        PromptLabService(database).run_case(project_slug, case_key, variant_notes=variant_notes, use_mock=True)
+        return _redirect(f"/projects/{project_slug}/labs")
+
+    @app.post("/projects/{project_slug}/labs/prompt/{case_key}/promote-note")
+    def promote_prompt_lab_note(project_slug: str, case_key: str) -> RedirectResponse:
+        PromptLabService(database).write_promotion_note(project_slug, case_key)
+        return _redirect(f"/projects/{project_slug}/labs")
+
+    @app.post("/projects/{project_slug}/labs/image/create")
+    def create_image_lab_case(project_slug: str, card_key: str = Form(...), notes: str = Form("")) -> RedirectResponse:
+        ImageLabService(database).create_case(project_slug, card_key, notes=notes)
+        return _redirect(f"/projects/{project_slug}/labs")
+
+    @app.post("/projects/{project_slug}/labs/image/{case_key}/run")
+    def run_image_lab_case(project_slug: str, case_key: str, prompt_append: str = Form(""), count: int = Form(4)) -> RedirectResponse:
+        ImageLabService(database).run_attempt(project_slug, case_key, prompt_append=prompt_append, count=count)
+        return _redirect(f"/projects/{project_slug}/labs")
+
+    @app.post("/projects/{project_slug}/labs/image/{case_key}/recommend")
+    def recommend_image_lab_case(project_slug: str, case_key: str, notes: str = Form("")) -> RedirectResponse:
+        ImageLabService(database).write_recommendation(project_slug, case_key, notes=notes)
+        return _redirect(f"/projects/{project_slug}/labs")
 
     @app.get("/projects/{project_slug}/integrations", response_class=HTMLResponse)
     def integrations_page(request: Request, project_slug: str) -> HTMLResponse:

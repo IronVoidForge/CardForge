@@ -159,3 +159,41 @@ def enqueue_comfy_art(
             payload={"card_key": card_key, "workflow_key": workflow_key, "seed": seed, "width": width, "height": height},
         )
     )
+
+
+@app.command("enqueue-prompt-lab-run")
+def enqueue_prompt_lab_run(
+    project_slug: str,
+    case_key: str,
+    variant_notes: str = typer.Option("", "--variant-notes"),
+) -> None:
+    ensure_db()
+    echo_json(
+        JobService().enqueue(
+            project_slug,
+            job_type=JobType.PROMPT_LAB_RUN,
+            target_type="prompt_lab_case",
+            target_id=case_key,
+            payload={"case_key": case_key, "variant_notes": variant_notes},
+        )
+    )
+
+
+@app.command("enqueue-image-lab-run")
+def enqueue_image_lab_run(
+    project_slug: str,
+    case_key: str,
+    prompt_append: str = typer.Option("", "--prompt-append"),
+    count: int = typer.Option(4, "--count"),
+    seed: int | None = typer.Option(None, "--seed"),
+) -> None:
+    ensure_db()
+    echo_json(
+        JobService().enqueue(
+            project_slug,
+            job_type=JobType.IMAGE_LAB_RUN,
+            target_type="image_lab_case",
+            target_id=case_key,
+            payload={"case_key": case_key, "prompt_append": prompt_append, "count": count, "seed": seed},
+        )
+    )

@@ -75,6 +75,8 @@ class JobType(StrEnum):
     ART_PREPARE_COMFY = "art_prepare_comfy"
     ART_SUBMIT_COMFY = "art_submit_comfy"
     ART_AUTO_REVIEW = "art_auto_review"
+    PROMPT_LAB_RUN = "prompt_lab_run"
+    IMAGE_LAB_RUN = "image_lab_run"
     RENDER_CARD = "render_card"
     EXPORT_JSON = "export_json"
     EXPORT_CSV = "export_csv"

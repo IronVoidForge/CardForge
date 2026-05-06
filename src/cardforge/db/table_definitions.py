@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-SCHEMA_VERSION = 3
+SCHEMA_VERSION = 4
 
 SCHEMA_SQL = [
     """
@@ -221,6 +221,74 @@ SCHEMA_SQL = [
       status TEXT NOT NULL DEFAULT 'rendered',
       created_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP,
       UNIQUE(project_id, package_key)
+    )
+    """,
+
+    """
+    CREATE TABLE IF NOT EXISTS prompt_lab_cases (
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      project_id INTEGER NOT NULL REFERENCES projects(id) ON DELETE CASCADE,
+      case_key TEXT NOT NULL,
+      template_key TEXT NOT NULL,
+      task_type TEXT NOT NULL DEFAULT '',
+      target_type TEXT NOT NULL DEFAULT '',
+      target_id TEXT NOT NULL DEFAULT '',
+      case_dir TEXT NOT NULL DEFAULT '',
+      status TEXT NOT NULL DEFAULT 'open',
+      accepted_run_key TEXT NOT NULL DEFAULT '',
+      notes TEXT NOT NULL DEFAULT '',
+      created_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP,
+      updated_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP,
+      UNIQUE(project_id, case_key)
+    )
+    """,
+    """
+    CREATE TABLE IF NOT EXISTS prompt_lab_runs (
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      case_id INTEGER NOT NULL REFERENCES prompt_lab_cases(id) ON DELETE CASCADE,
+      run_key TEXT NOT NULL,
+      variant_label TEXT NOT NULL DEFAULT '',
+      candidate_prompt_path TEXT NOT NULL DEFAULT '',
+      raw_response_path TEXT NOT NULL DEFAULT '',
+      parsed_response_json TEXT NOT NULL DEFAULT '{}',
+      metrics_json TEXT NOT NULL DEFAULT '{}',
+      status TEXT NOT NULL DEFAULT 'unreviewed',
+      notes TEXT NOT NULL DEFAULT '',
+      created_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP,
+      UNIQUE(case_id, run_key)
+    )
+    """,
+    """
+    CREATE TABLE IF NOT EXISTS image_lab_cases (
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      project_id INTEGER NOT NULL REFERENCES projects(id) ON DELETE CASCADE,
+      card_id INTEGER REFERENCES cards(id) ON DELETE SET NULL,
+      case_key TEXT NOT NULL,
+      mode TEXT NOT NULL DEFAULT 'card_art',
+      target_type TEXT NOT NULL DEFAULT 'card',
+      target_id TEXT NOT NULL DEFAULT '',
+      case_dir TEXT NOT NULL DEFAULT '',
+      status TEXT NOT NULL DEFAULT 'open',
+      accepted_attempt_key TEXT NOT NULL DEFAULT '',
+      notes TEXT NOT NULL DEFAULT '',
+      created_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP,
+      updated_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP,
+      UNIQUE(project_id, case_key)
+    )
+    """,
+    """
+    CREATE TABLE IF NOT EXISTS image_lab_attempts (
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      case_id INTEGER NOT NULL REFERENCES image_lab_cases(id) ON DELETE CASCADE,
+      attempt_key TEXT NOT NULL,
+      prompt_markdown_path TEXT NOT NULL DEFAULT '',
+      candidate_manifest_path TEXT NOT NULL DEFAULT '',
+      review_json_path TEXT NOT NULL DEFAULT '',
+      comparison_json_path TEXT NOT NULL DEFAULT '',
+      status TEXT NOT NULL DEFAULT 'unreviewed',
+      notes TEXT NOT NULL DEFAULT '',
+      created_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP,
+      UNIQUE(case_id, attempt_key)
     )
     """,
     """
