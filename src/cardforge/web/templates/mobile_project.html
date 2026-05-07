@@ -1,0 +1,68 @@
+{% extends "base.html" %}
+{% block title %}{{ status.project.name }} — CardForge Mobile{% endblock %}
+{% block sidebar %}
+<nav class="nav-list">
+  <a href="/m">Mobile home</a>
+  <a class="active" href="/m/{{ status.project.slug }}">Mobile dashboard</a>
+  <a href="/m/{{ status.project.slug }}/review">Review</a>
+  <a href="/m/{{ status.project.slug }}/jobs">Jobs</a>
+  <a href="/projects/{{ status.project.slug }}">Desktop dashboard</a>
+</nav>
+{% endblock %}
+{% block bottom_nav %}
+<a href="/m/{{ status.project.slug }}/review">Review</a>
+<a href="/m/{{ status.project.slug }}/jobs">Jobs</a>
+<a href="/projects/{{ status.project.slug }}">Full</a>
+{% endblock %}
+{% block content %}
+<section class="mobile-hero compact">
+  <p class="eyebrow">{{ status.project.slug }}</p>
+  <h1>{{ status.project.name }}</h1>
+  <p>{{ status.next_action }}</p>
+</section>
+<section class="mobile-stat-grid">
+  <div><span>Cards</span><strong>{{ status.counts.cards }}</strong></div>
+  <div><span>Reviews</span><strong>{{ status.counts.open_reviews }}</strong></div>
+  <div><span>Jobs</span><strong>{{ status.counts.jobs_pending + status.counts.jobs_running }}</strong></div>
+  <div><span>Locked</span><strong>{{ status.counts.locked_cards }}</strong></div>
+</section>
+<section class="panel mobile-action-panel">
+  <div class="panel-heading"><h2>Quick actions</h2></div>
+  <div class="mobile-actions">
+    <a class="primary-button full" href="/m/{{ status.project.slug }}/review">Review queue</a>
+    <a class="secondary-button full" href="/m/{{ status.project.slug }}/jobs">Run or inspect jobs</a>
+    <a class="ghost-button full" href="/projects/{{ status.project.slug }}/labs">Prompt/Image labs</a>
+  </div>
+</section>
+<section class="panel">
+  <div class="panel-heading"><h2>Open reviews</h2><span class="pill neutral">{{ open_reviews|length }}</span></div>
+  {% if open_reviews %}
+    <div class="mobile-list">
+      {% for review in open_reviews %}
+      <a class="mobile-row" href="/m/{{ status.project.slug }}/review#review-{{ review.id }}">
+        <strong>{{ review.title }}</strong>
+        <span>{{ review.review_type }} · {{ review.severity }}</span>
+      </a>
+      {% endfor %}
+    </div>
+  {% else %}
+    <div class="empty-state">No open review items.</div>
+  {% endif %}
+</section>
+<section class="panel">
+  <div class="panel-heading"><h2>Recent cards</h2></div>
+  {% if recent_cards %}
+    <div class="mobile-card-strip">
+      {% for card in recent_cards %}
+      <a class="mobile-card-tile" href="/m/{{ status.project.slug }}/cards/{{ card.card_key }}">
+        {% if card.latest_render %}<img src="{{ card.latest_render.preview_path|asset_url }}" alt="{{ card.name }} preview">{% else %}<div class="mini-placeholder">No render</div>{% endif %}
+        <strong>{{ card.name }}</strong>
+        <span>{{ card.card_key }} · {{ card.status }}</span>
+      </a>
+      {% endfor %}
+    </div>
+  {% else %}
+    <div class="empty-state">No cards yet.</div>
+  {% endif %}
+</section>
+{% endblock %}

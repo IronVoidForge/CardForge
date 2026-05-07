@@ -22,7 +22,7 @@ This repo now contains the first offline-safe production slice:
 - Placeholder or locked-art card front/back rendering with Pillow.
 - Review item creation and decisions.
 - Local job queue, resume planner, diagnostics, health endpoint, and audit events.
-- FastAPI/Jinja operator UI with jobs, review, card, batch, and export pages.
+- Mobile-first FastAPI/Jinja operator UI with PWA manifest, login protection, jobs, review, card, batch, lab, and export pages.
 - Quality gate scripts, Makefile targets, and GitHub Actions CI workflow.
 - CLI commands built with Typer.
 - Stubbed live LM Studio and ComfyUI integration classes for later manual integration.
@@ -77,6 +77,10 @@ make quality
 
 # Optional local operator UI.
 cardforge ui serve --host 127.0.0.1 --port 8765
+
+# Mobile/tablet operator UI for LAN/VPN control of the workstation.
+cardforge mobile serve --password "choose-a-local-password"
+cardforge mobile launcher --host 192.168.1.42 --port 8765
 ```
 
 The default workspace is `./workspace`. Override it with:
@@ -87,7 +91,7 @@ export CARDFORGE_WORKSPACE=/path/to/workspace
 
 ## Planned phases
 
-See `docs/PHASE_PLAN.md` for the full implementation roadmap, `docs/OFFLINE_PHASES.md` for exactly which phases can be built and tested without live LM Studio or ComfyUI, `docs/PROMPT_FORMAT_AND_AUTO_REVIEW.md` for the prompt package/autofill/refinement/auto-review contract, `docs/UI_AND_EXPORTS.md` for the local operator UI and export workflow, and `docs/JOBS_RESUME_AND_QUALITY.md` for the queue/resume/quality-gate layer.
+See `docs/PHASE_PLAN.md` for the full implementation roadmap, `docs/OFFLINE_PHASES.md` for exactly which phases can be built and tested without live LM Studio or ComfyUI, `docs/PROMPT_FORMAT_AND_AUTO_REVIEW.md` for the prompt package/autofill/refinement/auto-review contract, `docs/MOBILE_OPERATOR_REQUIREMENT.md` for the mobile-first LAN/PWA workflow, `docs/UI_AND_EXPORTS.md` for the operator UI and export workflow, and `docs/JOBS_RESUME_AND_QUALITY.md` for the queue/resume/quality-gate layer.
 
 ## Local integrations
 

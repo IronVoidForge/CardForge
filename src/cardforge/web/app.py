@@ -4,7 +4,7 @@ from pathlib import Path
 from typing import Any
 
 from fastapi import FastAPI, Form, HTTPException, Request
-from fastapi.responses import FileResponse, HTMLResponse, JSONResponse, RedirectResponse
+from fastapi.responses import FileResponse, HTMLResponse, JSONResponse, RedirectResponse, Response
 from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
 
@@ -33,6 +33,15 @@ from cardforge.services.review.review_service import ReviewService
 from cardforge.services.sets.set_service import SetService
 from cardforge.services.templates.template_service import TemplateService, TemplateValidationError
 from cardforge.services.ui.dashboard_service import UIDashboardService
+from cardforge.web.security import (
+    CSRF_COOKIE,
+    SESSION_COOKIE,
+    UIAuth,
+    login_redirect,
+    read_csrf_token,
+    safe_redirect_target,
+    wants_html,
+)
 
 PACKAGE_ROOT = Path(__file__).resolve().parent
 TEMPLATE_DIR = PACKAGE_ROOT / "templates"
@@ -49,6 +58,7 @@ def create_app(db: Database | None = None) -> FastAPI:
     app = FastAPI(title="CardForge", version="0.1.0")
     app.mount("/static", StaticFiles(directory=STATIC_DIR), name="static")
     templates = Jinja2Templates(directory=TEMPLATE_DIR)
+    auth = UIAuth(database.settings)
 
     def asset_url(path: str | None) -> str:
         value = str(path or "").strip()
@@ -70,15 +80,131 @@ def create_app(db: Database | None = None) -> FastAPI:
     ui = UIDashboardService(database)
 
 
+    @app.middleware("http")
+    async def mobile_operator_security(request: Request, call_next: Any) -> Response:
+        request.state.auth_required = auth.required
+        request.state.mobile_only = database.settings.ui_mobile_only
+        request.state.authenticated = auth.verify_session(request.cookies.get(SESSION_COOKIE))
+        request.state.csrf_token = request.cookies.get(CSRF_COOKIE, "")
+        if auth.required and not auth.public_path(request.url.path):
+            if not request.state.authenticated:
+                if wants_html(request):
+                    return login_redirect(request)
+                return JSONResponse({"ok": False, "error": "Authentication required."}, status_code=401)
+            if request.method in {"POST", "PUT", "PATCH", "DELETE"}:
+                csrf_token = await read_csrf_token(request)
+                if not auth.verify_csrf(csrf_token):
+                    return JSONResponse({"ok": False, "error": "Invalid CSRF token."}, status_code=403)
+        response = await call_next(request)
+        if auth.required and request.state.authenticated:
+            auth.ensure_csrf_cookie(request, response)
+        return response
+
     @app.get("/healthz")
     def healthz() -> JSONResponse:
         payload = DiagnosticsService(database).check()
         return JSONResponse(payload, status_code=200 if payload["ok"] else 503)
 
+
+
+    @app.get("/manifest.webmanifest")
+    def web_manifest() -> JSONResponse:
+        return JSONResponse(
+            {
+                "name": "CardForge Mobile Operator",
+                "short_name": "CardForge",
+                "description": "Mobile-first operator UI for local card generation pipelines.",
+                "start_url": "/m",
+                "scope": "/",
+                "display": "standalone",
+                "background_color": "#f4efe6",
+                "theme_color": "#472184",
+                "icons": [
+                    {"src": "/static/icon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any maskable"}
+                ],
+            }
+        )
+
+    @app.get("/service-worker.js")
+    def service_worker() -> Response:
+        body = (STATIC_DIR / "service-worker.js").read_text(encoding="utf-8")
+        return Response(body, media_type="application/javascript")
+
+    @app.get("/offline", response_class=HTMLResponse)
+    def offline(request: Request) -> HTMLResponse:
+        return templates.TemplateResponse(request, "offline.html", {})
+
+    @app.get("/login", response_class=HTMLResponse)
+    def login_page(request: Request, next: str = "/") -> HTMLResponse:  # noqa: A002 - user-facing query name
+        if not auth.required:
+            return _redirect(safe_redirect_target(next))
+        return templates.TemplateResponse(
+            request,
+            "login.html",
+            {"next_url": safe_redirect_target(next), "error": "", "password_configured": auth.password_configured},
+        )
+
+    @app.post("/login")
+    def login(password: str = Form(""), next: str = Form("/")) -> RedirectResponse:  # noqa: A002
+        result = auth.authenticate(password)
+        if not result.ok:
+            response = _redirect(f"/login?next={safe_redirect_target(next)}")
+            response.set_cookie("cardforge_login_error", result.error, max_age=8, samesite="lax")
+            return response
+        return auth.login_response(next)
+
+    @app.post("/logout")
+    def logout() -> RedirectResponse:
+        return auth.logout_response()
+
     @app.get("/", response_class=HTMLResponse)
     def home(request: Request) -> HTMLResponse:
+        if database.settings.ui_mobile_only:
+            return _redirect("/m")
         projects = ProjectService(database).list_projects()
         return templates.TemplateResponse(request, "home.html", {"projects": projects})
+
+
+
+    @app.get("/m", response_class=HTMLResponse)
+    def mobile_home(request: Request) -> HTMLResponse:
+        projects = ProjectService(database).list_projects()
+        if len(projects) == 1:
+            return _redirect(f"/m/{projects[0]['slug']}")
+        return templates.TemplateResponse(request, "mobile_home.html", {"projects": projects})
+
+    @app.get("/m/{project_slug}", response_class=HTMLResponse)
+    def mobile_project(request: Request, project_slug: str) -> HTMLResponse:
+        try:
+            payload = ui.project_overview(project_slug)
+        except KeyError as exc:
+            raise HTTPException(status_code=404, detail=str(exc)) from exc
+        return templates.TemplateResponse(request, "mobile_project.html", payload)
+
+    @app.get("/m/{project_slug}/cards/{card_key}", response_class=HTMLResponse)
+    def mobile_card(request: Request, project_slug: str, card_key: str) -> HTMLResponse:
+        try:
+            payload = ui.card_detail(project_slug, card_key)
+        except KeyError as exc:
+            raise HTTPException(status_code=404, detail=str(exc)) from exc
+        return templates.TemplateResponse(request, "mobile_card.html", payload)
+
+    @app.get("/m/{project_slug}/review", response_class=HTMLResponse)
+    def mobile_review_queue(request: Request, project_slug: str) -> HTMLResponse:
+        try:
+            payload = ui.review_queue(project_slug)
+        except KeyError as exc:
+            raise HTTPException(status_code=404, detail=str(exc)) from exc
+        return templates.TemplateResponse(request, "mobile_review.html", payload)
+
+    @app.get("/m/{project_slug}/jobs", response_class=HTMLResponse)
+    def mobile_jobs(request: Request, project_slug: str) -> HTMLResponse:
+        try:
+            payload = ui.job_queue(project_slug)
+            payload["resume_plan"] = ResumeService(database).plan_project(project_slug)
+        except KeyError as exc:
+            raise HTTPException(status_code=404, detail=str(exc)) from exc
+        return templates.TemplateResponse(request, "mobile_jobs.html", payload)
 
     @app.post("/projects/create")
     def create_project(slug: str = Form(...), name: str = Form(""), description: str = Form("")) -> RedirectResponse:

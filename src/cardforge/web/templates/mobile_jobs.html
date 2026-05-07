@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+{% block title %}Jobs — CardForge Mobile{% endblock %}
+{% block sidebar %}
+<nav class="nav-list">
+  <a href="/m">Mobile home</a>
+  <a href="/m/{{ project.slug }}">Mobile dashboard</a>
+  <a href="/m/{{ project.slug }}/review">Review</a>
+  <a class="active" href="/m/{{ project.slug }}/jobs">Jobs</a>
+</nav>
+{% endblock %}
+{% block bottom_nav %}
+<a href="/m/{{ project.slug }}">Dash</a>
+<a href="/m/{{ project.slug }}/review">Review</a>
+<a href="/projects/{{ project.slug }}/jobs">Full</a>
+{% endblock %}
+{% block content %}
+<section class="mobile-hero compact">
+  <p class="eyebrow">Jobs</p>
+  <h1>{{ pending_count }} pending</h1>
+  <p>{{ resume_plan.message }}</p>
+</section>
+<section class="panel mobile-action-panel">
+  <div class="mobile-actions">
+    <form method="post" action="/projects/{{ project.slug }}/jobs/enqueue-next"><button class="secondary-button full" type="submit">Queue next recommended job</button></form>
+    <form method="post" action="/projects/{{ project.slug }}/jobs/run-next"><button class="primary-button full" type="submit">Run next job</button></form>
+    <form method="post" action="/projects/{{ project.slug }}/jobs/run-all"><button class="ghost-button full" type="submit">Run pending jobs</button></form>
+  </div>
+</section>
+<section class="panel">
+  <div class="panel-heading"><h2>Queue</h2><span class="pill neutral">{{ jobs|length }}</span></div>
+  {% if jobs %}
+    <div class="mobile-list">
+      {% for job in jobs[:30] %}
+      <div class="mobile-row">
+        <strong>{{ job.job_type }}</strong>
+        <span>#{{ job.id }} · {{ job.status }} · {{ job.target_type }} {{ job.target_id }}</span>
+        {% if job.status == "failed" %}
+        <form method="post" action="/projects/{{ project.slug }}/jobs/{{ job.id }}/retry"><button class="secondary-button" type="submit">Retry</button></form>
+        {% endif %}
+      </div>
+      {% endfor %}
+    </div>
+  {% else %}
+    <div class="empty-state">No queued jobs.</div>
+  {% endif %}
+</section>
+{% endblock %}

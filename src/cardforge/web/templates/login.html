@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+{% block title %}Login — CardForge{% endblock %}
+{% block sidebar %}{% endblock %}
+{% block bottom_nav %}{% endblock %}
+{% block content %}
+<section class="login-shell panel">
+  <p class="eyebrow">Mobile operator login</p>
+  <h1>Unlock CardForge</h1>
+  <p class="muted">Enter the local UI password for this workstation. Use a trusted LAN or VPN before exposing CardForge to a phone or tablet.</p>
+  {% if not password_configured %}
+    <div class="empty-state bad-state">UI auth is required, but <span class="mono">CARDFORGE_UI_PASSWORD</span> is not configured on the server.</div>
+  {% endif %}
+  <form method="post" action="/login" class="stacked-form">
+    <input type="hidden" name="next" value="{{ next_url }}">
+    <label>Password <input name="password" type="password" autocomplete="current-password" autofocus required></label>
+    <button class="primary-button full" type="submit">Unlock mobile UI</button>
+  </form>
+</section>
+{% endblock %}

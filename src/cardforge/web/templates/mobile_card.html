@@ -1,0 +1,59 @@
+{% extends "base.html" %}
+{% block title %}{{ card.name }} — CardForge Mobile{% endblock %}
+{% block sidebar %}
+<nav class="nav-list">
+  <a href="/m">Mobile home</a>
+  <a href="/m/{{ project.slug }}">Mobile dashboard</a>
+  <a href="/m/{{ project.slug }}/review">Review</a>
+  <a href="/projects/{{ project.slug }}/cards/{{ card.card_key }}">Full card editor</a>
+</nav>
+{% endblock %}
+{% block bottom_nav %}
+<a href="/m/{{ project.slug }}">Dash</a>
+<a href="/m/{{ project.slug }}/review">Review</a>
+<a href="/projects/{{ project.slug }}/cards/{{ card.card_key }}">Full</a>
+{% endblock %}
+{% block content %}
+<section class="mobile-hero compact">
+  <p class="eyebrow">{{ card.card_key }} · {{ card.card_type }}</p>
+  <h1>{{ card.name }}</h1>
+  <p>{{ card.type_line or card.rarity }}</p>
+</section>
+<section class="panel mobile-card-preview">
+  {% if card.latest_render %}
+    <a href="{{ card.latest_render.preview_path|asset_url }}"><img class="large-preview" src="{{ card.latest_render.preview_path|asset_url }}" alt="{{ card.name }} preview"></a>
+  {% else %}
+    <div class="large-placeholder">No render</div>
+  {% endif %}
+  <div class="mobile-actions sticky-actions">
+    <form method="post" action="/projects/{{ project.slug }}/cards/{{ card.card_key }}/auto-review"><button class="secondary-button full" type="submit">Auto-review text</button></form>
+    <form method="post" action="/projects/{{ project.slug }}/cards/{{ card.card_key }}/render"><input type="hidden" name="placeholder_art" value="yes"><button class="primary-button full" type="submit">Render proxy</button></form>
+    <form method="post" action="/projects/{{ project.slug }}/cards/{{ card.card_key }}/art/generate-dummy"><input type="hidden" name="count" value="4"><button class="ghost-button full" type="submit">Dummy art</button></form>
+  </div>
+</section>
+<section class="panel">
+  <div class="panel-heading"><h2>Rules</h2><span class="pill {{ card.status|status_class }}">{{ card.status }}</span></div>
+  <p class="rules-text-mobile">{{ card.rules_text or "No rules text yet." }}</p>
+  {% if card.flavor_text %}<p class="muted"><em>{{ card.flavor_text }}</em></p>{% endif %}
+</section>
+<section class="panel">
+  <div class="panel-heading"><h2>Art candidates</h2><span class="pill neutral">{{ art_candidates|length }}</span></div>
+  {% if art_candidates %}
+    <div class="mobile-card-strip">
+      {% for art in art_candidates %}
+      <article class="mobile-card-tile">
+        <a href="{{ art.image_path|asset_url }}"><img src="{{ art.image_path|asset_url }}" alt="{{ art.candidate_key }}"></a>
+        <strong>{{ art.candidate_key }}</strong>
+        <span>{{ art.status }}</span>
+        <div class="button-row">
+          <form method="post" action="/projects/{{ project.slug }}/art/{{ art.candidate_key }}/approve"><input type="hidden" name="card_key" value="{{ card.card_key }}"><button type="submit">Approve</button></form>
+          <form method="post" action="/projects/{{ project.slug }}/art/{{ art.candidate_key }}/lock"><input type="hidden" name="card_key" value="{{ card.card_key }}"><button type="submit">Lock</button></form>
+        </div>
+      </article>
+      {% endfor %}
+    </div>
+  {% else %}
+    <div class="empty-state">No art candidates yet.</div>
+  {% endif %}
+</section>
+{% endblock %}

@@ -66,10 +66,10 @@ def test_renderer_uses_template_canvas(db: Database) -> None:
 
 def test_template_ui_pages(db: Database) -> None:
     ProjectService(db).create_project("gravebound_test", name="Gravebound Test")
-    client = TestClient(create_app(db))
-    library = client.get("/projects/gravebound_test/templates")
+    with TestClient(create_app(db)) as client:
+        library = client.get("/projects/gravebound_test/templates")
+        detail = client.get("/projects/gravebound_test/templates/default_creature_front_v1")
     assert library.status_code == 200
     assert "Template studio" in library.text
-    detail = client.get("/projects/gravebound_test/templates/default_creature_front_v1")
     assert detail.status_code == 200
     assert "Template JSON" in detail.text

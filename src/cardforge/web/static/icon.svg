@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" role="img" aria-label="CardForge icon">
+  <rect width="512" height="512" rx="112" fill="#241f2f"/>
+  <path d="M256 64 448 256 256 448 64 256Z" fill="#8b4bff"/>
+  <path d="M256 116 396 256 256 396 116 256Z" fill="#d89943"/>
+  <rect x="174" y="118" width="164" height="276" rx="18" fill="#fffaf0"/>
+  <rect x="198" y="150" width="116" height="78" rx="10" fill="#472184"/>
+  <path d="M204 268h104M204 300h104M204 332h72" stroke="#241f2f" stroke-width="18" stroke-linecap="round"/>
+</svg>

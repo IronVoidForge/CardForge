@@ -78,8 +78,8 @@ def test_job_dispatcher_can_prepare_comfy_art(db: Database) -> None:
 def test_integration_ui_page_lists_workflows(db: Database) -> None:
     _project_with_card(db)
     WorkflowRegistryService(db).sync_defaults()
-    client = TestClient(create_app(db))
-    response = client.get("/projects/gravebound_test/integrations")
+    with TestClient(create_app(db)) as client:
+        response = client.get("/projects/gravebound_test/integrations")
     assert response.status_code == 200
     assert "LM Studio and ComfyUI" in response.text
     assert "stub.card_art.t2i.v1" in response.text

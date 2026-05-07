@@ -175,3 +175,28 @@ PYTEST_DISABLE_PLUGIN_AUTOLOAD=1 python scripts/quality_check.py
 
 See `docs/LAB_PROMOTION_AND_PROMPT_VERSIONING.md`.
 
+
+
+## v11 Mobile operator pivot
+
+CardForge now treats the phone/tablet as the primary operator UI while the workstation runs Python, SQLite, LM Studio, ComfyUI, files, renders, and exports.
+
+Added in this pass:
+
+- Mobile-first `/m` UI surface for project dashboard, review queue, card inspection, and jobs.
+- PWA manifest, service worker shell, SVG icon, and mobile install metadata.
+- `cardforge mobile serve` command for LAN/VPN mobile operation.
+- `cardforge mobile launcher` command that writes a clickable HTML launcher file for phones/tablets.
+- Optional password login with signed sessions and CSRF protection for mutating form posts.
+- Mobile-friendly bottom navigation, sticky action controls, tap-sized buttons, responsive cards, and image zoom links.
+- Mobile auth/session/launcher tests.
+- CI and Makefile updated to run format, compile, lint, and tests as separate repeatable gates.
+
+Current local gate verified in this environment:
+
+```bash
+make quality
+# 45 passed; ruff skipped locally because it is not installed
+```
+
+See `docs/MOBILE_OPERATOR_REQUIREMENT.md`.

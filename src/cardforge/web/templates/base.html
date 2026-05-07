@@ -2,33 +2,52 @@
 <html lang="en">
 <head>
   <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#472184">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-title" content="CardForge">
+  <meta name="csrf-token" content="{{ request.state.csrf_token|default('') }}">
   <title>{% block title %}CardForge{% endblock %}</title>
+  <link rel="manifest" href="/manifest.webmanifest">
+  <link rel="icon" href="/static/icon.svg" type="image/svg+xml">
   <link rel="stylesheet" href="/static/cardforge.css">
 </head>
 <body>
   <a class="skip-link" href="#main-content">Skip to main content</a>
+  <div class="mobile-topbar" aria-label="Mobile application bar">
+    <a class="mobile-brand" href="/m"><span class="brand-mark small">◆</span><strong>CardForge</strong></a>
+    {% if request.state.authenticated|default(false) %}
+    <form method="post" action="/logout" class="mobile-logout"><button class="ghost-button" type="submit">Lock</button></form>
+    {% endif %}
+  </div>
   <div class="app-shell">
     <aside class="sidebar" aria-label="Application sidebar">
-      <a class="brand" href="/" aria-label="CardForge home">
+      <a class="brand" href="/m" aria-label="CardForge mobile home">
         <span class="brand-mark">◆</span>
         <span>
           <strong>CardForge</strong>
-          <small>local card pipeline</small>
+          <small>mobile card operator</small>
         </span>
       </a>
       {% block sidebar %}
       <nav class="nav-list">
-        <a href="/">Projects</a>
+        <a href="/m">Mobile home</a>
+        <a href="/">Desktop projects</a>
       </nav>
       {% endblock %}
       <div class="sidebar-note">
-        Offline-safe mode: simulated LM output, dummy art, deterministic review, no required LM Studio or ComfyUI.
+        Mobile UI controls a local workstation. Keep this server on a trusted LAN or VPN.
+        {% if request.state.authenticated|default(false) %}<br><br>Login protection is active.{% endif %}
       </div>
     </aside>
     <main class="main-panel" id="main-content" tabindex="-1">
       {% block content %}{% endblock %}
     </main>
   </div>
+  <nav class="bottom-nav" aria-label="Mobile bottom navigation">
+    <a href="/m">Home</a>
+    {% block bottom_nav %}{% endblock %}
+  </nav>
+  <script src="/static/mobile.js" defer></script>
 </body>
 </html>

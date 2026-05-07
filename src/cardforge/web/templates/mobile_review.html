@@ -1,0 +1,51 @@
+{% extends "base.html" %}
+{% block title %}Review — CardForge Mobile{% endblock %}
+{% block sidebar %}
+<nav class="nav-list">
+  <a href="/m">Mobile home</a>
+  <a href="/m/{{ project.slug }}">Mobile dashboard</a>
+  <a class="active" href="/m/{{ project.slug }}/review">Review queue</a>
+  <a href="/m/{{ project.slug }}/jobs">Jobs</a>
+</nav>
+{% endblock %}
+{% block bottom_nav %}
+<a href="/m/{{ project.slug }}">Dash</a>
+<a href="/m/{{ project.slug }}/jobs">Jobs</a>
+<a href="/projects/{{ project.slug }}/review">Full</a>
+{% endblock %}
+{% block content %}
+<section class="mobile-hero compact">
+  <p class="eyebrow">Review queue</p>
+  <h1>{{ open_count }} open</h1>
+  <p>Fast approve/reject/rework controls for phone and tablet review sessions.</p>
+</section>
+{% if reviews %}
+  <div class="mobile-review-stack">
+    {% for review in reviews %}
+    <article class="panel mobile-review-card" id="review-{{ review.id }}">
+      {% if review.preview_path %}<a href="{{ review.preview_path|asset_url }}"><img src="{{ review.preview_path|asset_url }}" alt="{{ review.title }} preview"></a>{% endif %}
+      <div>
+        <div class="review-title-row"><span class="pill {{ review.status|status_class }}">{{ review.status }}</span><span class="pill neutral">{{ review.review_type }}</span></div>
+        <h2>{{ review.title }}</h2>
+        <p class="muted">{{ review.description }}</p>
+        <form method="post" action="/projects/{{ project.slug }}/review/{{ review.id }}/decide" class="decision-form mobile-decision-form">
+          <label>Decision
+            <select name="decision">
+              <option value="approve">Approve</option>
+              <option value="request_rework">Request rework</option>
+              <option value="reject">Reject</option>
+              <option value="defer">Defer</option>
+            </select>
+          </label>
+          <label>Reason <input name="reason" placeholder="Optional short reason"></label>
+          <label>Notes <textarea name="notes" rows="3" placeholder="Voice dictation works well here."></textarea></label>
+          <button class="primary-button full" type="submit">Submit decision</button>
+        </form>
+      </div>
+    </article>
+    {% endfor %}
+  </div>
+{% else %}
+  <section class="panel"><div class="empty-state">No review items yet.</div></section>
+{% endif %}
+{% endblock %}
