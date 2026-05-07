@@ -18,12 +18,13 @@
   <p class="eyebrow">Review queue</p>
   <h1>{{ open_count }} open</h1>
   <p>Fast approve/reject/rework controls for phone and tablet review sessions.</p>
-  {% if open_count %}<a class="primary-button full" href="#review-{{ reviews[0].id }}">Jump to first item</a>{% endif %}
+  {% if open_count %}<a class="primary-button full" href="/m/{{ project.slug }}/review/{{ reviews[0].id }}">Open first item</a>{% endif %}
 </section>
 {% if reviews %}
   <div class="mobile-review-stack">
     {% for review in reviews %}
     <article class="panel mobile-review-card" id="review-{{ review.id }}">
+      <a class="mobile-row mobile-review-open" href="/m/{{ project.slug }}/review/{{ review.id }}"><strong>Open focused review</strong><span>Large preview, quick tags, and next-item flow</span></a>
       {% if review.preview_path %}<a href="{{ review.preview_path|asset_url }}"><img src="{{ review.preview_path|asset_url }}" alt="{{ review.title }} preview"></a>{% endif %}
       <div>
         <div class="review-title-row"><span class="pill {{ review.status|status_class }}">{{ review.status }}</span><span class="pill neutral">{{ review.review_type }}</span></div>
@@ -40,7 +41,8 @@
           </label>
           <label>Reason <input name="reason" placeholder="Optional short reason"></label>
           <label>Notes <textarea name="notes" rows="3" placeholder="Voice dictation works well here."></textarea></label>
-          <button class="primary-button full" type="submit">Submit decision</button>
+          <input type="hidden" name="return_to" value="/m/{{ project.slug }}/review/next">
+          <button class="primary-button full" type="submit">Submit and open next</button>
         </form>
       </div>
     </article>

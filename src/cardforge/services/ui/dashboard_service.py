@@ -203,6 +203,41 @@ class UIDashboardService:
             "open_count": sum(1 for row in rows if row["status"] == "open"),
         }
 
+    def mobile_review_item(self, project_slug: str, review_id: int) -> dict[str, Any]:
+        with self.db.connection() as conn:
+            project = self.projects.get_project(project_slug, conn=conn)
+            row = conn.execute(
+                "SELECT * FROM review_items WHERE project_id = ? AND id = ?",
+                (project["id"], review_id),
+            ).fetchone()
+            if row is None:
+                raise KeyError(f"Review item not found: {review_id}")
+            open_rows = list(conn.execute(
+                "SELECT id FROM review_items WHERE project_id = ? AND status = 'open' ORDER BY created_at DESC, id DESC",
+                (project["id"],),
+            ))
+            decisions = [dict(item) for item in conn.execute(
+                "SELECT * FROM review_decisions WHERE review_item_id = ? ORDER BY created_at DESC, id DESC",
+                (review_id,),
+            )]
+        open_ids = [int(item["id"]) for item in open_rows]
+        try:
+            current_index = open_ids.index(int(review_id))
+        except ValueError:
+            current_index = -1
+        next_id = open_ids[current_index + 1] if current_index >= 0 and current_index + 1 < len(open_ids) else (open_ids[0] if open_ids else None)
+        previous_id = open_ids[current_index - 1] if current_index > 0 else None
+        review = self._review_summary(row)
+        review["quick_tags"] = _quick_tags_for_review(review)
+        return {
+            "project": _row_to_dict(project),
+            "review": review,
+            "decisions": decisions,
+            "next_review_id": next_id,
+            "previous_review_id": previous_id,
+            "open_count": len(open_ids),
+        }
+
     def template_library(self, project_slug: str) -> dict[str, Any]:
         from cardforge.services.templates.template_service import TemplateService
 
@@ -454,3 +489,17 @@ class UIDashboardService:
         summary = _row_to_dict(row) or {}
         summary["payload"] = _json_loads(row["payload_json"], {})
         return summary
+
+def _quick_tags_for_review(review: dict[str, Any]) -> list[str]:
+    review_type = str(review.get("review_type") or "").lower()
+    target_type = str(review.get("target_type") or "").lower()
+    if "art" in review_type or "art" in target_type:
+        return ["wrong_subject", "bad_style", "has_text", "bad_anatomy", "too_modern", "weak_silhouette"]
+    if "render" in review_type:
+        return ["text_overflow", "wrong_template", "low_readability", "missing_art", "bad_crop"]
+    if "balance" in review_type:
+        return ["overpowered", "underpowered", "cost_mismatch", "unclear_role"]
+    if "prompt" in review_type or "lab" in review_type:
+        return ["weak_evidence", "unsafe_to_apply", "needs_diff", "too_broad", "good_candidate"]
+    return ["rules_unclear", "text_too_long", "wrong_faction", "missing_field", "needs_rework"]
+

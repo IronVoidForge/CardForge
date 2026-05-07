@@ -68,3 +68,47 @@ def test_mobile_launcher_file(db: Database, tmp_path) -> None:  # type: ignore[n
     text = result.path.read_text(encoding="utf-8")
     assert url in text
     assert "Opening CardForge Mobile" in text
+
+from cardforge.services.cards.card_service import CardService
+from cardforge.services.sets.set_service import SetService
+
+
+def test_mobile_focused_review_flow_with_quick_tags(db: Database) -> None:
+    ProjectService(db).create_project("gravebound_test", name="Gravebound Test")
+    SetService(db).create_set("gravebound_test", name="Gravebound Dominion")
+    CardService(db).create_card(
+        "gravebound_test",
+        "SET001",
+        name="Bone Lantern Warden",
+        card_type="creature",
+        rules_text="Guard. When this dies, draw a card.",
+        attack=2,
+        health=4,
+        cost=3,
+    )
+    with TestClient(create_app(db), follow_redirects=False) as client:
+        next_response = client.get("/m/gravebound_test/review/next")
+        assert next_response.status_code == 303
+        assert next_response.headers["location"].endswith("/m/gravebound_test/review/1")
+
+        detail = client.get("/m/gravebound_test/review/1")
+        assert detail.status_code == 200
+        assert "Quick failure tags" in detail.text
+        assert "Submit with notes" in detail.text
+
+        decided = client.post(
+            "/projects/gravebound_test/review/1/decide",
+            data={
+                "decision": "request_rework",
+                "reason": "rules_unclear",
+                "tags": "rules_unclear,text_too_long",
+                "notes": "Needs shorter phone-review wording.",
+                "return_to": "/m/gravebound_test/review/next",
+            },
+        )
+        assert decided.status_code == 303
+        assert decided.headers["location"].endswith("/m/gravebound_test/review/next")
+    with db.connection() as conn:
+        decision = conn.execute("SELECT * FROM review_decisions WHERE review_item_id = 1").fetchone()
+        assert decision is not None
+        assert "rules_unclear" in decision["tags_json"]

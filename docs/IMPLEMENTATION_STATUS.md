@@ -214,3 +214,11 @@ Added:
 - Mobile “review next” route for faster phone review sessions.
 
 Validated with automated tests and compile/format checks.
+
+## Latest additions: mobile review polish and Prompt Template Studio
+
+- Added focused mobile review item pages with large previews, quick decisions, quick failure tags, decision history, and next-review flow.
+- Added Prompt Template Studio with manual proposal creation, side-by-side active/proposed diffing, guarded markdown editing, approval, rejection, and activation.
+- Review decisions now support return targets and tag capture for mobile workflows.
+- Added tests for mobile review and prompt template studio flows.
+

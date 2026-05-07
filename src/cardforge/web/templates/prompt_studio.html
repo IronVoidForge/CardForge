@@ -1,0 +1,80 @@
+{% extends "base.html" %}
+{% block title %}Prompt Template Studio — {{ project.name }}{% endblock %}
+{% block sidebar %}
+<nav class="nav-list">
+  <a href="/">All projects</a>
+  <a href="/projects/{{ project.slug }}">Dashboard</a>
+  <a class="active" href="/projects/{{ project.slug }}/prompt-studio">Prompt Studio</a>
+  <a href="/projects/{{ project.slug }}/labs">Labs</a>
+  <a href="/projects/{{ project.slug }}/templates">Templates</a>
+  <a href="/projects/{{ project.slug }}/review">Review queue</a>
+  <a href="/projects/{{ project.slug }}/jobs">Jobs</a>
+</nav>
+{% endblock %}
+{% block content %}
+<section class="topbar">
+  <div>
+    <p class="eyebrow">Prompt Template Studio</p>
+    <h1>Versioned prompt contracts</h1>
+    <p class="muted">Review diffs, lab evidence, and proposed prompt changes before activation.</p>
+  </div>
+  <form method="post" action="/projects/{{ project.slug }}/prompt-studio/sync"><button class="secondary-button" type="submit">Sync versions</button></form>
+</section>
+
+<section class="stat-grid small">
+  <div class="stat-card"><span>Templates</span><strong>{{ templates|length }}</strong></div>
+  <div class="stat-card"><span>Versions</span><strong>{{ versions|length }}</strong></div>
+  <div class="stat-card"><span>Proposed</span><strong>{{ proposed_count }}</strong></div>
+  <div class="stat-card"><span>Approved</span><strong>{{ approved_count }}</strong></div>
+</section>
+
+<section class="panel">
+  <div class="panel-heading"><h2>Prompt templates</h2><span class="pill neutral">create proposals safely</span></div>
+  <div class="template-grid prompt-template-grid">
+    {% for template in templates %}
+    <article class="template-card">
+      <strong>{{ template.name }}</strong>
+      <small class="mono">{{ template.template_key }}</small>
+      <small>{{ template.task_type }} · active {{ template.active_version_key or "none" }}</small>
+      <span class="pill {{ 'warn' if template.pending_count else 'good' }}">{{ template.pending_count }} pending</span>
+      <form method="post" action="/projects/{{ project.slug }}/prompt-studio/{{ template.template_key }}/propose" class="stacked-form compact-form">
+        <label>Proposal summary <input name="summary" placeholder="What should this version test?"></label>
+        <button class="secondary-button" type="submit">Create editable proposal</button>
+      </form>
+    </article>
+    {% endfor %}
+  </div>
+</section>
+
+<section class="panel">
+  <div class="panel-heading"><h2>Versions</h2><span class="pill neutral">{{ versions|length }}</span></div>
+  {% if versions %}
+  <div class="table-wrap"><table><thead><tr><th>Version</th><th>Template</th><th>Status</th><th>Source</th><th>Summary</th><th>Open</th></tr></thead><tbody>
+  {% for version in versions %}
+  <tr>
+    <td class="mono">{{ version.version_key }}</td>
+    <td class="mono">{{ version.template_key }}</td>
+    <td><span class="pill {{ version.status|status_class }}">{{ version.status }}</span></td>
+    <td>{{ version.source }}</td>
+    <td>{{ version.summary }}</td>
+    <td><a class="secondary-button" href="/projects/{{ project.slug }}/prompt-studio/{{ version.version_key }}">Review</a></td>
+  </tr>
+  {% endfor %}
+  </tbody></table></div>
+  {% else %}<div class="empty-state">No prompt template versions yet. Sync to seed v001 versions.</div>{% endif %}
+</section>
+
+<section class="panel">
+  <div class="panel-heading"><h2>Recent lab evidence</h2><a class="ghost-button" href="/projects/{{ project.slug }}/labs">Open labs</a></div>
+  {% if promotions %}
+  <div class="review-list compact">
+    {% for promo in promotions %}
+    <div class="review-item">
+      <div><strong class="mono">{{ promo.request_key }}</strong><small>{{ promo.lab_type }} · {{ promo.case_key }} / {{ promo.run_key }}</small></div>
+      <span class="pill {{ promo.status|status_class }}">{{ promo.status }}</span>
+    </div>
+    {% endfor %}
+  </div>
+  {% else %}<div class="empty-state">No promotion requests yet.</div>{% endif %}
+</section>
+{% endblock %}

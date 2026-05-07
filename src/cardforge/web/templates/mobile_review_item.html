@@ -1,0 +1,121 @@
+{% extends "base.html" %}
+{% block title %}Review {{ review.id }} — CardForge Mobile{% endblock %}
+{% block sidebar %}
+<nav class="nav-list">
+  <a href="/m">Mobile home</a>
+  <a href="/m/{{ project.slug }}">Mobile dashboard</a>
+  <a class="active" href="/m/{{ project.slug }}/review">Review queue</a>
+  <a href="/m/{{ project.slug }}/jobs">Jobs</a>
+</nav>
+{% endblock %}
+{% block bottom_nav %}
+<a href="/m/{{ project.slug }}">Dash</a>
+<a href="/m/{{ project.slug }}/review">Queue</a>
+<a href="/m/{{ project.slug }}/review/next">Next</a>
+{% endblock %}
+{% block content %}
+<section class="mobile-hero compact review-focus-hero">
+  <p class="eyebrow">Review item {{ review.id }} of {{ open_count }} open</p>
+  <h1>{{ review.title }}</h1>
+  <p>{{ review.review_type }} · {{ review.target_type }}:{{ review.target_id }} · {{ review.severity }}</p>
+  <div class="button-row wrap">
+    <a class="ghost-button" href="/m/{{ project.slug }}/review">Queue</a>
+    {% if previous_review_id %}<a class="secondary-button" href="/m/{{ project.slug }}/review/{{ previous_review_id }}">Previous</a>{% endif %}
+    {% if next_review_id %}<a class="primary-button" href="/m/{{ project.slug }}/review/{{ next_review_id }}">Next</a>{% endif %}
+  </div>
+</section>
+
+<section class="panel mobile-review-detail">
+  {% if review.preview_path %}
+  <a class="mobile-zoom-card" href="{{ review.preview_path|asset_url }}" aria-label="Open preview image full size">
+    <img src="{{ review.preview_path|asset_url }}" alt="{{ review.title }} preview">
+    <span>Tap image to zoom</span>
+  </a>
+  {% else %}
+  <div class="empty-state">No preview image attached to this review item.</div>
+  {% endif %}
+  <div class="review-title-row">
+    <span class="pill {{ review.status|status_class }}">{{ review.status }}</span>
+    <span class="pill neutral">{{ review.review_type }}</span>
+  </div>
+  <p class="muted">{{ review.description or "No description provided." }}</p>
+  {% if review.metadata %}
+  <details class="mobile-details">
+    <summary>Metadata</summary>
+    <pre>{{ review.metadata | tojson(indent=2) }}</pre>
+  </details>
+  {% endif %}
+</section>
+
+<section class="panel mobile-action-panel sticky-mobile-actions">
+  <div class="panel-heading"><h2>Decision</h2><span class="pill neutral">tap-friendly</span></div>
+  <div class="mobile-decision-grid">
+    <form method="post" action="/projects/{{ project.slug }}/review/{{ review.id }}/decide">
+      <input type="hidden" name="decision" value="approve">
+      <input type="hidden" name="return_to" value="/m/{{ project.slug }}/review/next">
+      <button class="primary-button full" type="submit">Approve</button>
+    </form>
+    <form method="post" action="/projects/{{ project.slug }}/review/{{ review.id }}/decide">
+      <input type="hidden" name="decision" value="request_rework">
+      <input type="hidden" name="reason" value="Needs rework from mobile review">
+      <input type="hidden" name="return_to" value="/m/{{ project.slug }}/review/next">
+      <button class="secondary-button full" type="submit">Needs rework</button>
+    </form>
+    <form method="post" action="/projects/{{ project.slug }}/review/{{ review.id }}/decide">
+      <input type="hidden" name="decision" value="defer">
+      <input type="hidden" name="return_to" value="/m/{{ project.slug }}/review/next">
+      <button class="ghost-button full" type="submit">Defer</button>
+    </form>
+    <form method="post" action="/projects/{{ project.slug }}/review/{{ review.id }}/decide">
+      <input type="hidden" name="decision" value="reject">
+      <input type="hidden" name="reason" value="Rejected from mobile review">
+      <input type="hidden" name="return_to" value="/m/{{ project.slug }}/review/next">
+      <button class="danger-button full" type="submit">Reject</button>
+    </form>
+  </div>
+  <form method="post" action="/projects/{{ project.slug }}/review/{{ review.id }}/decide" class="stacked-form mobile-note-form">
+    <input type="hidden" name="return_to" value="/m/{{ project.slug }}/review/next">
+    <label>Decision
+      <select name="decision">
+        <option value="request_rework">Request rework</option>
+        <option value="approve">Approve</option>
+        <option value="reject">Reject</option>
+        <option value="defer">Defer</option>
+      </select>
+    </label>
+    <label>Reason <input name="reason" placeholder="Optional short reason"></label>
+    <label>Tags <input name="tags" placeholder="comma-separated tags"></label>
+    <label>Notes <textarea name="notes" rows="4" placeholder="Voice dictation works well here."></textarea></label>
+    <button class="primary-button full" type="submit">Submit with notes</button>
+  </form>
+</section>
+
+<section class="panel">
+  <div class="panel-heading"><h2>Quick failure tags</h2></div>
+  <div class="quick-tag-grid">
+    {% for tag in review.quick_tags %}
+    <form method="post" action="/projects/{{ project.slug }}/review/{{ review.id }}/decide">
+      <input type="hidden" name="decision" value="request_rework">
+      <input type="hidden" name="reason" value="{{ tag }}">
+      <input type="hidden" name="tags" value="{{ tag }}">
+      <input type="hidden" name="return_to" value="/m/{{ project.slug }}/review/next">
+      <button class="tag-button" type="submit">{{ tag.replace('_', ' ') }}</button>
+    </form>
+    {% endfor %}
+  </div>
+</section>
+
+{% if decisions %}
+<section class="panel">
+  <div class="panel-heading"><h2>Decision history</h2></div>
+  <div class="mobile-list">
+    {% for decision in decisions %}
+    <div class="mobile-row static-row">
+      <strong>{{ decision.decision }}</strong>
+      <span>{{ decision.reason }} · {{ decision.created_at }}</span>
+    </div>
+    {% endfor %}
+  </div>
+</section>
+{% endif %}
+{% endblock %}

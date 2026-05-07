@@ -34,6 +34,8 @@ from cardforge.services.render.card_renderer import CardRenderer
 from cardforge.services.review.auto_review_service import AutoReviewService
 from cardforge.services.review.review_service import ReviewService
 from cardforge.services.sets.set_service import SetService
+from cardforge.services.prompts.prompt_template_studio import PromptTemplateStudioService
+from cardforge.services.prompts.prompt_template_versioning import PromptTemplateVersionService
 from cardforge.services.templates.template_service import TemplateService, TemplateValidationError
 from cardforge.services.ui.dashboard_service import UIDashboardService
 from cardforge.web.security import (
@@ -200,7 +202,7 @@ def create_app(db: Database | None = None) -> FastAPI:
             raise HTTPException(status_code=404, detail=str(exc)) from exc
         first_open = next((item for item in payload["reviews"] if item.get("status") == "open"), None)
         if first_open:
-            return _redirect(f"/m/{project_slug}/review#review-{first_open['id']}")
+            return _redirect(f"/m/{project_slug}/review/{first_open['id']}")
         return _redirect(f"/m/{project_slug}")
 
     @app.get("/m/{project_slug}/review", response_class=HTMLResponse)
@@ -210,6 +212,14 @@ def create_app(db: Database | None = None) -> FastAPI:
         except KeyError as exc:
             raise HTTPException(status_code=404, detail=str(exc)) from exc
         return templates.TemplateResponse(request, "mobile_review.html", payload)
+
+    @app.get("/m/{project_slug}/review/{review_id}", response_class=HTMLResponse)
+    def mobile_review_item(request: Request, project_slug: str, review_id: int) -> HTMLResponse:
+        try:
+            payload = ui.mobile_review_item(project_slug, review_id)
+        except KeyError as exc:
+            raise HTTPException(status_code=404, detail=str(exc)) from exc
+        return templates.TemplateResponse(request, "mobile_review_item.html", payload)
 
     @app.get("/m/{project_slug}/jobs", response_class=HTMLResponse)
     def mobile_jobs(request: Request, project_slug: str) -> HTMLResponse:
@@ -434,6 +444,58 @@ def create_app(db: Database | None = None) -> FastAPI:
         return _redirect(f"/projects/{project_slug}/jobs")
 
 
+    @app.get("/projects/{project_slug}/prompt-studio", response_class=HTMLResponse)
+    def prompt_studio(request: Request, project_slug: str) -> HTMLResponse:
+        try:
+            payload = PromptTemplateStudioService(database).dashboard(project_slug)
+        except KeyError as exc:
+            raise HTTPException(status_code=404, detail=str(exc)) from exc
+        return templates.TemplateResponse(request, "prompt_studio.html", payload)
+
+    @app.post("/projects/{project_slug}/prompt-studio/sync")
+    def prompt_studio_sync(project_slug: str) -> RedirectResponse:
+        PromptTemplateVersionService(database).sync_project(project_slug)
+        return _redirect(f"/projects/{project_slug}/prompt-studio")
+
+    @app.post("/projects/{project_slug}/prompt-studio/{template_key}/propose")
+    def prompt_studio_propose(project_slug: str, template_key: str, summary: str = Form("")) -> RedirectResponse:
+        result = PromptTemplateStudioService(database).create_manual_proposal(project_slug, template_key=template_key, summary=summary)
+        return _redirect(f"/projects/{project_slug}/prompt-studio/{result['version_key']}")
+
+    @app.get("/projects/{project_slug}/prompt-studio/{version_key}", response_class=HTMLResponse)
+    def prompt_studio_version(request: Request, project_slug: str, version_key: str) -> HTMLResponse:
+        try:
+            payload = PromptTemplateStudioService(database).version_detail(project_slug, version_key)
+        except KeyError as exc:
+            raise HTTPException(status_code=404, detail=str(exc)) from exc
+        return templates.TemplateResponse(request, "prompt_studio_version.html", payload)
+
+    @app.post("/projects/{project_slug}/prompt-studio/{version_key}/update")
+    def prompt_studio_update(project_slug: str, version_key: str, markdown: str = Form(...), summary: str = Form("")) -> RedirectResponse:
+        try:
+            PromptTemplateStudioService(database).update_version_markdown(project_slug, version_key, markdown=markdown, summary=summary)
+        except ValueError as exc:
+            raise HTTPException(status_code=400, detail=str(exc)) from exc
+        return _redirect(f"/projects/{project_slug}/prompt-studio/{version_key}")
+
+    @app.post("/projects/{project_slug}/prompt-studio/{version_key}/approve")
+    def prompt_studio_approve(project_slug: str, version_key: str, notes: str = Form("")) -> RedirectResponse:
+        PromptTemplateVersionService(database).approve_version(project_slug, version_key, notes=notes)
+        return _redirect(f"/projects/{project_slug}/prompt-studio/{version_key}")
+
+    @app.post("/projects/{project_slug}/prompt-studio/{version_key}/reject")
+    def prompt_studio_reject(project_slug: str, version_key: str, notes: str = Form("")) -> RedirectResponse:
+        PromptTemplateVersionService(database).reject_version(project_slug, version_key, notes=notes)
+        return _redirect(f"/projects/{project_slug}/prompt-studio/{version_key}")
+
+    @app.post("/projects/{project_slug}/prompt-studio/{version_key}/activate")
+    def prompt_studio_activate(project_slug: str, version_key: str) -> RedirectResponse:
+        try:
+            PromptTemplateVersionService(database).activate_version(project_slug, version_key)
+        except ValueError as exc:
+            raise HTTPException(status_code=400, detail=str(exc)) from exc
+        return _redirect(f"/projects/{project_slug}/prompt-studio/{version_key}")
+
     @app.get("/projects/{project_slug}/templates", response_class=HTMLResponse)
     def template_library(request: Request, project_slug: str) -> HTMLResponse:
         try:
@@ -657,13 +719,16 @@ def create_app(db: Database | None = None) -> FastAPI:
         decision: str = Form(...),
         reason: str = Form(""),
         notes: str = Form(""),
+        tags: str = Form(""),
+        return_to: str = Form(""),
     ) -> RedirectResponse:
         try:
             decision_enum = ReviewDecision(decision)
         except ValueError as exc:
             raise HTTPException(status_code=400, detail=f"Unsupported decision: {decision}") from exc
-        ReviewService(database).decide(review_id, decision=decision_enum, reason=reason, notes=notes)
-        return _redirect(f"/projects/{project_slug}/review")
+        tag_list = [item.strip().lower().replace(" ", "_") for item in tags.replace(",", "\n").splitlines() if item.strip()]
+        ReviewService(database).decide(review_id, decision=decision_enum, reason=reason, notes=notes, tags=tag_list)
+        return _redirect(safe_redirect_target(return_to or f"/projects/{project_slug}/review"))
 
     @app.get("/assets/{asset_path:path}")
     def assets(asset_path: str) -> FileResponse:

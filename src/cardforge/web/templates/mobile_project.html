@@ -40,7 +40,7 @@
   {% if open_reviews %}
     <div class="mobile-list">
       {% for review in open_reviews %}
-      <a class="mobile-row" href="/m/{{ status.project.slug }}/review#review-{{ review.id }}">
+      <a class="mobile-row" href="/m/{{ status.project.slug }}/review/{{ review.id }}">
         <strong>{{ review.title }}</strong>
         <span>{{ review.review_type }} · {{ review.severity }}</span>
       </a>

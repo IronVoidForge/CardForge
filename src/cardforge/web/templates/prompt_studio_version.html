@@ -1,0 +1,82 @@
+{% extends "base.html" %}
+{% block title %}{{ version.version_key }} — Prompt Studio{% endblock %}
+{% block sidebar %}
+<nav class="nav-list">
+  <a href="/">All projects</a>
+  <a href="/projects/{{ project.slug }}">Dashboard</a>
+  <a href="/projects/{{ project.slug }}/prompt-studio">Prompt Studio</a>
+  <a href="/projects/{{ project.slug }}/labs">Labs</a>
+  <a href="/projects/{{ project.slug }}/review">Review queue</a>
+  <a href="/projects/{{ project.slug }}/jobs">Jobs</a>
+</nav>
+{% endblock %}
+{% block content %}
+<section class="topbar">
+  <div>
+    <p class="eyebrow">Prompt version review</p>
+    <h1>{{ version.version_key }}</h1>
+    <p class="muted mono">{{ version.template_key }} · {{ version.status }} · {{ version.source }}</p>
+  </div>
+  <div class="button-row wrap">
+    <a class="ghost-button" href="/projects/{{ project.slug }}/prompt-studio">Back to Prompt Studio</a>
+    {% if version.status in ["proposed"] %}<form method="post" action="/projects/{{ project.slug }}/prompt-studio/{{ version.version_key }}/approve"><button class="secondary-button" type="submit">Approve</button></form>{% endif %}
+    {% if version.status in ["proposed", "approved"] %}<form method="post" action="/projects/{{ project.slug }}/prompt-studio/{{ version.version_key }}/reject"><button class="danger-button" type="submit">Reject</button></form>{% endif %}
+    {% if version.status in ["approved", "active"] %}<form method="post" action="/projects/{{ project.slug }}/prompt-studio/{{ version.version_key }}/activate"><button class="primary-button" type="submit">Activate</button></form>{% endif %}
+  </div>
+</section>
+
+<section class="stat-grid small">
+  <div class="stat-card"><span>Version</span><strong>{{ version.version_number }}</strong></div>
+  <div class="stat-card"><span>Status</span><strong>{{ version.status }}</strong></div>
+  <div class="stat-card"><span>Active</span><strong>{{ active_version.version_key if active_version else "—" }}</strong></div>
+  <div class="stat-card"><span>Evidence</span><strong>{{ evidence|length }}</strong></div>
+</section>
+
+<div class="grid two-col wide-left">
+  <section class="panel">
+    <div class="panel-heading"><h2>Diff against active</h2><span class="pill neutral">unified</span></div>
+    {% if diff_lines %}
+    <pre class="diff-view" aria-label="Unified diff between active prompt template and selected version">{% for line in diff_lines %}<span class="diff-line {{ line.kind }}">{{ line.text }}</span>
+{% endfor %}</pre>
+    {% else %}<div class="empty-state">No differences from the active version.</div>{% endif %}
+  </section>
+  <aside class="panel">
+    <div class="panel-heading"><h2>Evidence summary</h2></div>
+    <div class="info-list">
+      <p><strong>Summary</strong><br>{{ version.summary or "No summary recorded." }}</p>
+      <p><strong>Source</strong><br>{{ version.source }} · {{ version.source_target_type }}:{{ version.source_target_id }}</p>
+      <p><strong>Editable</strong><br>{{ "Yes" if editable else "No — active/superseded/rejected versions are protected." }}</p>
+    </div>
+    {% if promotions %}
+    <h3>Related promotion requests</h3>
+    <div class="mobile-list">
+      {% for promo in promotions %}<div class="mobile-row static-row"><strong>{{ promo.request_key }}</strong><span>{{ promo.status }} · {{ promo.case_key }} / {{ promo.run_key }}</span></div>{% endfor %}
+    </div>
+    {% endif %}
+  </aside>
+</div>
+
+<section class="panel form-panel">
+  <div class="panel-heading"><h2>Edit proposed markdown</h2><span class="pill {{ version.status|status_class }}">{{ version.status }}</span></div>
+  {% if editable %}
+  <form method="post" action="/projects/{{ project.slug }}/prompt-studio/{{ version.version_key }}/update" class="stacked-form">
+    <label>Change summary <input name="summary" placeholder="What changed and why?"></label>
+    <label>Prompt template markdown
+      <textarea name="markdown" rows="30" spellcheck="false" class="code-input">{{ selected_markdown }}</textarea>
+    </label>
+    <button class="primary-button" type="submit">Validate and save proposed version</button>
+  </form>
+  {% else %}
+  <textarea rows="30" spellcheck="false" class="code-input" readonly>{{ selected_markdown }}</textarea>
+  {% endif %}
+</section>
+
+<section class="panel">
+  <div class="panel-heading"><h2>All versions for {{ version.template_key }}</h2></div>
+  <div class="table-wrap"><table><thead><tr><th>Version</th><th>Status</th><th>Source</th><th>Summary</th></tr></thead><tbody>
+    {% for item in all_versions %}
+    <tr><td><a class="mono" href="/projects/{{ project.slug }}/prompt-studio/{{ item.version_key }}">{{ item.version_key }}</a></td><td><span class="pill {{ item.status|status_class }}">{{ item.status }}</span></td><td>{{ item.source }}</td><td>{{ item.summary }}</td></tr>
+    {% endfor %}
+  </tbody></table></div>
+</section>
+{% endblock %}

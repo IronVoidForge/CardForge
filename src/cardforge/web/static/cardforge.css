@@ -565,3 +565,85 @@ td a { color: var(--accent-dark); font-weight: 800; }
 @media (max-width: 900px) {
   .two-column, .form-grid.two { grid-template-columns: 1fr; }
 }
+
+/* Mobile review polish */
+.review-focus-hero h1 { font-size: clamp(28px, 7vw, 44px); }
+.mobile-review-detail { display: grid; gap: 16px; }
+.mobile-zoom-card {
+  display: grid;
+  gap: 8px;
+  padding: 10px;
+  border-radius: 20px;
+  background: rgba(255,255,255,.66);
+  border: 1px solid var(--line);
+  text-align: center;
+  color: var(--muted);
+  font-weight: 800;
+}
+.mobile-zoom-card img {
+  width: 100%;
+  max-height: 66vh;
+  object-fit: contain;
+  border-radius: 16px;
+  background: #21182d;
+}
+.mobile-decision-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+  margin-bottom: 16px;
+}
+.mobile-note-form { margin-top: 8px; }
+.quick-tag-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+.tag-button {
+  background: rgba(255,255,255,.76);
+  border: 1px solid rgba(139,75,255,.25);
+  color: var(--accent-dark);
+  border-radius: 999px;
+  padding: 10px 13px;
+}
+.mobile-details summary { cursor: pointer; font-weight: 900; color: var(--accent-dark); }
+.mobile-details pre {
+  max-height: 260px;
+  overflow: auto;
+  padding: 12px;
+  border-radius: 14px;
+  background: rgba(36,31,47,.92);
+  color: #fffaf2;
+}
+.mobile-review-open { margin-bottom: 12px; border-color: rgba(139,75,255,.28); }
+.static-row { pointer-events: none; }
+
+/* Prompt Template Studio */
+.prompt-template-grid .template-card { gap: 10px; }
+.diff-view {
+  overflow: auto;
+  max-height: 620px;
+  padding: 14px;
+  border-radius: 16px;
+  background: #20192b;
+  color: #f8f1ff;
+  line-height: 1.45;
+  font-size: 13px;
+}
+.diff-line { display: block; white-space: pre; }
+.diff-line.meta { color: #d2c1ff; font-weight: 900; }
+.diff-line.hunk { color: #f6c86d; font-weight: 900; }
+.diff-line.add { color: #a9f3c7; background: rgba(46, 160, 92, .18); }
+.diff-line.remove { color: #ffb7c2; background: rgba(185, 56, 82, .18); }
+.diff-line.context { color: #f8f1ff; opacity: .86; }
+
+@media (max-width: 720px) {
+  .mobile-decision-grid { grid-template-columns: 1fr; }
+  .sticky-mobile-actions {
+    position: sticky;
+    bottom: 70px;
+    z-index: 5;
+    box-shadow: 0 18px 44px rgba(38, 28, 55, 0.24);
+  }
+  .quick-tag-grid form, .quick-tag-grid button { width: 100%; }
+}
