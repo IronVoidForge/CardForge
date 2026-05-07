@@ -37,8 +37,13 @@ def main(argv: Sequence[str] | None = None) -> int:
     run([sys.executable, "-m", "compileall", "-q", "src", "tests"])
     run_optional(["ruff", "check", "src", "tests", "scripts"], "ruff", strict=args.strict)
     if not args.skip_tests:
-        command = ["bash", "-lc", "PYTEST_DISABLE_PLUGIN_AUTOLOAD=1 python -m pytest -q -p no:cacheprovider tests"]
-        run(command)
+        env = dict(os.environ)
+        env["PYTEST_DISABLE_PLUGIN_AUTOLOAD"] = "1"
+        command = [sys.executable, "-m", "pytest", "-q", "-p", "no:cacheprovider", "tests"]
+        print("$ PYTEST_DISABLE_PLUGIN_AUTOLOAD=1 " + " ".join(command), flush=True)
+        completed = subprocess.run(command, check=False, env=env)
+        if completed.returncode:
+            raise SystemExit(completed.returncode)
     return 0
 
 

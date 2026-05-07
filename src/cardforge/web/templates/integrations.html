@@ -5,18 +5,79 @@
   <a href="/">All projects</a>
   <a href="/projects/{{ project.slug }}">Dashboard</a>
   <a href="/projects/{{ project.slug }}/templates">Templates</a>
+  <a href="/projects/{{ project.slug }}/labs">Labs</a>
   <a href="/projects/{{ project.slug }}/integrations">Integrations</a>
   <a href="/projects/{{ project.slug }}/review">Review queue</a>
   <a href="/projects/{{ project.slug }}/jobs">Jobs</a>
 </nav>
 {% endblock %}
 {% block content %}
-<section class="topbar"><div><p class="eyebrow">Live integration prep</p><h1>LM Studio and ComfyUI</h1><p class="muted">This page exposes configuration and prepared workflow records. Health checks are manual so dashboards stay fast.</p></div><form method="post" action="/projects/{{ project.slug }}/integrations/comfy/sync-workflows"><button class="secondary-button">Sync default Comfy workflows</button></form></section>
-<section class="stat-grid small"><div class="stat-card"><span>LM Studio URL</span><strong class="url-text">{{ settings.lmstudio_base_url }}</strong></div><div class="stat-card"><span>LLM model</span><strong>{{ settings.lmstudio_model }}</strong></div><div class="stat-card"><span>ComfyUI URL</span><strong class="url-text">{{ settings.comfy_base_url }}</strong></div><div class="stat-card"><span>Workflows</span><strong>{{ workflows|length }}</strong></div></section>
+<section class="topbar">
+  <div>
+    <p class="eyebrow">Network APIs</p>
+    <h1>LM Studio and ComfyUI</h1>
+    <p class="muted">Save LAN/VPN API URLs for the workstation server. Environment variables still override this file when explicitly set.</p>
+  </div>
+  <form method="post" action="/projects/{{ project.slug }}/integrations/comfy/sync-workflows">
+    <button class="secondary-button">Sync default Comfy workflows</button>
+  </form>
+</section>
+<section class="stat-grid small">
+  <div class="stat-card"><span>Config file</span><strong class="url-text">{{ settings.config_path }}</strong></div>
+  <div class="stat-card"><span>LM Studio</span><strong class="url-text">{{ settings.lmstudio_base_url }}</strong></div>
+  <div class="stat-card"><span>ComfyUI</span><strong class="url-text">{{ settings.comfy_base_url }}</strong></div>
+  <div class="stat-card"><span>Workflows</span><strong>{{ workflows|length }}</strong></div>
+</section>
+<section class="two-column">
+  <div class="panel">
+    <div class="panel-heading"><h2>LM Studio settings</h2><span class="pill {{ 'good' if settings.lmstudio_api_key_configured else 'neutral' }}">{{ 'token saved' if settings.lmstudio_api_key_configured else 'no token' }}</span></div>
+    <form method="post" action="/projects/{{ project.slug }}/integrations/lmstudio/save" class="stacked-form">
+      <label>Base URL <input name="base_url" value="{{ settings.lmstudio_base_url }}" placeholder="http://192.168.1.42:1234/v1"></label>
+      <label>Generation model <input name="model" value="{{ settings.lmstudio_model }}" placeholder="loaded-model-id"></label>
+      <label>Review model <input name="review_model" value="{{ settings.lmstudio_review_model }}" placeholder="review-model-id"></label>
+      <div class="form-grid two">
+        <label>Timeout seconds <input name="timeout_seconds" type="number" min="1" value="{{ settings.lmstudio_timeout_seconds }}"></label>
+        <label>Max tokens <input name="max_tokens" type="number" min="1" value="{{ settings.lmstudio_max_tokens or '' }}" placeholder="optional"></label>
+      </div>
+      <label>API key / bearer token <input name="api_key" type="password" placeholder="Leave blank to keep saved token"></label>
+      <label class="check-row"><input type="checkbox" name="clear_api_key" value="yes"> Clear saved LM Studio token</label>
+      <div class="button-row">
+        <button>Save LM Studio</button>
+        <a class="secondary-button" href="/projects/{{ project.slug }}/integrations/lmstudio/health" target="_blank" rel="noopener">Test LM Studio</a>
+      </div>
+    </form>
+  </div>
+  <div class="panel">
+    <div class="panel-heading"><h2>ComfyUI settings</h2><span class="pill {{ 'good' if settings.comfy_api_key_configured else 'neutral' }}">{{ 'token saved' if settings.comfy_api_key_configured else 'no token' }}</span></div>
+    <form method="post" action="/projects/{{ project.slug }}/integrations/comfy/save" class="stacked-form">
+      <label>Base URL <input name="base_url" value="{{ settings.comfy_base_url }}" placeholder="http://192.168.1.42:8188"></label>
+      <label>Input directory <input name="input_dir" value="{{ settings.comfy_input_dir }}"></label>
+      <label>Output directory <input name="output_dir" value="{{ settings.comfy_output_dir }}"></label>
+      <div class="form-grid two">
+        <label>Timeout seconds <input name="timeout_seconds" type="number" min="1" value="{{ settings.comfy_timeout_seconds }}"></label>
+        <label>Poll interval <input name="poll_interval_seconds" type="number" min="0.2" step="0.1" value="{{ settings.comfy_poll_interval_seconds }}"></label>
+      </div>
+      <label>API key / bearer token <input name="api_key" type="password" placeholder="Leave blank to keep saved token"></label>
+      <label class="check-row"><input type="checkbox" name="clear_api_key" value="yes"> Clear saved ComfyUI token</label>
+      <div class="button-row">
+        <button>Save ComfyUI</button>
+        <a class="secondary-button" href="/projects/{{ project.slug }}/integrations/comfy/health" target="_blank" rel="noopener">Test ComfyUI</a>
+      </div>
+    </form>
+  </div>
+</section>
+<section class="panel">
+  <div class="panel-heading"><h2>Setup directions</h2></div>
+  <div class="callout">
+    <p><strong>Mobile/PC mode:</strong> run <code>cardforge ui serve --mode both --host 0.0.0.0 --password "your-password"</code>, then open <code>/</code> on PC or <code>/m</code> on phone/tablet.</p>
+    <p><strong>LM Studio:</strong> start LM Studio server on your model machine and use its OpenAI-compatible URL, usually <code>http://&lt;machine-ip&gt;:1234/v1</code>.</p>
+    <p><strong>ComfyUI:</strong> start ComfyUI with network access and use <code>http://&lt;machine-ip&gt;:8188</code>. Keep input/output paths matching that ComfyUI machine.</p>
+  </div>
+  <pre class="code-block">cardforge llm configure --base-url http://192.168.1.42:1234/v1 --model your-model
+cardforge comfy configure --base-url http://192.168.1.42:8188 --input-dir C:\ComfyUIInstall\input --output-dir C:\ComfyUIInstall\output
+cardforge llm health --json
+cardforge comfy health --json</pre>
+</section>
 <section class="panel"><div class="panel-heading"><h2>Comfy workflow registry</h2><span class="pill neutral">prepare-only safe</span></div>{% if workflows %}<div class="table-wrap"><table><thead><tr><th>Workflow</th><th>Job type</th><th>Enabled</th><th>File</th></tr></thead><tbody>{% for workflow in workflows %}<tr><td><strong>{{ workflow.workflow_key }}</strong><br><small>{{ workflow.name }}</small></td><td>{{ workflow.supported_job_type }}</td><td>{{ workflow.enabled }}</td><td class="mono small-text">{{ workflow.workflow_path }}</td></tr>{% endfor %}</tbody></table></div>{% else %}<div class="empty-state">No workflows registered yet.</div>{% endif %}</section>
 <section class="panel"><div class="panel-heading"><h2>Prepared Comfy jobs</h2><span class="pill neutral">{{ comfy_jobs|length }}</span></div>{% if comfy_jobs %}<div class="table-wrap"><table><thead><tr><th>ID</th><th>Workflow</th><th>Status</th><th>Prompt ID</th><th>Patched workflow</th></tr></thead><tbody>{% for job in comfy_jobs %}<tr><td>{{ job.id }}</td><td>{{ job.workflow_key or "—" }}</td><td><span class="pill {{ job.status|status_class }}">{{ job.status }}</span></td><td>{{ job.prompt_id or "—" }}</td><td class="mono small-text">{{ job.patched_workflow_path }}</td></tr>{% endfor %}</tbody></table></div>{% else %}<div class="empty-state">No prepared Comfy jobs yet. Open a card and choose “Prepare Comfy workflow”.</div>{% endif %}</section>
-<section class="panel"><div class="panel-heading"><h2>Manual health commands</h2></div><pre class="code-block">cardforge llm health
-cardforge comfy health
-cardforge comfy sync-workflows
-cardforge comfy validate-workflow stub.card_art.t2i.v1</pre></section>
 {% endblock %}

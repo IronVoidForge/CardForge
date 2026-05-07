@@ -76,11 +76,13 @@ cardforge doctor check
 make quality
 
 # Optional local operator UI.
-cardforge ui serve --host 127.0.0.1 --port 8765
+cardforge ui serve --mode desktop --host 127.0.0.1 --port 8765
 
-# Mobile/tablet operator UI for LAN/VPN control of the workstation.
-cardforge mobile serve --password "choose-a-local-password"
-cardforge mobile launcher --host 192.168.1.42 --port 8765
+# PC + mobile/tablet operator UI from the same workstation server.
+cardforge ui serve --mode both --host 0.0.0.0 --port 8765 --password "choose-a-local-password"
+
+# Generate click/double-click launcher files under workspace/launchers.
+cardforge launcher write --host 192.168.1.42 --port 8765
 ```
 
 The default workspace is `./workspace`. Override it with:
@@ -91,11 +93,11 @@ export CARDFORGE_WORKSPACE=/path/to/workspace
 
 ## Planned phases
 
-See `docs/PHASE_PLAN.md` for the full implementation roadmap, `docs/OFFLINE_PHASES.md` for exactly which phases can be built and tested without live LM Studio or ComfyUI, `docs/PROMPT_FORMAT_AND_AUTO_REVIEW.md` for the prompt package/autofill/refinement/auto-review contract, `docs/MOBILE_OPERATOR_REQUIREMENT.md` for the mobile-first LAN/PWA workflow, `docs/UI_AND_EXPORTS.md` for the operator UI and export workflow, and `docs/JOBS_RESUME_AND_QUALITY.md` for the queue/resume/quality-gate layer.
+See `docs/PHASE_PLAN.md` for the full implementation roadmap, `docs/OFFLINE_PHASES.md` for exactly which phases can be built and tested without live LM Studio or ComfyUI, `docs/PROMPT_FORMAT_AND_AUTO_REVIEW.md` for the prompt package/autofill/refinement/auto-review contract, `docs/MOBILE_OPERATOR_REQUIREMENT.md` for the mobile-first LAN/PWA workflow, `docs/PC_MOBILE_STARTERS_AND_INTEGRATIONS.md` for one-click launcher files and network API setup, `docs/UI_AND_EXPORTS.md` for the operator UI and export workflow, and `docs/JOBS_RESUME_AND_QUALITY.md` for the queue/resume/quality-gate layer.
 
 ## Local integrations
 
-Environment variables reserved for local model hooks:
+You can configure network API settings from `/projects/<project_slug>/integrations`, with `cardforge llm configure`, with `cardforge comfy configure`, or with environment variables:
 
 ```bash
 CARDFORGE_LMSTUDIO_BASE_URL=http://127.0.0.1:1234/v1

@@ -289,6 +289,7 @@ class UIDashboardService:
 
     def integration_status(self, project_slug: str) -> dict[str, Any]:
         from cardforge.services.comfy.workflow_registry_service import WorkflowRegistryService
+        from cardforge.services.integrations.integration_config_service import IntegrationConfigService
 
         with self.db.connection() as conn:
             project = self.projects.get_project(project_slug, conn=conn)
@@ -300,16 +301,23 @@ class UIDashboardService:
                 """
             )]
         workflows = WorkflowRegistryService(self.db).list_workflows()
-        settings = self.db.settings
+        config = IntegrationConfigService(self.db.settings).effective_config()
         return {
             "project": _row_to_dict(project),
             "settings": {
-                "lmstudio_base_url": settings.lmstudio_base_url,
-                "lmstudio_model": settings.lmstudio_model,
-                "lmstudio_review_model": settings.lmstudio_review_model,
-                "comfy_base_url": settings.comfy_base_url,
-                "comfy_input_dir": str(settings.comfy_input_dir),
-                "comfy_output_dir": str(settings.comfy_output_dir),
+                "lmstudio_base_url": config["lmstudio"]["base_url"],
+                "lmstudio_model": config["lmstudio"]["model"],
+                "lmstudio_review_model": config["lmstudio"]["review_model"],
+                "lmstudio_timeout_seconds": config["lmstudio"]["timeout_seconds"],
+                "lmstudio_max_tokens": config["lmstudio"]["max_tokens"],
+                "lmstudio_api_key_configured": config["lmstudio"]["api_key_configured"],
+                "comfy_base_url": config["comfyui"]["base_url"],
+                "comfy_input_dir": config["comfyui"]["input_dir"],
+                "comfy_output_dir": config["comfyui"]["output_dir"],
+                "comfy_timeout_seconds": config["comfyui"]["timeout_seconds"],
+                "comfy_poll_interval_seconds": config["comfyui"]["poll_interval_seconds"],
+                "comfy_api_key_configured": config["comfyui"]["api_key_configured"],
+                "config_path": config["config_path"],
             },
             "workflows": workflows,
             "comfy_jobs": comfy_jobs,

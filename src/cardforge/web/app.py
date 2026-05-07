@@ -12,6 +12,8 @@ from cardforge.db.schema import migrate
 from cardforge.db.session import Database
 from cardforge.domain.enums import JobType, ReviewDecision
 from cardforge.files.asset_store import AssetStore
+from cardforge.integrations.comfyui import ComfyClient
+from cardforge.integrations.lmstudio import LMStudioClient
 from cardforge.services.art.art_candidate_service import ArtCandidateService
 from cardforge.services.batches.card_batch_service import CardBatchService
 from cardforge.services.export.export_service import ExportService
@@ -20,6 +22,7 @@ from cardforge.services.generation.card_autofill_service import CardAutofillServ
 from cardforge.services.comfy.comfy_art_service import ComfyArtService
 from cardforge.services.comfy.workflow_registry_service import WorkflowRegistryService
 from cardforge.services.jobs.job_service import JobService
+from cardforge.services.integrations.integration_config_service import IntegrationConfigService
 from cardforge.services.labs.image_lab_service import ImageLabService
 from cardforge.services.labs.lab_promotion_service import LabPromotionService
 from cardforge.services.labs.prompt_lab_service import PromptLabCaseSpec, PromptLabService
@@ -189,6 +192,17 @@ def create_app(db: Database | None = None) -> FastAPI:
             raise HTTPException(status_code=404, detail=str(exc)) from exc
         return templates.TemplateResponse(request, "mobile_card.html", payload)
 
+    @app.get("/m/{project_slug}/review/next")
+    def mobile_review_next(project_slug: str) -> RedirectResponse:
+        try:
+            payload = ui.review_queue(project_slug)
+        except KeyError as exc:
+            raise HTTPException(status_code=404, detail=str(exc)) from exc
+        first_open = next((item for item in payload["reviews"] if item.get("status") == "open"), None)
+        if first_open:
+            return _redirect(f"/m/{project_slug}/review#review-{first_open['id']}")
+        return _redirect(f"/m/{project_slug}")
+
     @app.get("/m/{project_slug}/review", response_class=HTMLResponse)
     def mobile_review_queue(request: Request, project_slug: str) -> HTMLResponse:
         try:
@@ -318,6 +332,66 @@ def create_app(db: Database | None = None) -> FastAPI:
     def sync_comfy_workflows(project_slug: str) -> RedirectResponse:
         WorkflowRegistryService(database).sync_defaults()
         return _redirect(f"/projects/{project_slug}/integrations")
+
+    @app.post("/projects/{project_slug}/integrations/lmstudio/save")
+    def save_lmstudio_settings(
+        project_slug: str,
+        base_url: str = Form(...),
+        model: str = Form(...),
+        review_model: str = Form(...),
+        timeout_seconds: float = Form(300.0),
+        max_tokens: str = Form(""),
+        api_key: str = Form(""),
+        clear_api_key: str = Form(""),
+    ) -> RedirectResponse:
+        IntegrationConfigService(database.settings).save_lmstudio(
+            base_url=base_url,
+            model=model,
+            review_model=review_model,
+            timeout_seconds=timeout_seconds,
+            max_tokens=_optional_int(max_tokens),
+            api_key=api_key or None,
+            clear_api_key=clear_api_key == "yes",
+        )
+        return _redirect(f"/projects/{project_slug}/integrations")
+
+    @app.post("/projects/{project_slug}/integrations/comfy/save")
+    def save_comfy_settings(
+        project_slug: str,
+        base_url: str = Form(...),
+        input_dir: str = Form(...),
+        output_dir: str = Form(...),
+        timeout_seconds: float = Form(1800.0),
+        poll_interval_seconds: float = Form(1.0),
+        api_key: str = Form(""),
+        clear_api_key: str = Form(""),
+    ) -> RedirectResponse:
+        IntegrationConfigService(database.settings).save_comfyui(
+            base_url=base_url,
+            input_dir=input_dir,
+            output_dir=output_dir,
+            timeout_seconds=timeout_seconds,
+            poll_interval_seconds=poll_interval_seconds,
+            api_key=api_key or None,
+            clear_api_key=clear_api_key == "yes",
+        )
+        return _redirect(f"/projects/{project_slug}/integrations")
+
+    @app.get("/projects/{project_slug}/integrations/lmstudio/health")
+    def lmstudio_health(project_slug: str) -> JSONResponse:
+        health = LMStudioClient().health_detail()
+        return JSONResponse(
+            {"ok": health.ok, "base_url": health.base_url, "models": health.models, "error": health.error},
+            status_code=200 if health.ok else 503,
+        )
+
+    @app.get("/projects/{project_slug}/integrations/comfy/health")
+    def comfy_health(project_slug: str) -> JSONResponse:
+        health = ComfyClient().health_detail()
+        return JSONResponse(
+            {"ok": health.ok, "base_url": health.base_url, "raw": health.raw, "error": health.error},
+            status_code=200 if health.ok else 503,
+        )
 
 
     @app.get("/projects/{project_slug}/jobs", response_class=HTMLResponse)

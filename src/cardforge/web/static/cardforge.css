@@ -537,3 +537,31 @@ td a { color: var(--accent-dark); font-weight: 800; }
   }
   input, textarea, select { font-size: 16px; }
 }
+
+.two-column {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 18px;
+}
+.form-grid.two {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+}
+.check-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-weight: 700;
+}
+.check-row input { width: auto; }
+.callout {
+  border: 1px solid rgba(139,75,255,.22);
+  background: rgba(255,255,255,.64);
+  border-radius: 16px;
+  padding: 14px 16px;
+}
+.url-text { overflow-wrap: anywhere; }
+@media (max-width: 900px) {
+  .two-column, .form-grid.two { grid-template-columns: 1fr; }
+}

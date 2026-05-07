@@ -200,3 +200,17 @@ make quality
 ```
 
 See `docs/MOBILE_OPERATOR_REQUIREMENT.md`.
+
+## Latest pass: startup launchers and persistent network integration config
+
+Added:
+
+- Dual desktop/mobile `cardforge ui serve --mode desktop|mobile|both`.
+- Workspace launcher bundle generation through `cardforge launcher write`.
+- Persistent `workspace/config/integrations.json` for LM Studio and ComfyUI LAN/VPN URLs.
+- Desktop integration settings forms for LM Studio and ComfyUI.
+- Health JSON endpoints for configured LM Studio and ComfyUI clients.
+- Optional bearer-token support in both integration clients.
+- Mobile “review next” route for faster phone review sessions.
+
+Validated with automated tests and compile/format checks.
