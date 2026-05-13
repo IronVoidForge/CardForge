@@ -1,0 +1,126 @@
+- generic [active] [ref=e1]:
+  - link "Skip to main content" [ref=e2] [cursor=pointer]:
+    - /url: "#main-content"
+  - generic [ref=e3]:
+    - complementary "Application sidebar" [ref=e4]:
+      - link "CardForge mobile home" [ref=e5] [cursor=pointer]:
+        - /url: /m
+        - generic [ref=e6]: ◆
+        - generic [ref=e7]:
+          - strong [ref=e8]: CardForge
+          - generic [ref=e9]: mobile card operator
+      - navigation [ref=e10]:
+        - link "All projects" [ref=e11] [cursor=pointer]:
+          - /url: /
+        - link "Dashboard" [ref=e12] [cursor=pointer]:
+          - /url: /projects/qa_manual_test
+        - link "Templates" [ref=e13] [cursor=pointer]:
+          - /url: /projects/qa_manual_test/templates
+        - link "Integrations" [ref=e14] [cursor=pointer]:
+          - /url: /projects/qa_manual_test/integrations
+        - link "Review queue" [ref=e15] [cursor=pointer]:
+          - /url: /projects/qa_manual_test/review
+        - link "Jobs" [ref=e16] [cursor=pointer]:
+          - /url: /projects/qa_manual_test/jobs
+      - generic [ref=e17]:
+        - text: Mobile UI controls a local workstation. Keep this server on a trusted LAN or VPN.
+        - text: Login protection is active.
+    - main [ref=e18]:
+      - generic [ref=e19]:
+        - generic [ref=e20]:
+          - paragraph [ref=e21]: Set SET001
+          - heading "QA Dominion" [level=1] [ref=e22]
+          - paragraph [ref=e23]: Tiny manual set used for browser QA.
+        - link "Back to project" [ref=e24] [cursor=pointer]:
+          - /url: /projects/qa_manual_test
+      - generic [ref=e25]:
+        - generic [ref=e26]:
+          - generic [ref=e27]: Cards
+          - strong [ref=e28]: "1"
+        - generic [ref=e29]:
+          - generic [ref=e30]: Batches
+          - strong [ref=e31]: "0"
+        - generic [ref=e32]:
+          - generic [ref=e33]: Open reviews
+          - strong [ref=e34]: "1"
+        - generic [ref=e35]:
+          - generic [ref=e36]: Rendered
+          - strong [ref=e37]: "1"
+      - generic [ref=e38]:
+        - generic [ref=e39]:
+          - generic [ref=e40]:
+            - heading "Generate card batch" [level=2] [ref=e41]
+            - generic [ref=e42]: offline by default
+          - generic [ref=e43]:
+            - generic [ref=e44]:
+              - text: Card count
+              - spinbutton "Card count" [ref=e45]: "12"
+            - generic [ref=e46]:
+              - text: Design request
+              - textbox "Design request" [ref=e47]: Generate 12 gothic necromancer cards with creatures, spells, equipment, locations, and a legendary boss. Make them readable and prototype-balanced.
+            - generic [ref=e48]:
+              - button "Generate simulated batch" [ref=e49] [cursor=pointer]
+              - button "Generate with LM Studio" [ref=e50] [cursor=pointer]
+        - generic [ref=e51]:
+          - heading "Create manual card" [level=2] [ref=e53]
+          - generic [ref=e54]:
+            - generic [ref=e55]:
+              - text: Name
+              - textbox "Name" [ref=e56]:
+                - /placeholder: Bone Lantern Warden
+            - generic [ref=e57]:
+              - generic [ref=e58]:
+                - text: Type
+                - combobox "Type" [ref=e59]:
+                  - option "creature" [selected]
+                  - option "spell"
+                  - option "equipment"
+                  - option "location"
+                  - option "legendary"
+              - generic [ref=e60]:
+                - text: Rarity
+                - combobox "Rarity" [ref=e61]:
+                  - option "common" [selected]
+                  - option "uncommon"
+                  - option "rare"
+                  - option "legendary"
+            - generic [ref=e62]:
+              - generic [ref=e63]:
+                - text: Cost
+                - spinbutton "Cost" [ref=e64]: "2"
+              - generic [ref=e65]:
+                - text: ATK
+                - textbox "ATK" [ref=e66]:
+                  - /placeholder: "2"
+              - generic [ref=e67]:
+                - text: HP
+                - textbox "HP" [ref=e68]:
+                  - /placeholder: "3"
+            - generic [ref=e69]:
+              - text: Rules
+              - textbox "Rules" [ref=e70]:
+                - /placeholder: Guard. When this dies, draw a card.
+            - button "Create card" [ref=e71] [cursor=pointer]
+      - generic [ref=e72]:
+        - heading "Batches" [level=2] [ref=e74]
+        - generic [ref=e75]: No generated batches yet.
+      - generic [ref=e76]:
+        - generic [ref=e77]:
+          - heading "Cards" [level=2] [ref=e78]
+          - generic [ref=e79]: "1"
+        - link "Lantern Audit Warden preview Lantern Audit Warden CARD_0001 · creature · cost 2 rendered" [ref=e81] [cursor=pointer]:
+          - /url: /projects/qa_manual_test/cards/CARD_0001
+          - img "Lantern Audit Warden preview" [ref=e82]
+          - strong [ref=e83]: Lantern Audit Warden
+          - generic [ref=e84]: CARD_0001 · creature · cost 2
+          - generic [ref=e85]: rendered
+      - generic [ref=e86]:
+        - generic [ref=e87]:
+          - heading "Exports" [level=2] [ref=e88]
+          - generic [ref=e89]: offline files
+        - paragraph [ref=e90]: Export the current set data and any latest rendered card images. PNG export copies only cards that already have renders.
+        - generic [ref=e91]:
+          - button "JSON" [ref=e93] [cursor=pointer]
+          - button "CSV" [ref=e95] [cursor=pointer]
+          - button "Markdown catalog" [ref=e97] [cursor=pointer]
+          - button "PNG bundle" [ref=e99] [cursor=pointer]

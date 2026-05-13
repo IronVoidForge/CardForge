@@ -25,8 +25,7 @@ class WorkflowRegistryService:
         with self.db.connection() as conn:
             for workflow_key, definition in DEFAULT_COMFY_WORKFLOWS.items():
                 workflow_path = workflow_root / str(definition["workflow_filename"])
-                if not workflow_path.exists():
-                    self.asset_store.write_json(workflow_path, definition["workflow_payload"])
+                self.asset_store.write_json(workflow_path, definition["workflow_payload"])
                 self._upsert(conn, workflow_key=workflow_key, name=str(definition["name"]), workflow_path=self.asset_store.relative_to_workspace(workflow_path), supported_job_type=str(definition["supported_job_type"]), patch_points=definition["patch_points"], default_settings=definition["default_settings"])
                 synced.append(workflow_key)
         return {"synced_count": len(synced), "workflow_keys": synced}

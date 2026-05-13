@@ -1,0 +1,91 @@
+- generic [active] [ref=e1]:
+  - link "Skip to main content" [ref=e2] [cursor=pointer]:
+    - /url: "#main-content"
+  - generic [ref=e3]:
+    - complementary "Application sidebar" [ref=e4]:
+      - link "CardForge mobile home" [ref=e5] [cursor=pointer]:
+        - /url: /m
+        - generic [ref=e6]: ◆
+        - generic [ref=e7]:
+          - strong [ref=e8]: CardForge
+          - generic [ref=e9]: mobile card operator
+      - navigation [ref=e10]:
+        - link "All projects" [ref=e11] [cursor=pointer]:
+          - /url: /
+        - link "Dashboard" [ref=e12] [cursor=pointer]:
+          - /url: /projects/qa_manual_test
+        - link "Prompt Studio" [ref=e13] [cursor=pointer]:
+          - /url: /projects/qa_manual_test/prompt-studio
+        - link "Labs" [ref=e14] [cursor=pointer]:
+          - /url: /projects/qa_manual_test/labs
+        - link "Review queue" [ref=e15] [cursor=pointer]:
+          - /url: /projects/qa_manual_test/review
+        - link "Jobs" [ref=e16] [cursor=pointer]:
+          - /url: /projects/qa_manual_test/jobs
+      - generic [ref=e17]:
+        - text: Mobile UI controls a local workstation. Keep this server on a trusted LAN or VPN.
+        - text: Login protection is active.
+    - main [ref=e18]:
+      - generic [ref=e19]:
+        - generic [ref=e20]:
+          - paragraph [ref=e21]: Prompt version review
+          - heading "auto_review_v1_v001" [level=1] [ref=e22]
+          - paragraph [ref=e23]: auto_review_v1 · active · scaffold
+        - generic [ref=e24]:
+          - link "Back to Prompt Studio" [ref=e25] [cursor=pointer]:
+            - /url: /projects/qa_manual_test/prompt-studio
+          - button "Activate" [ref=e27] [cursor=pointer]
+      - generic [ref=e28]:
+        - generic [ref=e29]:
+          - generic [ref=e30]: Version
+          - strong [ref=e31]: "1"
+        - generic [ref=e32]:
+          - generic [ref=e33]: Status
+          - strong [ref=e34]: active
+        - generic [ref=e35]:
+          - generic [ref=e36]: Active
+          - strong [ref=e37]: auto_review_v1_v001
+        - generic [ref=e38]:
+          - generic [ref=e39]: Evidence
+          - strong [ref=e40]: "0"
+      - generic [ref=e41]:
+        - generic [ref=e42]:
+          - generic [ref=e43]:
+            - heading "Diff against active" [level=2] [ref=e44]
+            - generic [ref=e45]: unified
+          - generic [ref=e46]: No differences from the active version.
+        - complementary [ref=e47]:
+          - heading "Evidence summary" [level=2] [ref=e49]
+          - generic [ref=e50]:
+            - paragraph [ref=e51]:
+              - strong [ref=e52]: Summary
+              - text: Initial scaffolded prompt template.
+            - paragraph [ref=e53]:
+              - strong [ref=e54]: Source
+              - text: "scaffold · :"
+            - paragraph [ref=e55]:
+              - strong [ref=e56]: Editable
+              - text: No — active/superseded/rejected versions are protected.
+      - generic [ref=e57]:
+        - generic [ref=e58]:
+          - heading "Edit proposed markdown" [level=2] [ref=e59]
+          - generic [ref=e60]: active
+        - textbox [ref=e61]: "# Title Card Auto Review v1 # ID auto_review_v1 # Task card_auto_review # Model Role You review card text like a strict production assistant. Return one packet or concise JSON findings. # Inputs - project_slug: {project_slug} - card_key: {card_key} - name: {name} - card_type: {card_type} - rules_text: {rules_text} - validation_summary: {validation_summary} # Instructions Score the card for template fit, clarity, required fields, and readiness for art/rendering. Recommend rework only when useful. # Output Contract Return status, score_100, findings, and recommendations. # Packet Shape [[CARDFORGE_PACKET]] task: card_auto_review version: 1 status: needs_human_review score_100: 75 [[SECTION findings]] - issue [[/SECTION]] [[SECTION recommendations]] - recommendation [[/SECTION]] [[/CARDFORGE_PACKET]] # Sources - card.json - validation report"
+      - generic [ref=e62]:
+        - heading "All versions for auto_review_v1" [level=2] [ref=e64]
+        - table [ref=e66]:
+          - rowgroup [ref=e67]:
+            - row "Version Status Source Summary" [ref=e68]:
+              - columnheader "Version" [ref=e69]
+              - columnheader "Status" [ref=e70]
+              - columnheader "Source" [ref=e71]
+              - columnheader "Summary" [ref=e72]
+          - rowgroup [ref=e73]:
+            - row "auto_review_v1_v001 active scaffold Initial scaffolded prompt template." [ref=e74]:
+              - cell "auto_review_v1_v001" [ref=e75]:
+                - link "auto_review_v1_v001" [ref=e76] [cursor=pointer]:
+                  - /url: /projects/qa_manual_test/prompt-studio/auto_review_v1_v001
+              - cell "active" [ref=e77]:
+                - generic [ref=e78]: active
+              - cell "scaffold" [ref=e79]
+              - cell "Initial scaffolded prompt template." [ref=e80]

@@ -1,0 +1,53 @@
+{
+  "date": "2026-05-12",
+  "url": "http://127.0.0.1:8765",
+  "healthScore": 82,
+  "issues": [
+    {
+      "id": "ISSUE-001",
+      "title": "Mobile quick failure tag submits the review decision",
+      "severity": "high",
+      "category": "functional"
+    },
+    {
+      "id": "ISSUE-002",
+      "title": "Mobile review detail count reads as item id, not queue position",
+      "severity": "medium",
+      "category": "content"
+    },
+    {
+      "id": "ISSUE-003",
+      "title": "Integrations page horizontally overflows on desktop-width viewport",
+      "severity": "medium",
+      "category": "visual"
+    },
+    {
+      "id": "ISSUE-004",
+      "title": "Export actions provide no visible success feedback",
+      "severity": "medium",
+      "category": "ux"
+    },
+    {
+      "id": "ISSUE-005",
+      "title": "PWA meta warning repeats on every page",
+      "severity": "low",
+      "category": "console"
+    },
+    {
+      "id": "ISSUE-006",
+      "title": "Prompt version detail says protected, but shows editable text area",
+      "severity": "low",
+      "category": "ux"
+    }
+  ],
+  "categoryScores": {
+    "console": 70,
+    "links": 100,
+    "visual": 92,
+    "functional": 85,
+    "ux": 89,
+    "performance": 90,
+    "content": 92,
+    "accessibility": 92
+  }
+}

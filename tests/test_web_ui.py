@@ -43,7 +43,9 @@ def test_web_offline_generation_card_render_and_review_flow(db: Database) -> Non
 
         card_page = client.get("/projects/gravebound_test/cards/CARD_0001")
         assert card_page.status_code == 200
-        assert "Offline AI helpers" in card_page.text
+        assert "AI text helpers" in card_page.text
+        assert "offline by default" in card_page.text
+        assert "Live autofill" in card_page.text
 
         client.post("/projects/gravebound_test/cards/CARD_0001/art/generate-dummy", data={"count": "1"})
         client.post("/projects/gravebound_test/art/ART_CAND_0001/approve", data={"card_key": "CARD_0001"})

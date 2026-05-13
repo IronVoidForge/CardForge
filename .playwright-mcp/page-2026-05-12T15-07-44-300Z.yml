@@ -1,0 +1,67 @@
+- generic [active] [ref=e1]:
+  - link "Skip to main content" [ref=e2] [cursor=pointer]:
+    - /url: "#main-content"
+  - generic "Mobile application bar" [ref=e3]:
+    - link "◆ CardForge" [ref=e4] [cursor=pointer]:
+      - /url: /m
+      - generic [ref=e5]: ◆
+      - strong [ref=e6]: CardForge
+    - button "Lock" [ref=e8] [cursor=pointer]
+  - main [ref=e10]:
+    - generic [ref=e11]:
+      - paragraph [ref=e12]: qa_manual_test
+      - heading "QA Manual Test" [level=1] [ref=e13]
+      - paragraph [ref=e14]: Work through the open review queue.
+    - generic [ref=e15]:
+      - generic [ref=e16]:
+        - generic [ref=e17]: Cards
+        - strong [ref=e18]: "1"
+      - generic [ref=e19]:
+        - generic [ref=e20]: Reviews
+        - strong [ref=e21]: "2"
+      - generic [ref=e22]:
+        - generic [ref=e23]: Jobs
+        - strong [ref=e24]: "0"
+      - generic [ref=e25]:
+        - generic [ref=e26]: Locked
+        - strong [ref=e27]: "0"
+    - generic [ref=e28]:
+      - heading "Quick actions" [level=2] [ref=e30]
+      - generic [ref=e31]:
+        - link "Review next item" [ref=e32] [cursor=pointer]:
+          - /url: /m/qa_manual_test/review/next
+        - link "Review queue" [ref=e33] [cursor=pointer]:
+          - /url: /m/qa_manual_test/review
+        - link "Run or inspect jobs" [ref=e34] [cursor=pointer]:
+          - /url: /m/qa_manual_test/jobs
+        - link "Prompt/Image labs" [ref=e35] [cursor=pointer]:
+          - /url: /projects/qa_manual_test/labs
+    - generic [ref=e36]:
+      - generic [ref=e37]:
+        - heading "Open reviews" [level=2] [ref=e38]
+        - generic [ref=e39]: "2"
+      - generic [ref=e40]:
+        - 'link "Prompt Lab case PLAB_0001: auto_review_v1 prompt_lab · normal" [ref=e41] [cursor=pointer]':
+          - /url: /m/qa_manual_test/review/3
+          - strong [ref=e42]: "Prompt Lab case PLAB_0001: auto_review_v1"
+          - generic [ref=e43]: prompt_lab · normal
+        - 'link "Review render: Lantern Audit Warden render · normal" [ref=e44] [cursor=pointer]':
+          - /url: /m/qa_manual_test/review/2
+          - strong [ref=e45]: "Review render: Lantern Audit Warden"
+          - generic [ref=e46]: render · normal
+    - generic [ref=e47]:
+      - heading "Recent cards" [level=2] [ref=e49]
+      - link "Lantern Audit Warden preview Lantern Audit Warden CARD_0001 · rendered" [ref=e51] [cursor=pointer]:
+        - /url: /m/qa_manual_test/cards/CARD_0001
+        - img "Lantern Audit Warden preview" [ref=e52]
+        - strong [ref=e53]: Lantern Audit Warden
+        - generic [ref=e54]: CARD_0001 · rendered
+  - navigation "Mobile bottom navigation" [ref=e55]:
+    - link "Home" [ref=e56] [cursor=pointer]:
+      - /url: /m
+    - link "Review" [ref=e57] [cursor=pointer]:
+      - /url: /m/qa_manual_test/review
+    - link "Jobs" [ref=e58] [cursor=pointer]:
+      - /url: /m/qa_manual_test/jobs
+    - link "Full" [ref=e59] [cursor=pointer]:
+      - /url: /projects/qa_manual_test

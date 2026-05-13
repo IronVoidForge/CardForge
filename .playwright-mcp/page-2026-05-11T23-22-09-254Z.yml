@@ -1,0 +1,56 @@
+- generic [active] [ref=e1]:
+  - link "Skip to main content" [ref=e2] [cursor=pointer]:
+    - /url: "#main-content"
+  - generic [ref=e3]:
+    - complementary "Application sidebar" [ref=e4]:
+      - link "CardForge mobile home" [ref=e5] [cursor=pointer]:
+        - /url: /m
+        - generic [ref=e6]: ◆
+        - generic [ref=e7]:
+          - strong [ref=e8]: CardForge
+          - generic [ref=e9]: mobile card operator
+      - navigation "Project navigation" [ref=e10]:
+        - link "All projects" [ref=e11] [cursor=pointer]:
+          - /url: /
+        - link "Dashboard" [ref=e12] [cursor=pointer]:
+          - /url: /projects/qa_manual_test
+        - link "Review queue" [ref=e13] [cursor=pointer]:
+          - /url: /projects/qa_manual_test/review
+        - link "Jobs" [ref=e14] [cursor=pointer]:
+          - /url: /projects/qa_manual_test/jobs
+      - generic [ref=e15]:
+        - text: Mobile UI controls a local workstation. Keep this server on a trusted LAN or VPN.
+        - text: Login protection is active.
+    - main [ref=e16]:
+      - generic [ref=e17]:
+        - generic [ref=e18]:
+          - paragraph [ref=e19]: Local worker queue
+          - heading "Jobs" [level=1] [ref=e20]
+          - paragraph [ref=e21]: Queue long-running work, run it safely, retry failures, and inspect recent audit events.
+        - generic [ref=e22]:
+          - button "Run next" [ref=e24] [cursor=pointer]
+          - button "Run all pending" [ref=e26] [cursor=pointer]
+      - generic [ref=e27]:
+        - generic [ref=e28]: Resume planner
+        - strong [ref=e29]: Work through the open review queue.
+      - generic [ref=e30]:
+        - generic [ref=e31]:
+          - generic [ref=e32]: Pending
+          - strong [ref=e33]: "0"
+        - generic [ref=e34]:
+          - generic [ref=e35]: Running
+          - strong [ref=e36]: "0"
+        - generic [ref=e37]:
+          - generic [ref=e38]: Failed
+          - strong [ref=e39]: "0"
+        - generic [ref=e40]:
+          - generic [ref=e41]: Total shown
+          - strong [ref=e42]: "0"
+      - generic [ref=e43]:
+        - generic [ref=e44]:
+          - heading "Queue" [level=2] [ref=e45]
+          - generic [ref=e46]: "0"
+        - generic [ref=e47]: No jobs yet. Use the resume planner to queue the next safe action.
+      - generic [ref=e48]:
+        - heading "Recent audit events" [level=2] [ref=e50]
+        - generic [ref=e51]: No audit events yet.

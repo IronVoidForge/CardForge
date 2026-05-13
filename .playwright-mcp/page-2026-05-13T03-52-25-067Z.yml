@@ -1,0 +1,1 @@
+- generic [ref=e2]: "{\"ok\":true,\"base_url\":\"http://127.0.0.1:1234/v1\",\"models\":[\"gemma-4-26b-a4b-it\",\"qwen/qwen2.5-vl-7b\",\"qwen/qwen3-vl-8b\",\"qwen/qwen3.5-9b\",\"gemma-4-26b-a4b-it-uncensored.i1\",\"supergemma4-26b-uncensored-fast-v2\",\"text-embedding-nomic-embed-text-v1.5\"],\"error\":\"\"}"

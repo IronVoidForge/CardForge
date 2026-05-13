@@ -236,6 +236,7 @@ class UIDashboardService:
             "next_review_id": next_id,
             "previous_review_id": previous_id,
             "open_count": len(open_ids),
+            "review_position": current_index + 1 if current_index >= 0 else None,
         }
 
     def template_library(self, project_slug: str) -> dict[str, Any]:
@@ -502,4 +503,3 @@ def _quick_tags_for_review(review: dict[str, Any]) -> list[str]:
     if "prompt" in review_type or "lab" in review_type:
         return ["weak_evidence", "unsafe_to_apply", "needs_diff", "too_broad", "good_candidate"]
     return ["rules_unclear", "text_too_long", "wrong_faction", "missing_field", "needs_rework"]
-

@@ -1,9 +1,13 @@
 from __future__ import annotations
 
 import json
+from pathlib import Path
 from typing import Any
 
+from PIL import Image
+
 from cardforge.db.session import Database
+from cardforge.domain.ids import next_key
 from cardforge.files.asset_store import AssetStore
 from cardforge.integrations.comfyui import ComfyClient
 from cardforge.services.art.art_prompt_service import ArtPromptService
@@ -12,6 +16,7 @@ from cardforge.services.comfy.workflow_defaults import DEFAULT_CARD_ART_WORKFLOW
 from cardforge.services.comfy.workflow_patcher import WorkflowPatcher
 from cardforge.services.comfy.workflow_registry_service import WorkflowRegistryService
 from cardforge.services.projects.project_service import ProjectService
+from cardforge.services.review.review_service import ReviewService
 
 
 class ComfyArtService:
@@ -80,11 +85,114 @@ class ComfyArtService:
             comfy_job_id = conn.execute("SELECT last_insert_rowid() AS id").fetchone()["id"]
             result = {"project_slug": project_slug, "card_key": card_key, "workflow_key": workflow_key, "comfy_job_id": comfy_job_id, "status": "prepared", "patched_workflow_path": self.asset_store.relative_to_workspace(patched_path), "save_prefix": save_prefix, "manifest_path": self.asset_store.relative_to_workspace(manifest_path)}
             if submit:
-                submission = ComfyClient(self.db.settings).submit_prompt(patched)
+                client = ComfyClient(self.db.settings)
+                submission = client.submit_prompt(patched)
                 if not submission.ok:
                     conn.execute("UPDATE comfy_jobs SET status = 'failed', error_message = ? WHERE id = ?", (submission.error, comfy_job_id))
                     raise RuntimeError(submission.error or "ComfyUI submit failed.")
                 conn.execute("UPDATE comfy_jobs SET status = 'submitted', prompt_id = ?, submitted_at = CURRENT_TIMESTAMP WHERE id = ?", (submission.prompt_id, comfy_job_id))
                 result.update({"status": "submitted", "prompt_id": submission.prompt_id})
+                history = client.wait_for_completion(submission.prompt_id)
+                imported = self._import_completed_images(
+                    conn=conn,
+                    project_id=project["id"],
+                    set_id=card["set_id"],
+                    project_slug=project_slug,
+                    card_id=card["id"],
+                    card_key=card_key,
+                    prompt_id=submission.prompt_id,
+                    comfy_job_id=comfy_job_id,
+                    art_prompt_id=prompt_row["id"],
+                    workflow_key=workflow_key,
+                    seed=int(patch_values["seed"]),
+                    history=history,
+                    settings=patch_values,
+                )
+                conn.execute("UPDATE comfy_jobs SET status = 'completed', completed_at = CURRENT_TIMESTAMP WHERE id = ?", (comfy_job_id,))
+                result.update({"status": "completed", "candidate_keys": imported})
             self.asset_store.write_json(manifest_path, result)
             return result
+
+    def _import_completed_images(
+        self,
+        *,
+        conn: Any,
+        project_id: int,
+        set_id: int,
+        project_slug: str,
+        card_id: int,
+        card_key: str,
+        prompt_id: str,
+        comfy_job_id: int,
+        art_prompt_id: int,
+        workflow_key: str,
+        seed: int,
+        history: dict[str, Any],
+        settings: dict[str, Any],
+    ) -> list[str]:
+        image_refs = self._history_image_refs(history)
+        if not image_refs:
+            raise RuntimeError(f"ComfyUI completed prompt {prompt_id} without image outputs.")
+        art_dir = self.asset_store.project_root(project_slug) / "cards" / card_key / "art" / "candidates"
+        art_dir.mkdir(parents=True, exist_ok=True)
+        created_keys: list[str] = []
+        for image_ref in image_refs:
+            source = self._resolve_comfy_output(image_ref)
+            candidate_key = next_key(conn, "art_candidates", "candidate_key", "ART_CAND", where="card_id = ?", params=(card_id,))
+            image_path = art_dir / f"{candidate_key}{source.suffix or '.png'}"
+            thumb_path = art_dir / f"{candidate_key}_thumb.png"
+            Image.open(source).save(image_path)
+            Image.open(image_path).resize((256, 192)).save(thumb_path)
+            conn.execute(
+                """
+                INSERT INTO art_candidates(card_id, art_prompt_id, comfy_job_id, candidate_key, image_path, thumbnail_path, seed, workflow_key, settings_json, status, review_status)
+                VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, 'generated', 'open')
+                """,
+                (
+                    card_id,
+                    art_prompt_id,
+                    comfy_job_id,
+                    candidate_key,
+                    self.asset_store.relative_to_workspace(image_path),
+                    self.asset_store.relative_to_workspace(thumb_path),
+                    seed,
+                    workflow_key,
+                    json.dumps({"comfy": True, "prompt_id": prompt_id, "source": image_ref, **settings}, ensure_ascii=False),
+                ),
+            )
+            created_keys.append(candidate_key)
+        ReviewService(self.db).enqueue(
+            project_id=project_id,
+            set_id=set_id,
+            target_type="card_art",
+            target_id=card_key,
+            review_type="art_candidate",
+            title=f"Review Comfy art candidates: {card_key}",
+            description=f"Imported {len(created_keys)} live ComfyUI art candidate(s).",
+            metadata={"candidate_keys": created_keys, "comfy_job_id": comfy_job_id, "prompt_id": prompt_id},
+            conn=conn,
+        )
+        return created_keys
+
+    def _history_image_refs(self, history: dict[str, Any]) -> list[dict[str, str]]:
+        refs: list[dict[str, str]] = []
+        outputs = history.get("outputs", {}) if isinstance(history, dict) else {}
+        for output in outputs.values():
+            for image in output.get("images", []) if isinstance(output, dict) else []:
+                if isinstance(image, dict) and image.get("filename"):
+                    refs.append(
+                        {
+                            "filename": str(image.get("filename") or ""),
+                            "subfolder": str(image.get("subfolder") or ""),
+                            "type": str(image.get("type") or "output"),
+                        }
+                    )
+        return refs
+
+    def _resolve_comfy_output(self, image_ref: dict[str, str]) -> Path:
+        output_root = Path(self.db.settings.comfy_output_dir).expanduser().resolve()
+        candidate = (output_root / image_ref.get("subfolder", "") / image_ref["filename"]).resolve()
+        candidate.relative_to(output_root)
+        if not candidate.exists() or not candidate.is_file():
+            raise FileNotFoundError(f"ComfyUI output image not found: {candidate}")
+        return candidate

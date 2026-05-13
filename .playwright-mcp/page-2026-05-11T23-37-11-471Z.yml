@@ -1,0 +1,140 @@
+- generic [active] [ref=e1]:
+  - link "Skip to main content" [ref=e2] [cursor=pointer]:
+    - /url: "#main-content"
+  - generic [ref=e3]:
+    - complementary "Application sidebar" [ref=e4]:
+      - link "CardForge mobile home" [ref=e5] [cursor=pointer]:
+        - /url: /m
+        - generic [ref=e6]: ◆
+        - generic [ref=e7]:
+          - strong [ref=e8]: CardForge
+          - generic [ref=e9]: mobile card operator
+      - navigation [ref=e10]:
+        - link "All projects" [ref=e11] [cursor=pointer]:
+          - /url: /
+        - link "Dashboard" [ref=e12] [cursor=pointer]:
+          - /url: /projects/qa_manual_test
+        - link "Labs" [ref=e13] [cursor=pointer]:
+          - /url: /projects/qa_manual_test/labs
+        - link "Templates" [ref=e14] [cursor=pointer]:
+          - /url: /projects/qa_manual_test/templates
+        - link "Review queue" [ref=e15] [cursor=pointer]:
+          - /url: /projects/qa_manual_test/review
+        - link "Jobs" [ref=e16] [cursor=pointer]:
+          - /url: /projects/qa_manual_test/jobs
+      - generic [ref=e17]:
+        - text: Mobile UI controls a local workstation. Keep this server on a trusted LAN or VPN.
+        - text: Login protection is active.
+    - main [ref=e18]:
+      - generic [ref=e20]:
+        - paragraph [ref=e21]: Prompt Lab & Image Lab
+        - heading "Experiment safely before changing production" [level=1] [ref=e22]
+        - paragraph [ref=e23]: Lab cases are read-only snapshots. Accepted evidence becomes review-gated promotion requests before it can affect prompt templates.
+      - generic [ref=e24]:
+        - generic [ref=e25]:
+          - generic [ref=e26]: Prompt cases
+          - strong [ref=e27]: "0"
+        - generic [ref=e28]:
+          - generic [ref=e29]: Image cases
+          - strong [ref=e30]: "0"
+        - generic [ref=e31]:
+          - generic [ref=e32]: Promotion requests
+          - strong [ref=e33]: "0"
+        - generic [ref=e34]:
+          - generic [ref=e35]: Open promotions
+          - strong [ref=e36]: "0"
+      - generic [ref=e37]:
+        - generic [ref=e38]:
+          - heading "Create Prompt Lab case" [level=2] [ref=e40]
+          - generic [ref=e41]:
+            - generic [ref=e42]:
+              - text: Prompt template
+              - combobox "Prompt template" [ref=e43]:
+                - option "auto_review_v1 · card_auto_review" [selected]
+                - option "card_autofill_v1 · card_autofill"
+                - option "card_batch_generation_v1 · card_batch"
+                - option "card_refinement_v1 · card_refinement"
+            - generic [ref=e44]:
+              - text: Target type
+              - combobox "Target type" [ref=e45]:
+                - option "project" [selected]
+                - option "set"
+                - option "card"
+                - option "batch"
+            - generic [ref=e46]:
+              - text: Target ID
+              - textbox "Target ID" [ref=e47]:
+                - /placeholder: CARD_0001 or SET001
+            - generic [ref=e48]:
+              - text: Hypothesis / notes
+              - textbox "Hypothesis / notes" [ref=e49]:
+                - /placeholder: Test shorter rules instructions, stronger type mix, or a different art prompt contract.
+            - button "Create Prompt Lab case" [ref=e50] [cursor=pointer]
+        - generic [ref=e51]:
+          - heading "Create Image Lab case" [level=2] [ref=e53]
+          - generic [ref=e54]:
+            - generic [ref=e55]:
+              - text: Card
+              - combobox "Card" [ref=e56]:
+                - option "CARD_0001 · Lantern Audit Warden" [selected]
+            - generic [ref=e57]:
+              - text: Goal / notes
+              - textbox "Goal / notes" [ref=e58]:
+                - /placeholder: Compare portrait vs action shot, lighting styles, or composition clauses.
+            - button "Create Image Lab case" [ref=e59] [cursor=pointer]
+      - generic [ref=e60]:
+        - generic [ref=e61]:
+          - heading "Prompt template promotion requests" [level=2] [ref=e62]
+          - generic [ref=e63]: "0"
+        - generic [ref=e64]: No lab promotion requests yet.
+      - generic [ref=e65]:
+        - generic [ref=e66]:
+          - heading "Prompt template versions" [level=2] [ref=e67]
+          - generic [ref=e68]: "4"
+        - table [ref=e70]:
+          - rowgroup [ref=e71]:
+            - row "Template Version Status Source Summary" [ref=e72]:
+              - columnheader "Template" [ref=e73]
+              - columnheader "Version" [ref=e74]
+              - columnheader "Status" [ref=e75]
+              - columnheader "Source" [ref=e76]
+              - columnheader "Summary" [ref=e77]
+          - rowgroup [ref=e78]:
+            - row "auto_review_v1 auto_review_v1_v001 active scaffold Initial scaffolded prompt template." [ref=e79]:
+              - cell "auto_review_v1" [ref=e80]
+              - cell "auto_review_v1_v001" [ref=e81]
+              - cell "active" [ref=e82]:
+                - generic [ref=e83]: active
+              - cell "scaffold" [ref=e84]
+              - cell "Initial scaffolded prompt template." [ref=e85]
+            - row "card_autofill_v1 card_autofill_v1_v001 active scaffold Initial scaffolded prompt template." [ref=e86]:
+              - cell "card_autofill_v1" [ref=e87]
+              - cell "card_autofill_v1_v001" [ref=e88]
+              - cell "active" [ref=e89]:
+                - generic [ref=e90]: active
+              - cell "scaffold" [ref=e91]
+              - cell "Initial scaffolded prompt template." [ref=e92]
+            - row "card_batch_generation_v1 card_batch_generation_v1_v001 active scaffold Initial scaffolded prompt template." [ref=e93]:
+              - cell "card_batch_generation_v1" [ref=e94]
+              - cell "card_batch_generation_v1_v001" [ref=e95]
+              - cell "active" [ref=e96]:
+                - generic [ref=e97]: active
+              - cell "scaffold" [ref=e98]
+              - cell "Initial scaffolded prompt template." [ref=e99]
+            - row "card_refinement_v1 card_refinement_v1_v001 active scaffold Initial scaffolded prompt template." [ref=e100]:
+              - cell "card_refinement_v1" [ref=e101]
+              - cell "card_refinement_v1_v001" [ref=e102]
+              - cell "active" [ref=e103]:
+                - generic [ref=e104]: active
+              - cell "scaffold" [ref=e105]
+              - cell "Initial scaffolded prompt template." [ref=e106]
+      - generic [ref=e107]:
+        - generic [ref=e108]:
+          - heading "Prompt Lab cases" [level=2] [ref=e109]
+          - generic [ref=e110]: "0"
+        - generic [ref=e111]: No Prompt Lab cases yet.
+      - generic [ref=e112]:
+        - generic [ref=e113]:
+          - heading "Image Lab cases" [level=2] [ref=e114]
+          - generic [ref=e115]: "0"
+        - generic [ref=e116]: No Image Lab cases yet.

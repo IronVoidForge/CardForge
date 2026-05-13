@@ -21,4 +21,25 @@
       navigator.serviceWorker.register("/service-worker.js").catch(() => undefined);
     });
   }
+
+  document.querySelectorAll("[data-review-tag]").forEach((button) => {
+    button.addEventListener("click", () => {
+      const tag = button.getAttribute("data-review-tag") || "";
+      const tagsInput = document.querySelector("#review-tags-input");
+      const notesInput = document.querySelector("#mobile-decision-notes textarea[name='notes']");
+      if (tagsInput) {
+        const existing = tagsInput.value.split(",").map((item) => item.trim()).filter(Boolean);
+        if (!existing.includes(tag)) {
+          existing.push(tag);
+          tagsInput.value = existing.join(", ");
+        }
+      }
+      if (notesInput && !notesInput.value.includes(tag.replaceAll("_", " "))) {
+        const note = tag.replaceAll("_", " ");
+        notesInput.value = notesInput.value ? notesInput.value + "\n- " + note : "- " + note;
+      }
+      button.setAttribute("aria-pressed", "true");
+      button.classList.add("selected");
+    });
+  });
 })();

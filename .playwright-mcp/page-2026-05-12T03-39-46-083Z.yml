@@ -1,0 +1,58 @@
+- generic [active] [ref=e1]:
+  - link "Skip to main content" [ref=e2] [cursor=pointer]:
+    - /url: "#main-content"
+  - generic [ref=e3]:
+    - complementary "Application sidebar" [ref=e4]:
+      - link "CardForge mobile home" [ref=e5] [cursor=pointer]:
+        - /url: /m
+        - generic [ref=e6]: ◆
+        - generic [ref=e7]:
+          - strong [ref=e8]: CardForge
+          - generic [ref=e9]: mobile card operator
+      - navigation [ref=e10]:
+        - link "All projects" [ref=e11] [cursor=pointer]:
+          - /url: /
+        - link "Dashboard" [ref=e12] [cursor=pointer]:
+          - /url: /projects/qa_manual_test
+        - link "Templates" [ref=e13] [cursor=pointer]:
+          - /url: /projects/qa_manual_test/templates
+        - link "Integrations" [ref=e14] [cursor=pointer]:
+          - /url: /projects/qa_manual_test/integrations
+        - link "Review queue" [ref=e15] [cursor=pointer]:
+          - /url: /projects/qa_manual_test/review
+        - link "Jobs" [ref=e16] [cursor=pointer]:
+          - /url: /projects/qa_manual_test/jobs
+      - generic [ref=e17]:
+        - text: Mobile UI controls a local workstation. Keep this server on a trusted LAN or VPN.
+        - text: Login protection is active.
+    - main [ref=e18]:
+      - generic [ref=e19]:
+        - generic [ref=e20]:
+          - paragraph [ref=e21]: Template detail
+          - heading "Default Creature Front" [level=1] [ref=e22]
+          - paragraph [ref=e23]: default_creature_front_v1 · front · creature · 12 layers
+        - generic [ref=e24]:
+          - button "Render preview" [ref=e26] [cursor=pointer]
+          - link "Back to library" [ref=e27] [cursor=pointer]:
+            - /url: /projects/qa_manual_test/templates
+      - generic [ref=e28]:
+        - generic [ref=e29]:
+          - heading "Template JSON" [level=2] [ref=e31]
+          - generic [ref=e32]:
+            - generic [ref=e33]:
+              - text: JSON definition
+              - textbox "JSON definition" [ref=e34]: "{ \"template_type\": \"front\", \"canvas\": { \"width\": 750, \"height\": 1050, \"bleed\": 24, \"safe_margin\": 52 }, \"colors\": { \"background\": [ 236, 232, 220 ], \"border\": [ 32, 28, 35 ], \"frame\": [ 70, 60, 82 ], \"panel\": [ 245, 241, 229 ], \"text\": [ 25, 20, 20 ], \"muted_text\": [ 55, 45, 55 ], \"art_placeholder\": [ 135, 125, 145 ] }, \"font_roles\": { \"title\": { \"size\": 40, \"min_size\": 24 }, \"cost\": { \"size\": 30, \"min_size\": 20 }, \"type_line\": { \"size\": 28, \"min_size\": 18 }, \"rules\": { \"size\": 27, \"min_size\": 17 }, \"flavor\": { \"size\": 21, \"min_size\": 15 }, \"stats\": { \"size\": 32, \"min_size\": 20 } }, \"layers\": [ { \"id\": \"outer_frame\", \"type\": \"rounded_rect\", \"box\": [ 24, 24, 726, 1026 ], \"radius\": 34 }, { \"id\": \"inner_frame\", \"type\": \"rounded_rect\", \"box\": [ 46, 46, 704, 1004 ], \"radius\": 24 }, { \"id\": \"title\", \"type\": \"text\", \"source\": \"card.name\", \"box\": [ 86, 82, 610, 142 ], \"max_lines\": 1 }, { \"id\": \"cost\", \"type\": \"cost\", \"source\": \"card.cost\", \"box\": [ 625, 78, 690, 143 ], \"max_lines\": 1 }, { \"id\": \"title_bar\", \"type\": \"rounded_rect\", \"box\": [ 64, 64, 686, 150 ], \"radius\": 14 }, { \"id\": \"art\", \"type\": \"image_slot\", \"source\": \"locked_art\", \"box\": [ 78, 170, 672, 520 ], \"fit\": \"cover\" }, { \"id\": \"type_line\", \"type\": \"text\", \"source\": \"card.type_line\", \"box\": [ 96, 542, 650, 586 ], \"max_lines\": 1 }, { \"id\": \"type_bar\", \"type\": \"rounded_rect\", \"box\": [ 78, 535, 672, 590 ], \"radius\": 8 }, { \"id\": \"rules_panel\", \"type\": \"rounded_rect\", \"box\": [ 78, 605, 672, 890 ], \"radius\": 10 }, { \"id\": \"rules_text\", \"type\": \"rich_text\", \"source\": \"card.rules_text\", \"box\": [ 92, 620, 658, 865 ], \"max_lines\": 12 }, { \"id\": \"flavor_text\", \"type\": \"rich_text\", \"source\": \"card.flavor_text\", \"box\": [ 94, 905, 634, 980 ], \"max_lines\": 3 }, { \"id\": \"stats\", \"type\": \"stats\", \"source\": \"card.stats\", \"box\": [ 560, 930, 680, 995 ] } ], \"template_key\": \"default_creature_front_v1\", \"name\": \"Default Creature Front\", \"card_type\": \"creature\" }"
+            - button "Validate and save template" [ref=e35] [cursor=pointer]
+        - complementary [ref=e36]:
+          - heading "Preview" [level=2] [ref=e38]
+          - generic [ref=e39]: No preview yet. Render one to inspect layer boxes.
+          - generic [ref=e40]:
+            - paragraph [ref=e41]:
+              - strong [ref=e42]: Canvas
+              - text: 750×1050
+            - paragraph [ref=e43]:
+              - strong [ref=e44]: Usage
+              - text: Front templates drive title, art, type line, rules, flavor, and stats. Back templates drive card backs.
+            - paragraph [ref=e45]:
+              - strong [ref=e46]: Safety
+              - text: Invalid JSON or missing required layers is rejected before it reaches the renderer.

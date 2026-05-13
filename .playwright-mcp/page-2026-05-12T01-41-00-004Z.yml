@@ -1,0 +1,158 @@
+- generic [active] [ref=e1]:
+  - link "Skip to main content" [ref=e2] [cursor=pointer]:
+    - /url: "#main-content"
+  - generic [ref=e3]:
+    - complementary "Application sidebar" [ref=e4]:
+      - link "CardForge mobile home" [ref=e5] [cursor=pointer]:
+        - /url: /m
+        - generic [ref=e6]: ◆
+        - generic [ref=e7]:
+          - strong [ref=e8]: CardForge
+          - generic [ref=e9]: mobile card operator
+      - navigation [ref=e10]:
+        - link "All projects" [ref=e11] [cursor=pointer]:
+          - /url: /
+        - link "Dashboard" [ref=e12] [cursor=pointer]:
+          - /url: /projects/qa_manual_test
+        - link "Prompt Studio" [ref=e13] [cursor=pointer]:
+          - /url: /projects/qa_manual_test/prompt-studio
+        - link "Labs" [ref=e14] [cursor=pointer]:
+          - /url: /projects/qa_manual_test/labs
+        - link "Templates" [ref=e15] [cursor=pointer]:
+          - /url: /projects/qa_manual_test/templates
+        - link "Review queue" [ref=e16] [cursor=pointer]:
+          - /url: /projects/qa_manual_test/review
+        - link "Jobs" [ref=e17] [cursor=pointer]:
+          - /url: /projects/qa_manual_test/jobs
+      - generic [ref=e18]:
+        - text: Mobile UI controls a local workstation. Keep this server on a trusted LAN or VPN.
+        - text: Login protection is active.
+    - main [ref=e19]:
+      - generic [ref=e20]:
+        - generic [ref=e21]:
+          - paragraph [ref=e22]: Prompt Template Studio
+          - heading "Versioned prompt contracts" [level=1] [ref=e23]
+          - paragraph [ref=e24]: Review diffs, lab evidence, and proposed prompt changes before activation.
+        - button "Sync versions" [ref=e26] [cursor=pointer]
+      - generic [ref=e27]:
+        - generic [ref=e28]:
+          - generic [ref=e29]: Templates
+          - strong [ref=e30]: "4"
+        - generic [ref=e31]:
+          - generic [ref=e32]: Versions
+          - strong [ref=e33]: "4"
+        - generic [ref=e34]:
+          - generic [ref=e35]: Proposed
+          - strong [ref=e36]: "0"
+        - generic [ref=e37]:
+          - generic [ref=e38]: Approved
+          - strong [ref=e39]: "0"
+      - generic [ref=e40]:
+        - generic [ref=e41]:
+          - heading "Prompt templates" [level=2] [ref=e42]
+          - generic [ref=e43]: create proposals safely
+        - generic [ref=e44]:
+          - article [ref=e45]:
+            - strong [ref=e46]: Card Auto Review v1
+            - generic [ref=e47]: auto_review_v1
+            - generic [ref=e48]: card_auto_review · active auto_review_v1_v001
+            - generic [ref=e49]: 0 pending
+            - generic [ref=e50]:
+              - generic [ref=e51]:
+                - text: Proposal summary
+                - textbox "Proposal summary" [ref=e52]:
+                  - /placeholder: What should this version test?
+              - button "Create editable proposal" [ref=e53] [cursor=pointer]
+          - article [ref=e54]:
+            - strong [ref=e55]: Card Autofill v1
+            - generic [ref=e56]: card_autofill_v1
+            - generic [ref=e57]: card_autofill · active card_autofill_v1_v001
+            - generic [ref=e58]: 0 pending
+            - generic [ref=e59]:
+              - generic [ref=e60]:
+                - text: Proposal summary
+                - textbox "Proposal summary" [ref=e61]:
+                  - /placeholder: What should this version test?
+              - button "Create editable proposal" [ref=e62] [cursor=pointer]
+          - article [ref=e63]:
+            - strong [ref=e64]: Card Batch Generation v1
+            - generic [ref=e65]: card_batch_generation_v1
+            - generic [ref=e66]: card_batch · active card_batch_generation_v1_v001
+            - generic [ref=e67]: 0 pending
+            - generic [ref=e68]:
+              - generic [ref=e69]:
+                - text: Proposal summary
+                - textbox "Proposal summary" [ref=e70]:
+                  - /placeholder: What should this version test?
+              - button "Create editable proposal" [ref=e71] [cursor=pointer]
+          - article [ref=e72]:
+            - strong [ref=e73]: Card Refinement v1
+            - generic [ref=e74]: card_refinement_v1
+            - generic [ref=e75]: card_refinement · active card_refinement_v1_v001
+            - generic [ref=e76]: 0 pending
+            - generic [ref=e77]:
+              - generic [ref=e78]:
+                - text: Proposal summary
+                - textbox "Proposal summary" [ref=e79]:
+                  - /placeholder: What should this version test?
+              - button "Create editable proposal" [ref=e80] [cursor=pointer]
+      - generic [ref=e81]:
+        - generic [ref=e82]:
+          - heading "Versions" [level=2] [ref=e83]
+          - generic [ref=e84]: "4"
+        - table [ref=e86]:
+          - rowgroup [ref=e87]:
+            - row "Version Template Status Source Summary Open" [ref=e88]:
+              - columnheader "Version" [ref=e89]
+              - columnheader "Template" [ref=e90]
+              - columnheader "Status" [ref=e91]
+              - columnheader "Source" [ref=e92]
+              - columnheader "Summary" [ref=e93]
+              - columnheader "Open" [ref=e94]
+          - rowgroup [ref=e95]:
+            - row "auto_review_v1_v001 auto_review_v1 active scaffold Initial scaffolded prompt template. Review" [ref=e96]:
+              - cell "auto_review_v1_v001" [ref=e97]
+              - cell "auto_review_v1" [ref=e98]
+              - cell "active" [ref=e99]:
+                - generic [ref=e100]: active
+              - cell "scaffold" [ref=e101]
+              - cell "Initial scaffolded prompt template." [ref=e102]
+              - cell "Review" [ref=e103]:
+                - link "Review" [ref=e104] [cursor=pointer]:
+                  - /url: /projects/qa_manual_test/prompt-studio/auto_review_v1_v001
+            - row "card_autofill_v1_v001 card_autofill_v1 active scaffold Initial scaffolded prompt template. Review" [ref=e105]:
+              - cell "card_autofill_v1_v001" [ref=e106]
+              - cell "card_autofill_v1" [ref=e107]
+              - cell "active" [ref=e108]:
+                - generic [ref=e109]: active
+              - cell "scaffold" [ref=e110]
+              - cell "Initial scaffolded prompt template." [ref=e111]
+              - cell "Review" [ref=e112]:
+                - link "Review" [ref=e113] [cursor=pointer]:
+                  - /url: /projects/qa_manual_test/prompt-studio/card_autofill_v1_v001
+            - row "card_batch_generation_v1_v001 card_batch_generation_v1 active scaffold Initial scaffolded prompt template. Review" [ref=e114]:
+              - cell "card_batch_generation_v1_v001" [ref=e115]
+              - cell "card_batch_generation_v1" [ref=e116]
+              - cell "active" [ref=e117]:
+                - generic [ref=e118]: active
+              - cell "scaffold" [ref=e119]
+              - cell "Initial scaffolded prompt template." [ref=e120]
+              - cell "Review" [ref=e121]:
+                - link "Review" [ref=e122] [cursor=pointer]:
+                  - /url: /projects/qa_manual_test/prompt-studio/card_batch_generation_v1_v001
+            - row "card_refinement_v1_v001 card_refinement_v1 active scaffold Initial scaffolded prompt template. Review" [ref=e123]:
+              - cell "card_refinement_v1_v001" [ref=e124]
+              - cell "card_refinement_v1" [ref=e125]
+              - cell "active" [ref=e126]:
+                - generic [ref=e127]: active
+              - cell "scaffold" [ref=e128]
+              - cell "Initial scaffolded prompt template." [ref=e129]
+              - cell "Review" [ref=e130]:
+                - link "Review" [ref=e131] [cursor=pointer]:
+                  - /url: /projects/qa_manual_test/prompt-studio/card_refinement_v1_v001
+      - generic [ref=e132]:
+        - generic [ref=e133]:
+          - heading "Recent lab evidence" [level=2] [ref=e134]
+          - link "Open labs" [ref=e135] [cursor=pointer]:
+            - /url: /projects/qa_manual_test/labs
+        - generic [ref=e136]: No promotion requests yet.

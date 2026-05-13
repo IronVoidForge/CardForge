@@ -66,10 +66,12 @@
     </div>
 
     <div class="panel">
-      <div class="panel-heading"><h2>Offline AI helpers</h2><span class="pill warn">simulated</span></div>
+      <div class="panel-heading"><h2>AI text helpers</h2><span class="pill warn">offline by default</span></div>
       <div class="action-bar wrap">
         <form method="post" action="/projects/{{ project.slug }}/cards/{{ card.card_key }}/autofill"><button class="secondary-button">Autofill missing fields</button></form>
+        <form method="post" action="/projects/{{ project.slug }}/cards/{{ card.card_key }}/autofill"><button class="secondary-button" name="live" value="yes">Live autofill</button></form>
         <form method="post" action="/projects/{{ project.slug }}/cards/{{ card.card_key }}/refine"><button class="secondary-button">Auto refine</button></form>
+        <form method="post" action="/projects/{{ project.slug }}/cards/{{ card.card_key }}/refine"><button class="secondary-button" name="live" value="yes">Live refine</button></form>
         <form method="post" action="/projects/{{ project.slug }}/cards/{{ card.card_key }}/auto-review"><button class="secondary-button">Auto review text</button></form>
         <form method="post" action="/projects/{{ project.slug }}/cards/{{ card.card_key }}/validate"><button class="secondary-button">Validate</button></form>
       </div>
@@ -95,10 +97,19 @@
       <label>Count <input type="number" name="count" value="4" min="1" max="8"></label>
       <button class="primary-button" type="submit">Generate dummy art</button>
     </form>
-    <form method="post" action="/projects/{{ project.slug }}/cards/{{ card.card_key }}/art/prepare-comfy" class="inline-form">
-      <label>Workflow <input name="workflow_key" value="stub.card_art.t2i.v1"></label>
-      <button class="secondary-button" type="submit">Prepare Comfy workflow</button>
-    </form>
+    <div class="comfy-action-box">
+      <form method="post" action="/projects/{{ project.slug }}/cards/{{ card.card_key }}/art/prepare-comfy" class="inline-form">
+        <label>Workflow <input name="workflow_key" value="stub.card_art.t2i.v1"></label>
+        <button class="secondary-button" type="submit">Prepare Comfy workflow</button>
+      </form>
+      <form method="post" action="/projects/{{ project.slug }}/cards/{{ card.card_key }}/art/submit-comfy" class="inline-form">
+        <label>Workflow <input name="workflow_key" value="stub.card_art.t2i.v1"></label>
+        <label>Seed <input name="seed" placeholder="optional"></label>
+        <label>Width <input name="width" value="768"></label>
+        <label>Height <input name="height" value="1024"></label>
+        <button class="primary-button" type="submit">Submit live Comfy art</button>
+      </form>
+    </div>
     {% if art_candidates %}
     <div class="art-grid">
       {% for art in art_candidates %}

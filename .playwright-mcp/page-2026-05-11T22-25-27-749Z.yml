@@ -1,0 +1,78 @@
+- generic [active] [ref=e1]:
+  - link "Skip to main content" [ref=e2] [cursor=pointer]:
+    - /url: "#main-content"
+  - generic [ref=e3]:
+    - complementary "Application sidebar" [ref=e4]:
+      - link "CardForge mobile home" [ref=e5] [cursor=pointer]:
+        - /url: /m
+        - generic [ref=e6]: ◆
+        - generic [ref=e7]:
+          - strong [ref=e8]: CardForge
+          - generic [ref=e9]: mobile card operator
+      - navigation [ref=e10]:
+        - link "All projects" [ref=e11] [cursor=pointer]:
+          - /url: /
+        - link "Dashboard" [ref=e12] [cursor=pointer]:
+          - /url: /projects/qa_manual_test
+        - link "Templates" [ref=e13] [cursor=pointer]:
+          - /url: /projects/qa_manual_test/templates
+        - link "Integrations" [ref=e14] [cursor=pointer]:
+          - /url: /projects/qa_manual_test/integrations
+        - link "Review queue" [ref=e15] [cursor=pointer]:
+          - /url: /projects/qa_manual_test/review
+        - link "Jobs" [ref=e16] [cursor=pointer]:
+          - /url: /projects/qa_manual_test/jobs
+      - generic [ref=e17]:
+        - text: Mobile UI controls a local workstation. Keep this server on a trusted LAN or VPN.
+        - text: Login protection is active.
+    - main [ref=e18]:
+      - generic [ref=e20]:
+        - paragraph [ref=e21]: Operator queue
+        - heading "Review queue" [level=1] [ref=e22]
+        - paragraph [ref=e23]: 2 open item(s) for QA Manual Test
+      - generic [ref=e25]:
+        - article [ref=e26]:
+          - img "review preview" [ref=e27]
+          - generic [ref=e28]:
+            - generic [ref=e29]:
+              - generic [ref=e30]: open
+              - generic [ref=e31]: render
+              - generic [ref=e32]: normal
+            - 'heading "Review render: Lantern Audit Warden" [level=2] [ref=e33]'
+            - paragraph [ref=e34]: Rendered card front/back needs final visual review.
+            - text: "render:RENDER_0001 · #2"
+          - generic [ref=e35]:
+            - generic [ref=e36]:
+              - text: Reason
+              - textbox "Reason" [ref=e37]:
+                - /placeholder: Looks good / needs rewrite / wrong art...
+            - generic [ref=e38]:
+              - text: Notes
+              - textbox "Notes" [ref=e39]
+            - generic [ref=e40]:
+              - button "Approve" [ref=e41] [cursor=pointer]
+              - button "Rework" [ref=e42] [cursor=pointer]
+              - button "Reject" [ref=e43] [cursor=pointer]
+              - button "Defer" [ref=e44] [cursor=pointer]
+        - article [ref=e45]:
+          - generic [ref=e46]:
+            - generic [ref=e47]:
+              - generic [ref=e48]: open
+              - generic [ref=e49]: card_text
+              - generic [ref=e50]: normal
+            - 'heading "Review card text: Lantern Audit Warden" [level=2] [ref=e51]'
+            - paragraph [ref=e52]: New manually created card needs text review.
+            - text: "card:CARD_0001 · #1"
+          - generic [ref=e53]:
+            - generic [ref=e54]:
+              - text: Reason
+              - textbox "Reason" [ref=e55]:
+                - /placeholder: Looks good / needs rewrite / wrong art...
+            - generic [ref=e56]:
+              - text: Notes
+              - textbox "Notes" [ref=e57]
+            - generic [ref=e58]:
+              - button "Approve" [ref=e59] [cursor=pointer]
+              - button "Rework" [ref=e60] [cursor=pointer]
+              - button "Reject" [ref=e61] [cursor=pointer]
+              - button "Defer" [ref=e62] [cursor=pointer]

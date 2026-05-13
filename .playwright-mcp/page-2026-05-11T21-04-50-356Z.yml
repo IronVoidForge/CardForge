@@ -1,0 +1,46 @@
+- generic [active] [ref=e1]:
+  - link "Skip to main content" [ref=e2] [cursor=pointer]:
+    - /url: "#main-content"
+  - generic [ref=e3]:
+    - complementary "Application sidebar" [ref=e4]:
+      - link "CardForge mobile home" [ref=e5] [cursor=pointer]:
+        - /url: /m
+        - generic [ref=e6]: ◆
+        - generic [ref=e7]:
+          - strong [ref=e8]: CardForge
+          - generic [ref=e9]: mobile card operator
+      - navigation [ref=e10]:
+        - link "Mobile home" [ref=e11] [cursor=pointer]:
+          - /url: /m
+        - link "Desktop projects" [ref=e12] [cursor=pointer]:
+          - /url: /
+      - generic [ref=e13]:
+        - text: Mobile UI controls a local workstation. Keep this server on a trusted LAN or VPN.
+        - text: Login protection is active.
+    - main [ref=e14]:
+      - generic [ref=e16]:
+        - paragraph [ref=e17]: Local-first game card production
+        - heading "Build, review, render, and export prototype card sets." [level=1] [ref=e18]
+        - paragraph [ref=e19]: "Use the same pipeline discipline as FilmCreator: structured artifacts, prompt packages, simulated generation, review queues, rework, locked art, and deterministic renders."
+      - generic [ref=e20]:
+        - generic [ref=e21]:
+          - generic [ref=e22]:
+            - heading "Projects" [level=2] [ref=e23]
+            - generic [ref=e24]: 0 total
+          - generic [ref=e25]: No projects yet. Create one to start a set.
+        - generic [ref=e26]:
+          - heading "Create project" [level=2] [ref=e28]
+          - generic [ref=e29]:
+            - generic [ref=e30]:
+              - text: Slug
+              - textbox "Slug" [ref=e31]:
+                - /placeholder: gravebound_test
+            - generic [ref=e32]:
+              - text: Name
+              - textbox "Name" [ref=e33]:
+                - /placeholder: Gravebound Test
+            - generic [ref=e34]:
+              - text: Description
+              - textbox "Description" [ref=e35]:
+                - /placeholder: Prototype gothic necromancer card set.
+            - button "Create project" [ref=e36] [cursor=pointer]

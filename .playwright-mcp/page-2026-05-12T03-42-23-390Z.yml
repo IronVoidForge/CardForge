@@ -1,0 +1,169 @@
+- generic [active] [ref=e1]:
+  - link "Skip to main content" [ref=e2] [cursor=pointer]:
+    - /url: "#main-content"
+  - generic [ref=e3]:
+    - complementary "Application sidebar" [ref=e4]:
+      - link "CardForge mobile home" [ref=e5] [cursor=pointer]:
+        - /url: /m
+        - generic [ref=e6]: ◆
+        - generic [ref=e7]:
+          - strong [ref=e8]: CardForge
+          - generic [ref=e9]: mobile card operator
+      - navigation [ref=e10]:
+        - link "All projects" [ref=e11] [cursor=pointer]:
+          - /url: /
+        - link "Dashboard" [ref=e12] [cursor=pointer]:
+          - /url: /projects/qa_manual_test
+        - link "Templates" [ref=e13] [cursor=pointer]:
+          - /url: /projects/qa_manual_test/templates
+        - link "Labs" [ref=e14] [cursor=pointer]:
+          - /url: /projects/qa_manual_test/labs
+        - link "Integrations" [ref=e15] [cursor=pointer]:
+          - /url: /projects/qa_manual_test/integrations
+        - link "Review queue" [ref=e16] [cursor=pointer]:
+          - /url: /projects/qa_manual_test/review
+        - link "Jobs" [ref=e17] [cursor=pointer]:
+          - /url: /projects/qa_manual_test/jobs
+      - generic [ref=e18]:
+        - text: Mobile UI controls a local workstation. Keep this server on a trusted LAN or VPN.
+        - text: Login protection is active.
+    - main [ref=e19]:
+      - generic [ref=e20]:
+        - generic [ref=e21]:
+          - paragraph [ref=e22]: Network APIs
+          - heading "LM Studio and ComfyUI" [level=1] [ref=e23]
+          - paragraph [ref=e24]: Save LAN/VPN API URLs for the workstation server. Environment variables still override this file when explicitly set.
+        - button "Sync default Comfy workflows" [ref=e26] [cursor=pointer]
+      - generic [ref=e27]:
+        - generic [ref=e28]:
+          - generic [ref=e29]: Config file
+          - strong [ref=e30]: C:\Users\setho\OneDrive\Documents\0_projects\CardForge_repo_v5\workspace\config\integrations.json
+        - generic [ref=e31]:
+          - generic [ref=e32]: LM Studio
+          - strong [ref=e33]: http://127.0.0.1:1234/v1
+        - generic [ref=e34]:
+          - generic [ref=e35]: ComfyUI
+          - strong [ref=e36]: http://127.0.0.1:8188
+        - generic [ref=e37]:
+          - generic [ref=e38]: Workflows
+          - strong [ref=e39]: "1"
+      - generic [ref=e40]:
+        - generic [ref=e41]:
+          - generic [ref=e42]:
+            - heading "LM Studio settings" [level=2] [ref=e43]
+            - generic [ref=e44]: no token
+          - generic [ref=e45]:
+            - generic [ref=e46]:
+              - text: Base URL
+              - textbox "Base URL" [ref=e47]:
+                - /placeholder: http://192.168.1.42:1234/v1
+                - text: http://127.0.0.1:1234/v1
+            - generic [ref=e48]:
+              - text: Generation model
+              - textbox "Generation model" [ref=e49]:
+                - /placeholder: loaded-model-id
+                - text: local-cardforge-model
+            - generic [ref=e50]:
+              - text: Review model
+              - textbox "Review model" [ref=e51]:
+                - /placeholder: review-model-id
+                - text: local-cardforge-review-model
+            - generic [ref=e52]:
+              - generic [ref=e53]:
+                - text: Timeout seconds
+                - spinbutton "Timeout seconds" [ref=e54]: "300.0"
+              - generic [ref=e55]:
+                - text: Max tokens
+                - spinbutton "Max tokens" [ref=e56]
+            - generic [ref=e57]:
+              - text: API key / bearer token
+              - textbox "API key / bearer token" [ref=e58]:
+                - /placeholder: Leave blank to keep saved token
+            - generic [ref=e59]:
+              - checkbox "Clear saved LM Studio token" [ref=e60]
+              - text: Clear saved LM Studio token
+            - generic [ref=e61]:
+              - button "Save LM Studio" [ref=e62] [cursor=pointer]
+              - link "Test LM Studio" [ref=e63] [cursor=pointer]:
+                - /url: /projects/qa_manual_test/integrations/lmstudio/health
+        - generic [ref=e64]:
+          - generic [ref=e65]:
+            - heading "ComfyUI settings" [level=2] [ref=e66]
+            - generic [ref=e67]: no token
+          - generic [ref=e68]:
+            - generic [ref=e69]:
+              - text: Base URL
+              - textbox "Base URL" [ref=e70]:
+                - /placeholder: http://192.168.1.42:8188
+                - text: http://127.0.0.1:8188
+            - generic [ref=e71]:
+              - text: Input directory
+              - textbox "Input directory" [ref=e72]: C:\ComfyUIInstall\input
+            - generic [ref=e73]:
+              - text: Output directory
+              - textbox "Output directory" [ref=e74]: C:\ComfyUIInstall\output
+            - generic [ref=e75]:
+              - generic [ref=e76]:
+                - text: Timeout seconds
+                - spinbutton "Timeout seconds" [ref=e77]: "1800.0"
+              - generic [ref=e78]:
+                - text: Poll interval
+                - spinbutton "Poll interval" [ref=e79]: "1.0"
+            - generic [ref=e80]:
+              - text: API key / bearer token
+              - textbox "API key / bearer token" [ref=e81]:
+                - /placeholder: Leave blank to keep saved token
+            - generic [ref=e82]:
+              - checkbox "Clear saved ComfyUI token" [ref=e83]
+              - text: Clear saved ComfyUI token
+            - generic [ref=e84]:
+              - button "Save ComfyUI" [ref=e85] [cursor=pointer]
+              - link "Test ComfyUI" [ref=e86] [cursor=pointer]:
+                - /url: /projects/qa_manual_test/integrations/comfy/health
+      - generic [ref=e87]:
+        - heading "Setup directions" [level=2] [ref=e89]
+        - generic [ref=e90]:
+          - paragraph [ref=e91]:
+            - strong [ref=e92]: "Mobile/PC mode:"
+            - text: run
+            - code [ref=e93]: cardforge ui serve --mode both --host 0.0.0.0 --password "your-password"
+            - text: ", then open"
+            - code [ref=e94]: /
+            - text: on PC or
+            - code [ref=e95]: /m
+            - text: on phone/tablet.
+          - paragraph [ref=e96]:
+            - strong [ref=e97]: "LM Studio:"
+            - text: start LM Studio server on your model machine and use its OpenAI-compatible URL, usually
+            - code [ref=e98]: http://<machine-ip>:1234/v1
+            - text: .
+          - paragraph [ref=e99]:
+            - strong [ref=e100]: "ComfyUI:"
+            - text: start ComfyUI with network access and use
+            - code [ref=e101]: http://<machine-ip>:8188
+            - text: . Keep input/output paths matching that ComfyUI machine.
+        - generic [ref=e102]: cardforge llm configure --base-url http://192.168.1.42:1234/v1 --model your-model cardforge comfy configure --base-url http://192.168.1.42:8188 --input-dir C:\ComfyUIInstall\input --output-dir C:\ComfyUIInstall\output cardforge llm health --json cardforge comfy health --json
+      - generic [ref=e103]:
+        - generic [ref=e104]:
+          - heading "Comfy workflow registry" [level=2] [ref=e105]
+          - generic [ref=e106]: prepare-only safe
+        - table [ref=e108]:
+          - rowgroup [ref=e109]:
+            - row "Workflow Job type Enabled File" [ref=e110]:
+              - columnheader "Workflow" [ref=e111]
+              - columnheader "Job type" [ref=e112]
+              - columnheader "Enabled" [ref=e113]
+              - columnheader "File" [ref=e114]
+          - rowgroup [ref=e115]:
+            - row "stub.card_art.t2i.v1 Stub Card Art T2I v1 art_prepare_comfy 1 workflows/comfy/stub.card_art.t2i.v1.json" [ref=e116]:
+              - cell "stub.card_art.t2i.v1 Stub Card Art T2I v1" [ref=e117]:
+                - strong [ref=e118]: stub.card_art.t2i.v1
+                - text: Stub Card Art T2I v1
+              - cell "art_prepare_comfy" [ref=e119]
+              - cell "1" [ref=e120]
+              - cell "workflows/comfy/stub.card_art.t2i.v1.json" [ref=e121]
+      - generic [ref=e122]:
+        - generic [ref=e123]:
+          - heading "Prepared Comfy jobs" [level=2] [ref=e124]
+          - generic [ref=e125]: "0"
+        - generic [ref=e126]: No prepared Comfy jobs yet. Open a card and choose “Prepare Comfy workflow”.

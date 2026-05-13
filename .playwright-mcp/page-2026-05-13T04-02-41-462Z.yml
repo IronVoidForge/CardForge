@@ -1,0 +1,144 @@
+- generic [active] [ref=e1]:
+  - link "Skip to main content" [ref=e2] [cursor=pointer]:
+    - /url: "#main-content"
+  - generic [ref=e3]:
+    - complementary "Application sidebar" [ref=e4]:
+      - link "CardForge mobile home" [ref=e5] [cursor=pointer]:
+        - /url: /m
+        - generic [ref=e6]: ◆
+        - generic [ref=e7]:
+          - strong [ref=e8]: CardForge
+          - generic [ref=e9]: mobile card operator
+      - navigation [ref=e10]:
+        - link "All projects" [ref=e11] [cursor=pointer]:
+          - /url: /
+        - link "Dashboard" [ref=e12] [cursor=pointer]:
+          - /url: /projects/qa_manual_test
+        - link "SET001" [ref=e13] [cursor=pointer]:
+          - /url: /projects/qa_manual_test/sets/SET001
+        - link "Templates" [ref=e14] [cursor=pointer]:
+          - /url: /projects/qa_manual_test/templates
+        - link "Integrations" [ref=e15] [cursor=pointer]:
+          - /url: /projects/qa_manual_test/integrations
+        - link "Review queue" [ref=e16] [cursor=pointer]:
+          - /url: /projects/qa_manual_test/review
+        - link "Jobs" [ref=e17] [cursor=pointer]:
+          - /url: /projects/qa_manual_test/jobs
+      - generic [ref=e18]:
+        - text: Mobile UI controls a local workstation. Keep this server on a trusted LAN or VPN.
+        - text: Login protection is active.
+    - main [ref=e19]:
+      - generic [ref=e20]:
+        - generic [ref=e21]:
+          - paragraph [ref=e22]: CARD_0002 · creature · rare
+          - heading "Soul-Light Sentinel" [level=1] [ref=e23]
+          - paragraph [ref=e24]: Creature
+        - generic [ref=e25]: validated
+      - generic [ref=e26]:
+        - generic [ref=e28]:
+          - heading "Preview" [level=2] [ref=e30]
+          - generic [ref=e31]: No render yet
+          - generic [ref=e32]:
+            - button "Render with placeholder" [ref=e34] [cursor=pointer]
+            - button "Render with locked art" [ref=e36] [cursor=pointer]
+        - generic [ref=e37]:
+          - generic [ref=e38]:
+            - generic [ref=e39]:
+              - heading "Card text" [level=2] [ref=e40]
+              - generic [ref=e41]: v1
+            - generic [ref=e42]:
+              - generic [ref=e43]:
+                - text: Name
+                - textbox "Name" [ref=e44]: Soul-Light Sentinel
+              - generic [ref=e45]:
+                - generic [ref=e46]:
+                  - text: Type line
+                  - textbox "Type line" [ref=e47]: Creature
+                - generic [ref=e48]:
+                  - text: Rarity
+                  - textbox "Rarity" [ref=e49]: rare
+                - generic [ref=e50]:
+                  - text: Faction
+                  - textbox "Faction" [ref=e51]: Necromancy
+              - generic [ref=e52]:
+                - text: Rules text
+                - textbox "Rules text" [ref=e53]: Guard. When this creature deals combat damage to a player, heal your hero for 2.
+              - generic [ref=e54]:
+                - text: Flavor text
+                - textbox "Flavor text" [ref=e55]
+              - generic [ref=e56]:
+                - text: Art direction
+                - textbox "Art direction" [ref=e57]: A tall, skeletal figure draped in tattered, midnight-blue robes. The entity holds a rusted iron lantern aloft, emitting a sickly, swirling emerald soul-fire that illuminates a graveyard of fog-covered tombstones. Dark fantasy aesthetic with heavy chiaroscuro lighting.
+              - generic [ref=e58]:
+                - text: Design notes
+                - textbox "Design notes" [ref=e59]: Defensive anchor for Necromancy decks. High health and Guard provide stability, while Lifelink rewards aggressive positioning.
+              - button "Save new version" [ref=e60] [cursor=pointer]
+          - generic [ref=e61]:
+            - generic [ref=e62]:
+              - heading "AI text helpers" [level=2] [ref=e63]
+              - generic [ref=e64]: offline by default
+            - generic [ref=e65]:
+              - button "Autofill missing fields" [ref=e67] [cursor=pointer]
+              - button "Live autofill" [ref=e69] [cursor=pointer]
+              - button "Auto refine" [ref=e71] [cursor=pointer]
+              - button "Live refine" [ref=e73] [cursor=pointer]
+              - button "Auto review text" [ref=e75] [cursor=pointer]
+              - button "Validate" [ref=e77] [cursor=pointer]
+      - generic [ref=e78]:
+        - generic [ref=e79]:
+          - generic [ref=e80]:
+            - heading "Art candidates" [level=2] [ref=e81]
+            - generic [ref=e82]: "0"
+          - generic [ref=e83]:
+            - generic [ref=e84]:
+              - text: Count
+              - spinbutton "Count" [ref=e85]: "4"
+            - button "Generate dummy art" [ref=e86] [cursor=pointer]
+          - generic [ref=e87]:
+            - generic [ref=e88]:
+              - generic [ref=e89]:
+                - text: Workflow
+                - textbox "Workflow" [ref=e90]: stub.card_art.t2i.v1
+              - button "Prepare Comfy workflow" [ref=e91] [cursor=pointer]
+            - generic [ref=e92]:
+              - generic [ref=e93]:
+                - text: Workflow
+                - textbox "Workflow" [ref=e94]: stub.card_art.t2i.v1
+              - generic [ref=e95]:
+                - text: Seed
+                - textbox "Seed" [ref=e96]:
+                  - /placeholder: optional
+              - generic [ref=e97]:
+                - text: Width
+                - textbox "Width" [ref=e98]: "768"
+              - generic [ref=e99]:
+                - text: Height
+                - textbox "Height" [ref=e100]: "1024"
+              - button "Submit live Comfy art" [ref=e101] [cursor=pointer]
+          - generic [ref=e102]: No art candidates yet. Generate dummy art or connect ComfyUI later.
+        - generic [ref=e103]:
+          - heading "Open review items" [level=2] [ref=e105]
+          - generic [ref=e106]:
+            - generic [ref=e107]:
+              - generic [ref=e108]: normal
+              - strong [ref=e109]: "Review card text: Soul-Light Sentinel"
+              - generic [ref=e110]: Generated card needs text/rules review before art or final rendering.
+            - generic [ref=e111]:
+              - generic [ref=e112]: normal
+              - strong [ref=e113]: Review generated batch BATCH_0001
+              - generic [ref=e114]: Generated 1 card(s). Review type mix, rules clarity, and batch health.
+      - generic [ref=e115]:
+        - heading "Version history" [level=2] [ref=e117]
+        - table [ref=e119]:
+          - rowgroup [ref=e120]:
+            - row "Version Source Reason Created" [ref=e121]:
+              - columnheader "Version" [ref=e122]
+              - columnheader "Source" [ref=e123]
+              - columnheader "Reason" [ref=e124]
+              - columnheader "Created" [ref=e125]
+          - rowgroup [ref=e126]:
+            - row "v1 llm_generation Initial card creation 2026-05-13 04:02:31" [ref=e127]:
+              - cell "v1" [ref=e128]
+              - cell "llm_generation" [ref=e129]
+              - cell "Initial card creation" [ref=e130]
+              - cell "2026-05-13 04:02:31" [ref=e131]

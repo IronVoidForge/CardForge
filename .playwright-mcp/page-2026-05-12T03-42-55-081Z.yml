@@ -1,0 +1,74 @@
+- generic [active] [ref=e1]:
+  - link "Skip to main content" [ref=e2] [cursor=pointer]:
+    - /url: "#main-content"
+  - generic "Mobile application bar" [ref=e3]:
+    - link "◆ CardForge" [ref=e4] [cursor=pointer]:
+      - /url: /m
+      - generic [ref=e5]: ◆
+      - strong [ref=e6]: CardForge
+    - button "Lock" [ref=e8] [cursor=pointer]
+  - main [ref=e10]:
+    - generic [ref=e11]:
+      - paragraph [ref=e12]: Review item 4 of 3 open
+      - 'heading "Image Lab case ILAB_0001: Lantern Audit Warden" [level=1] [ref=e13]'
+      - paragraph [ref=e14]: image_lab · image_lab_case:ILAB_0001 · normal
+      - generic [ref=e15]:
+        - link "Queue" [ref=e16] [cursor=pointer]:
+          - /url: /m/qa_manual_test/review
+        - link "Next" [ref=e17] [cursor=pointer]:
+          - /url: /m/qa_manual_test/review/3
+    - generic [ref=e18]:
+      - generic [ref=e19]: No preview image attached to this review item.
+      - generic [ref=e20]:
+        - generic [ref=e21]: open
+        - generic [ref=e22]: image_lab
+      - paragraph [ref=e23]: Run isolated art prompt attempts and promote only the best prompt lessons.
+      - group [ref=e24]:
+        - generic "Metadata" [ref=e25] [cursor=pointer]
+    - generic [ref=e26]:
+      - generic [ref=e27]:
+        - heading "Decision" [level=2] [ref=e28]
+        - generic [ref=e29]: tap-friendly
+      - generic [ref=e30]:
+        - button "Approve" [ref=e32] [cursor=pointer]
+        - button "Needs rework" [ref=e34] [cursor=pointer]
+        - button "Defer" [ref=e36] [cursor=pointer]
+        - button "Reject" [ref=e38] [cursor=pointer]
+      - generic [ref=e39]:
+        - generic [ref=e40]:
+          - text: Decision
+          - combobox "Decision" [ref=e41]:
+            - option "Request rework" [selected]
+            - option "Approve"
+            - option "Reject"
+            - option "Defer"
+        - generic [ref=e42]:
+          - text: Reason
+          - textbox "Reason" [ref=e43]:
+            - /placeholder: Optional short reason
+        - generic [ref=e44]:
+          - text: Tags
+          - textbox "Tags" [ref=e45]:
+            - /placeholder: comma-separated tags
+        - generic [ref=e46]:
+          - text: Notes
+          - textbox "Notes" [ref=e47]:
+            - /placeholder: Voice dictation works well here.
+        - button "Submit with notes" [ref=e48] [cursor=pointer]
+    - generic [ref=e49]:
+      - heading "Quick failure tags" [level=2] [ref=e51]
+      - generic [ref=e52]:
+        - button "weak evidence" [ref=e54] [cursor=pointer]
+        - button "unsafe to apply" [ref=e56] [cursor=pointer]
+        - button "needs diff" [ref=e58] [cursor=pointer]
+        - button "too broad" [ref=e60] [cursor=pointer]
+        - button "good candidate" [ref=e62] [cursor=pointer]
+  - navigation "Mobile bottom navigation" [ref=e63]:
+    - link "Home" [ref=e64] [cursor=pointer]:
+      - /url: /m
+    - link "Dash" [ref=e65] [cursor=pointer]:
+      - /url: /m/qa_manual_test
+    - link "Queue" [ref=e66] [cursor=pointer]:
+      - /url: /m/qa_manual_test/review
+    - link "Next" [ref=e67] [cursor=pointer]:
+      - /url: /m/qa_manual_test/review/next

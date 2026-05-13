@@ -93,7 +93,9 @@ def test_mobile_focused_review_flow_with_quick_tags(db: Database) -> None:
 
         detail = client.get("/m/gravebound_test/review/1")
         assert detail.status_code == 200
-        assert "Quick failure tags" in detail.text
+        assert "Review 1 of 1 open" in detail.text
+        assert "Review cues" in detail.text
+        assert 'type="button" data-review-tag="rules_unclear"' in detail.text
         assert "Submit with notes" in detail.text
 
         decided = client.post(

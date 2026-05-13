@@ -57,7 +57,10 @@
 </div>
 
 <section class="panel form-panel">
-  <div class="panel-heading"><h2>Edit proposed markdown</h2><span class="pill {{ version.status|status_class }}">{{ version.status }}</span></div>
+  <div class="panel-heading">
+    <h2>{{ "Edit proposed markdown" if editable else "Prompt markdown" }}</h2>
+    <span class="pill {{ version.status|status_class }}">{{ version.status }}</span>
+  </div>
   {% if editable %}
   <form method="post" action="/projects/{{ project.slug }}/prompt-studio/{{ version.version_key }}/update" class="stacked-form">
     <label>Change summary <input name="summary" placeholder="What changed and why?"></label>
@@ -67,7 +70,7 @@
     <button class="primary-button" type="submit">Validate and save proposed version</button>
   </form>
   {% else %}
-  <textarea rows="30" spellcheck="false" class="code-input" readonly>{{ selected_markdown }}</textarea>
+  <pre class="code-input read-only-code" aria-label="Read-only prompt template markdown">{{ selected_markdown }}</pre>
   {% endif %}
 </section>
 

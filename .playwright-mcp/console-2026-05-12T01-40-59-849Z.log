@@ -1,0 +1,2 @@
+[     114ms] [WARNING] <meta name="apple-mobile-web-app-capable" content="yes"> is deprecated. Please include <meta name="mobile-web-app-capable" content="yes"> @ http://127.0.0.1:8765/projects/qa_manual_test/prompt-studio:0
+[ 1362098ms] [WARNING] <meta name="apple-mobile-web-app-capable" content="yes"> is deprecated. Please include <meta name="mobile-web-app-capable" content="yes"> @ http://127.0.0.1:8765/projects/qa_manual_test/prompt-studio/auto_review_v1_v001:0

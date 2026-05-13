@@ -2,6 +2,7 @@ from __future__ import annotations
 
 from pathlib import Path
 from typing import Any
+from urllib.parse import quote
 
 from fastapi import FastAPI, Form, HTTPException, Request
 from fastapi.responses import FileResponse, HTMLResponse, JSONResponse, RedirectResponse, Response
@@ -536,6 +537,13 @@ def create_app(db: Database | None = None) -> FastAPI:
             payload = ui.set_detail(project_slug, set_code)
         except KeyError as exc:
             raise HTTPException(status_code=404, detail=str(exc)) from exc
+        export_type = request.query_params.get("export")
+        export_path = request.query_params.get("path")
+        if export_type and export_path:
+            payload["export_result"] = {
+                "type": export_type,
+                "path": export_path,
+            }
         return templates.TemplateResponse(request, "set_detail.html", payload)
 
     @app.post("/projects/{project_slug}/sets/{set_code}/batches/generate")
@@ -544,8 +552,15 @@ def create_app(db: Database | None = None) -> FastAPI:
         set_code: str,
         request_text: str = Form("Generate a balanced gothic fantasy card batch."),
         count: int = Form(12),
+        live: str = Form(""),
     ) -> RedirectResponse:
-        result = CardBatchService(database).generate_batch(project_slug, set_code, count=count, request_text=request_text, use_mock=True)
+        result = CardBatchService(database).generate_batch(
+            project_slug,
+            set_code,
+            count=count,
+            request_text=request_text,
+            use_mock=live != "yes",
+        )
         return _redirect(f"/projects/{project_slug}/batches/{result['batch_key']}")
 
     @app.post("/projects/{project_slug}/sets/{set_code}/cards/create")
@@ -582,16 +597,18 @@ def create_app(db: Database | None = None) -> FastAPI:
     def export_set(project_slug: str, set_code: str, export_type: str) -> RedirectResponse:
         service = ExportService(database)
         if export_type == "json":
-            service.export_json(project_slug, set_code)
+            result = service.export_json(project_slug, set_code)
         elif export_type == "csv":
-            service.export_csv(project_slug, set_code)
+            result = service.export_csv(project_slug, set_code)
         elif export_type == "markdown":
-            service.export_markdown_catalog(project_slug, set_code)
+            result = service.export_markdown_catalog(project_slug, set_code)
         elif export_type == "png":
-            service.export_png_bundle(project_slug, set_code)
+            result = service.export_png_bundle(project_slug, set_code)
         else:
             raise HTTPException(status_code=400, detail=f"Unsupported export type: {export_type}")
-        return _redirect(f"/projects/{project_slug}/sets/{set_code}")
+        return _redirect(
+            f"/projects/{project_slug}/sets/{set_code}?export={quote(export_type)}&path={quote(result['output_path'])}#exports"
+        )
 
     @app.get("/projects/{project_slug}/batches/{batch_key}", response_class=HTMLResponse)
     def batch_detail(request: Request, project_slug: str, batch_key: str) -> HTMLResponse:
@@ -654,13 +671,13 @@ def create_app(db: Database | None = None) -> FastAPI:
         return _redirect(f"/projects/{project_slug}/cards/{card_key}")
 
     @app.post("/projects/{project_slug}/cards/{card_key}/autofill")
-    def autofill_card(project_slug: str, card_key: str) -> RedirectResponse:
-        CardAutofillService(database).autofill_card(project_slug, card_key)
+    def autofill_card(project_slug: str, card_key: str, live: str = Form("")) -> RedirectResponse:
+        CardAutofillService(database).autofill_card(project_slug, card_key, use_mock=live != "yes")
         return _redirect(f"/projects/{project_slug}/cards/{card_key}")
 
     @app.post("/projects/{project_slug}/cards/{card_key}/refine")
-    def refine_card(project_slug: str, card_key: str) -> RedirectResponse:
-        CardRefinementService(database).refine_card(project_slug, card_key)
+    def refine_card(project_slug: str, card_key: str, live: str = Form("")) -> RedirectResponse:
+        CardRefinementService(database).refine_card(project_slug, card_key, use_mock=live != "yes")
         return _redirect(f"/projects/{project_slug}/cards/{card_key}")
 
     @app.post("/projects/{project_slug}/cards/{card_key}/auto-review")
@@ -672,6 +689,26 @@ def create_app(db: Database | None = None) -> FastAPI:
     @app.post("/projects/{project_slug}/cards/{card_key}/art/prepare-comfy")
     def prepare_comfy_art(project_slug: str, card_key: str, workflow_key: str = Form("stub.card_art.t2i.v1")) -> RedirectResponse:
         ComfyArtService(database).prepare_card_art(project_slug, card_key, workflow_key=workflow_key, submit=False)
+        return _redirect(f"/projects/{project_slug}/cards/{card_key}")
+
+    @app.post("/projects/{project_slug}/cards/{card_key}/art/submit-comfy")
+    def submit_comfy_art(
+        project_slug: str,
+        card_key: str,
+        workflow_key: str = Form("stub.card_art.t2i.v1"),
+        seed: str = Form(""),
+        width: str = Form(""),
+        height: str = Form(""),
+    ) -> RedirectResponse:
+        ComfyArtService(database).prepare_card_art(
+            project_slug,
+            card_key,
+            workflow_key=workflow_key,
+            seed=_optional_int(seed),
+            width=_optional_int(width),
+            height=_optional_int(height),
+            submit=True,
+        )
         return _redirect(f"/projects/{project_slug}/cards/{card_key}")
 
     @app.post("/projects/{project_slug}/cards/{card_key}/art/generate-dummy")

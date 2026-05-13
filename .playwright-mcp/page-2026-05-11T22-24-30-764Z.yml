@@ -1,0 +1,121 @@
+- generic [active] [ref=e1]:
+  - link "Skip to main content" [ref=e2] [cursor=pointer]:
+    - /url: "#main-content"
+  - generic [ref=e3]:
+    - complementary "Application sidebar" [ref=e4]:
+      - link "CardForge mobile home" [ref=e5] [cursor=pointer]:
+        - /url: /m
+        - generic [ref=e6]: ◆
+        - generic [ref=e7]:
+          - strong [ref=e8]: CardForge
+          - generic [ref=e9]: mobile card operator
+      - navigation [ref=e10]:
+        - link "All projects" [ref=e11] [cursor=pointer]:
+          - /url: /
+        - link "Dashboard" [ref=e12] [cursor=pointer]:
+          - /url: /projects/qa_manual_test
+        - link "SET001" [ref=e13] [cursor=pointer]:
+          - /url: /projects/qa_manual_test/sets/SET001
+        - link "Templates" [ref=e14] [cursor=pointer]:
+          - /url: /projects/qa_manual_test/templates
+        - link "Integrations" [ref=e15] [cursor=pointer]:
+          - /url: /projects/qa_manual_test/integrations
+        - link "Review queue" [ref=e16] [cursor=pointer]:
+          - /url: /projects/qa_manual_test/review
+        - link "Jobs" [ref=e17] [cursor=pointer]:
+          - /url: /projects/qa_manual_test/jobs
+      - generic [ref=e18]:
+        - text: Mobile UI controls a local workstation. Keep this server on a trusted LAN or VPN.
+        - text: Login protection is active.
+    - main [ref=e19]:
+      - generic [ref=e20]:
+        - generic [ref=e21]:
+          - paragraph [ref=e22]: CARD_0001 · creature · common
+          - heading "Lantern Audit Warden" [level=1] [ref=e23]
+          - paragraph [ref=e24]: Creature
+        - generic [ref=e25]: validated
+      - generic [ref=e26]:
+        - generic [ref=e28]:
+          - heading "Preview" [level=2] [ref=e30]
+          - generic [ref=e31]: No render yet
+          - generic [ref=e32]:
+            - button "Render with placeholder" [ref=e34] [cursor=pointer]
+            - button "Render with locked art" [ref=e36] [cursor=pointer]
+        - generic [ref=e37]:
+          - generic [ref=e38]:
+            - generic [ref=e39]:
+              - heading "Card text" [level=2] [ref=e40]
+              - generic [ref=e41]: v1
+            - generic [ref=e42]:
+              - generic [ref=e43]:
+                - text: Name
+                - textbox "Name" [ref=e44]: Lantern Audit Warden
+              - generic [ref=e45]:
+                - generic [ref=e46]:
+                  - text: Type line
+                  - textbox "Type line" [ref=e47]: Creature
+                - generic [ref=e48]:
+                  - text: Rarity
+                  - textbox "Rarity" [ref=e49]: common
+                - generic [ref=e50]:
+                  - text: Faction
+                  - textbox "Faction" [ref=e51]
+              - generic [ref=e52]:
+                - text: Rules text
+                - textbox "Rules text" [ref=e53]: Guard. When this dies, draw a card.
+              - generic [ref=e54]:
+                - text: Flavor text
+                - textbox "Flavor text" [ref=e55]
+              - generic [ref=e56]:
+                - text: Art direction
+                - textbox "Art direction" [ref=e57]
+              - generic [ref=e58]:
+                - text: Design notes
+                - textbox "Design notes" [ref=e59]
+              - button "Save new version" [ref=e60] [cursor=pointer]
+          - generic [ref=e61]:
+            - generic [ref=e62]:
+              - heading "Offline AI helpers" [level=2] [ref=e63]
+              - generic [ref=e64]: simulated
+            - generic [ref=e65]:
+              - button "Autofill missing fields" [ref=e67] [cursor=pointer]
+              - button "Auto refine" [ref=e69] [cursor=pointer]
+              - button "Auto review text" [ref=e71] [cursor=pointer]
+              - button "Validate" [ref=e73] [cursor=pointer]
+      - generic [ref=e74]:
+        - generic [ref=e75]:
+          - generic [ref=e76]:
+            - heading "Art candidates" [level=2] [ref=e77]
+            - generic [ref=e78]: "0"
+          - generic [ref=e79]:
+            - generic [ref=e80]:
+              - text: Count
+              - spinbutton "Count" [ref=e81]: "4"
+            - button "Generate dummy art" [ref=e82] [cursor=pointer]
+          - generic [ref=e83]:
+            - generic [ref=e84]:
+              - text: Workflow
+              - textbox "Workflow" [ref=e85]: stub.card_art.t2i.v1
+            - button "Prepare Comfy workflow" [ref=e86] [cursor=pointer]
+          - generic [ref=e87]: No art candidates yet. Generate dummy art or connect ComfyUI later.
+        - generic [ref=e88]:
+          - heading "Open review items" [level=2] [ref=e90]
+          - generic [ref=e92]:
+            - generic [ref=e93]: normal
+            - strong [ref=e94]: "Review card text: Lantern Audit Warden"
+            - generic [ref=e95]: New manually created card needs text review.
+      - generic [ref=e96]:
+        - heading "Version history" [level=2] [ref=e98]
+        - table [ref=e100]:
+          - rowgroup [ref=e101]:
+            - row "Version Source Reason Created" [ref=e102]:
+              - columnheader "Version" [ref=e103]
+              - columnheader "Source" [ref=e104]
+              - columnheader "Reason" [ref=e105]
+              - columnheader "Created" [ref=e106]
+          - rowgroup [ref=e107]:
+            - row "v1 manual_create Initial card creation 2026-05-11 22:02:31" [ref=e108]:
+              - cell "v1" [ref=e109]
+              - cell "manual_create" [ref=e110]
+              - cell "Initial card creation" [ref=e111]
+              - cell "2026-05-11 22:02:31" [ref=e112]

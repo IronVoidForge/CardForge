@@ -1,0 +1,86 @@
+- generic [active] [ref=e1]:
+  - link "Skip to main content" [ref=e2] [cursor=pointer]:
+    - /url: "#main-content"
+  - generic [ref=e3]:
+    - complementary "Application sidebar" [ref=e4]:
+      - link "CardForge mobile home" [ref=e5] [cursor=pointer]:
+        - /url: /m
+        - generic [ref=e6]: ◆
+        - generic [ref=e7]:
+          - strong [ref=e8]: CardForge
+          - generic [ref=e9]: mobile card operator
+      - navigation [ref=e10]:
+        - link "All projects" [ref=e11] [cursor=pointer]:
+          - /url: /
+        - link "Dashboard" [ref=e12] [cursor=pointer]:
+          - /url: /projects/qa_manual_test
+        - link "Templates" [ref=e13] [cursor=pointer]:
+          - /url: /projects/qa_manual_test/templates
+        - link "Integrations" [ref=e14] [cursor=pointer]:
+          - /url: /projects/qa_manual_test/integrations
+        - link "Review queue" [ref=e15] [cursor=pointer]:
+          - /url: /projects/qa_manual_test/review
+        - link "Jobs" [ref=e16] [cursor=pointer]:
+          - /url: /projects/qa_manual_test/jobs
+      - generic [ref=e17]:
+        - text: Mobile UI controls a local workstation. Keep this server on a trusted LAN or VPN.
+        - text: Login protection is active.
+    - main [ref=e18]:
+      - generic [ref=e19]:
+        - generic [ref=e20]:
+          - paragraph [ref=e21]: Template studio
+          - heading "Card templates" [level=1] [ref=e22]
+          - paragraph [ref=e23]: Manage front/back layout JSON used by deterministic renders.
+        - button "Sync registry" [ref=e25] [cursor=pointer]
+      - generic [ref=e26]:
+        - generic [ref=e27]:
+          - generic [ref=e28]: Total templates
+          - strong [ref=e29]: "6"
+        - generic [ref=e30]:
+          - generic [ref=e31]: Fronts
+          - strong [ref=e32]: "5"
+        - generic [ref=e33]:
+          - generic [ref=e34]: Backs
+          - strong [ref=e35]: "1"
+        - generic [ref=e36]:
+          - generic [ref=e37]: Status
+          - strong [ref=e38]: OK
+      - generic [ref=e39]:
+        - heading "Template library" [level=2] [ref=e41]
+        - generic [ref=e42]:
+          - link "Preview Default Card Back default_card_back_v1 · back · any 750×1050" [ref=e43] [cursor=pointer]:
+            - /url: /projects/qa_manual_test/templates/default_card_back_v1
+            - generic [ref=e44]: Preview
+            - strong [ref=e45]: Default Card Back
+            - generic [ref=e46]: default_card_back_v1 · back · any
+            - generic [ref=e47]: 750×1050
+          - link "Preview Default Creature Front default_creature_front_v1 · front · creature 750×1050" [ref=e48] [cursor=pointer]:
+            - /url: /projects/qa_manual_test/templates/default_creature_front_v1
+            - generic [ref=e49]: Preview
+            - strong [ref=e50]: Default Creature Front
+            - generic [ref=e51]: default_creature_front_v1 · front · creature
+            - generic [ref=e52]: 750×1050
+          - link "Preview Default Equipment Front default_equipment_front_v1 · front · equipment 750×1050" [ref=e53] [cursor=pointer]:
+            - /url: /projects/qa_manual_test/templates/default_equipment_front_v1
+            - generic [ref=e54]: Preview
+            - strong [ref=e55]: Default Equipment Front
+            - generic [ref=e56]: default_equipment_front_v1 · front · equipment
+            - generic [ref=e57]: 750×1050
+          - link "Preview Default Legendary Front default_legendary_front_v1 · front · legendary 750×1050" [ref=e58] [cursor=pointer]:
+            - /url: /projects/qa_manual_test/templates/default_legendary_front_v1
+            - generic [ref=e59]: Preview
+            - strong [ref=e60]: Default Legendary Front
+            - generic [ref=e61]: default_legendary_front_v1 · front · legendary
+            - generic [ref=e62]: 750×1050
+          - link "Preview Default Location Front default_location_front_v1 · front · location 750×1050" [ref=e63] [cursor=pointer]:
+            - /url: /projects/qa_manual_test/templates/default_location_front_v1
+            - generic [ref=e64]: Preview
+            - strong [ref=e65]: Default Location Front
+            - generic [ref=e66]: default_location_front_v1 · front · location
+            - generic [ref=e67]: 750×1050
+          - link "Preview Default Spell Front default_spell_front_v1 · front · spell 750×1050" [ref=e68] [cursor=pointer]:
+            - /url: /projects/qa_manual_test/templates/default_spell_front_v1
+            - generic [ref=e69]: Preview
+            - strong [ref=e70]: Default Spell Front
+            - generic [ref=e71]: default_spell_front_v1 · front · spell
+            - generic [ref=e72]: 750×1050

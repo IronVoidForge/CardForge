@@ -15,7 +15,9 @@
 {% endblock %}
 {% block content %}
 <section class="mobile-hero compact review-focus-hero">
-  <p class="eyebrow">Review item {{ review.id }} of {{ open_count }} open</p>
+  <p class="eyebrow">
+    {% if review_position %}Review {{ review_position }} of {{ open_count }} open{% else %}Review #{{ review.id }}{% endif %}
+  </p>
   <h1>{{ review.title }}</h1>
   <p>{{ review.review_type }} · {{ review.target_type }}:{{ review.target_id }} · {{ review.severity }}</p>
   <div class="button-row wrap">
@@ -73,7 +75,7 @@
       <button class="danger-button full" type="submit">Reject</button>
     </form>
   </div>
-  <form method="post" action="/projects/{{ project.slug }}/review/{{ review.id }}/decide" class="stacked-form mobile-note-form">
+  <form method="post" action="/projects/{{ project.slug }}/review/{{ review.id }}/decide" class="stacked-form mobile-note-form" id="mobile-decision-notes">
     <input type="hidden" name="return_to" value="/m/{{ project.slug }}/review/next">
     <label>Decision
       <select name="decision">
@@ -84,23 +86,18 @@
       </select>
     </label>
     <label>Reason <input name="reason" placeholder="Optional short reason"></label>
-    <label>Tags <input name="tags" placeholder="comma-separated tags"></label>
+    <label>Tags <input name="tags" id="review-tags-input" placeholder="comma-separated tags"></label>
     <label>Notes <textarea name="notes" rows="4" placeholder="Voice dictation works well here."></textarea></label>
     <button class="primary-button full" type="submit">Submit with notes</button>
   </form>
 </section>
 
 <section class="panel">
-  <div class="panel-heading"><h2>Quick failure tags</h2></div>
+  <div class="panel-heading"><h2>Review cues</h2><span class="pill neutral">adds to notes</span></div>
+  <p class="muted compact-copy">Tap a cue to add it to the notes form. Nothing is submitted until you press Submit with notes.</p>
   <div class="quick-tag-grid">
     {% for tag in review.quick_tags %}
-    <form method="post" action="/projects/{{ project.slug }}/review/{{ review.id }}/decide">
-      <input type="hidden" name="decision" value="request_rework">
-      <input type="hidden" name="reason" value="{{ tag }}">
-      <input type="hidden" name="tags" value="{{ tag }}">
-      <input type="hidden" name="return_to" value="/m/{{ project.slug }}/review/next">
-      <button class="tag-button" type="submit">{{ tag.replace('_', ' ') }}</button>
-    </form>
+    <button class="tag-button" type="button" data-review-tag="{{ tag }}">{{ tag.replace('_', ' ') }}</button>
     {% endfor %}
   </div>
 </section>
