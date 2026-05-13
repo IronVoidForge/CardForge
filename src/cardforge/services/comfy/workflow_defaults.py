@@ -5,7 +5,7 @@ from typing import Any
 DEFAULT_CARD_ART_WORKFLOW_KEY = "stub.card_art.t2i.v1"
 
 DEFAULT_CARD_ART_API_WORKFLOW: dict[str, Any] = {
-    "3": {"class_type": "KSampler", "inputs": {"seed": 1000, "steps": 28, "cfg": 6.5, "sampler_name": "euler", "scheduler": "normal", "model": ["4", 0], "positive": ["6", 0], "negative": ["7", 0], "latent_image": ["5", 0]}},
+    "3": {"class_type": "KSampler", "inputs": {"seed": 1000, "steps": 28, "cfg": 6.5, "sampler_name": "euler", "scheduler": "normal", "denoise": 1.0, "model": ["4", 0], "positive": ["6", 0], "negative": ["7", 0], "latent_image": ["5", 0]}},
     "4": {"class_type": "CheckpointLoaderSimple", "inputs": {"ckpt_name": "juggernautXL_version6Rundiffusion.safetensors"}},
     "5": {"class_type": "EmptyLatentImage", "inputs": {"width": 1024, "height": 768, "batch_size": 1}},
     "6": {"class_type": "CLIPTextEncode", "inputs": {"text": "card art prompt", "clip": ["4", 1]}},

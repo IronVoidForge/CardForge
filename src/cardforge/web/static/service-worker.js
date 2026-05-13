@@ -1,5 +1,5 @@
-const CACHE_NAME = "cardforge-mobile-shell-v1";
-const SHELL = ["/static/cardforge.css", "/static/mobile.js", "/static/icon.svg", "/offline"];
+const CACHE_NAME = "cardforge-mobile-shell-v2";
+const SHELL = ["/static/cardforge.css?v=20260513", "/static/mobile.js?v=20260513", "/static/icon.svg", "/offline"];
 self.addEventListener("install", (event) => {
   event.waitUntil(caches.open(CACHE_NAME).then((cache) => cache.addAll(SHELL)));
   self.skipWaiting();

@@ -60,6 +60,8 @@ def test_web_offline_generation_card_render_and_review_flow(db: Database) -> Non
         card_page = client.get("/projects/gravebound_test/cards/CARD_0001")
         assert "RENDER_0001" in card_page.text
         assert "locked" in card_page.text
+        assert 'data-lightbox-src="/assets/projects/gravebound_test/cards/CARD_0001/renders/preview_render_0001.png"' in card_page.text
+        assert "Click to enlarge" in card_page.text
 
         exported = client.post("/projects/gravebound_test/sets/SET001/export/json", follow_redirects=False)
         assert exported.status_code == 303

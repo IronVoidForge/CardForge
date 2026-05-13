@@ -26,10 +26,20 @@
     <div class="panel sticky-panel">
       <div class="panel-heading"><h2>Preview</h2></div>
       {% if card.latest_render %}
-        <img class="large-preview" src="{{ card.latest_render.preview_path|asset_url }}" alt="{{ card.name }} rendered preview">
+        <button
+          class="preview-zoom-button"
+          type="button"
+          data-lightbox-src="{{ card.latest_render.preview_path|asset_url }}"
+          data-lightbox-alt="{{ card.name }} rendered preview"
+          aria-label="Open {{ card.name }} render full screen"
+        >
+          <img class="large-preview" src="{{ card.latest_render.preview_path|asset_url }}" alt="{{ card.name }} rendered preview">
+          <span class="preview-zoom-hint">Click to enlarge</span>
+        </button>
         <div class="metric-strip">
           <span>{{ card.latest_render.render_key }}</span>
           <span class="pill {{ card.latest_render.status|status_class }}">{{ card.latest_render.status }}</span>
+          <a class="small-button" href="{{ card.latest_render.preview_path|asset_url }}" target="_blank" rel="noopener">Open image</a>
         </div>
       {% else %}
         <div class="large-placeholder">No render yet</div>
