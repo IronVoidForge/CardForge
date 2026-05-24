@@ -1,0 +1,93 @@
+{
+  "id": 178,
+  "set_id": 2,
+  "batch_id": null,
+  "card_key": "MON-G1-028",
+  "name": "Blank Page Beast",
+  "slug": "blank_page_beast",
+  "card_number": "MON-G1-028",
+  "card_type": "mmm_monster",
+  "type_line": "elite",
+  "rarity": "common",
+  "faction": "",
+  "cost_json": "{\"generic\": 0, \"display\": \"0\"}",
+  "stats_json": "{\"attack\": 1, \"health\": null}",
+  "rules_text": "Attack: Page Chomp - 1 damage\nAbility: . Can only be damaged by a 3-die solve: answer, notation, and fluency/explanation.",
+  "flavor_text": "The beast folds into a bright map page.",
+  "keywords_json": "[]",
+  "mechanics_json": "[{\"source\": \"magic_math_monsters\", \"raw\": {\"id\": \"MON-G1-028\", \"asset_type\": \"monster_deck_card\", \"physical_deck\": \"Monster Deck\", \"version\": \"4.0-simple-rules\", \"name\": \"Blank Page Beast\", \"act\": \"Finale\", \"monster_type\": \"elite\", \"hp\": {\"base_two_heroes\": 14, \"one_hero\": 12, \"three_heroes\": 17, \"four_heroes\": 20, \"scaling_note\": \"Use base_two_heroes for 2 children. Adjust only if live playtests consistently run too short or long.\"}, \"attack\": {\"name\": \"Page Chomp\", \"damage\": 1, \"dodge_rule\": \"Targeted hero answers the Quick Dodge Rune strip from the top Player Deck card. Correct = no damage; wrong or heavily helped = lose 1 potion.\"}, \"special_ability\": {\"rules_text\": \"Can only be damaged by a 3-die solve: answer, notation, and fluency/explanation.\", \"educational_purpose\": \"Final review of the scoring system.\"}, \"encounter_guidance\": {\"use_in_random_deck\": \"May be shuffled into the Monster Deck for its act or selected by the Adventure Book.\", \"kid_safety_tone\": \"Obstacle/cursed creature, not a horror monster. Defeat restores or redirects it.\", \"first_play_mode\": \"Ignore this monster special ability unless this is a boss fight. This keeps first games very simple.\"}, \"defeat_text\": \"The beast folds into a bright map page.\", \"art\": {\"art_window_prompt\": \"Child-friendly cozy fantasy monster card art for 'Blank Page Beast': Blank Page Beast, a cozy fantasy creature or obstacle from Finale, expressive and exciting but safe for kids. Bright storybook adventure style, expressive, non-scary, clear main subject, no text, no numerals, no equations, no copyrighted characters.\", \"negative_prompt\": \"no gore, no horror, no realistic violence, no weapons pointed at viewer, no text, no numerals, no copyrighted characters\"}, \"status\": {\"drafted\": true, \"self_reviewed_v3\": true, \"math_checked\": true, \"human_playtested\": false, \"final\": false, \"self_reviewed_v4_simple_rules\": true}, \"title\": \"Blank Page Beast\", \"cardforge_import\": {\"target_set_code\": \"MONSTER\", \"target_card_type\": \"mmm_monster\", \"target_template_id\": \"mmm_monster_front_v1\", \"target_back_template_id\": \"mmm_monster_back_v1\", \"source_id_preserved_as_card_key\": true}, \"hp_display\": 14}}]",
+  "design_notes": "",
+  "art_direction": "Child-friendly cozy fantasy monster card art for 'Blank Page Beast': Blank Page Beast, a cozy fantasy creature or obstacle from Finale, expressive and exciting but safe for kids. Bright storybook adventure style, expressive, non-scary, clear main subject, no text, no numerals, no equations, no copyrighted characters.",
+  "template_id": "mmm_monster_front_v1",
+  "back_template_id": "mmm_monster_back_v1",
+  "status": "draft",
+  "current_version_id": 178,
+  "created_at": "2026-05-24 03:59:55",
+  "updated_at": "2026-05-24 03:59:55",
+  "cost": {
+    "generic": 0,
+    "display": "0"
+  },
+  "stats": {
+    "attack": 1,
+    "health": null
+  },
+  "keywords": [],
+  "mechanics": [
+    {
+      "source": "magic_math_monsters",
+      "raw": {
+        "id": "MON-G1-028",
+        "asset_type": "monster_deck_card",
+        "physical_deck": "Monster Deck",
+        "version": "4.0-simple-rules",
+        "name": "Blank Page Beast",
+        "act": "Finale",
+        "monster_type": "elite",
+        "hp": {
+          "base_two_heroes": 14,
+          "one_hero": 12,
+          "three_heroes": 17,
+          "four_heroes": 20,
+          "scaling_note": "Use base_two_heroes for 2 children. Adjust only if live playtests consistently run too short or long."
+        },
+        "attack": {
+          "name": "Page Chomp",
+          "damage": 1,
+          "dodge_rule": "Targeted hero answers the Quick Dodge Rune strip from the top Player Deck card. Correct = no damage; wrong or heavily helped = lose 1 potion."
+        },
+        "special_ability": {
+          "rules_text": "Can only be damaged by a 3-die solve: answer, notation, and fluency/explanation.",
+          "educational_purpose": "Final review of the scoring system."
+        },
+        "encounter_guidance": {
+          "use_in_random_deck": "May be shuffled into the Monster Deck for its act or selected by the Adventure Book.",
+          "kid_safety_tone": "Obstacle/cursed creature, not a horror monster. Defeat restores or redirects it.",
+          "first_play_mode": "Ignore this monster special ability unless this is a boss fight. This keeps first games very simple."
+        },
+        "defeat_text": "The beast folds into a bright map page.",
+        "art": {
+          "art_window_prompt": "Child-friendly cozy fantasy monster card art for 'Blank Page Beast': Blank Page Beast, a cozy fantasy creature or obstacle from Finale, expressive and exciting but safe for kids. Bright storybook adventure style, expressive, non-scary, clear main subject, no text, no numerals, no equations, no copyrighted characters.",
+          "negative_prompt": "no gore, no horror, no realistic violence, no weapons pointed at viewer, no text, no numerals, no copyrighted characters"
+        },
+        "status": {
+          "drafted": true,
+          "self_reviewed_v3": true,
+          "math_checked": true,
+          "human_playtested": false,
+          "final": false,
+          "self_reviewed_v4_simple_rules": true
+        },
+        "title": "Blank Page Beast",
+        "cardforge_import": {
+          "target_set_code": "MONSTER",
+          "target_card_type": "mmm_monster",
+          "target_template_id": "mmm_monster_front_v1",
+          "target_back_template_id": "mmm_monster_back_v1",
+          "source_id_preserved_as_card_key": true
+        },
+        "hp_display": 14
+      }
+    }
+  ]
+}

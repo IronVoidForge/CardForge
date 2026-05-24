@@ -1,0 +1,25 @@
+{
+  "schema_version": "2026-05-keyword-registry-v1",
+  "keywords": {
+    "guard": {
+      "display_name": "Guard",
+      "rules_text": "This can block attacks against nearby allies."
+    },
+    "summon": {
+      "display_name": "Summon",
+      "rules_text": "Creates another unit or token."
+    },
+    "curse": {
+      "display_name": "Curse",
+      "rules_text": "Applies a negative ongoing effect."
+    },
+    "sacrifice": {
+      "display_name": "Sacrifice",
+      "rules_text": "Destroy or spend one of your own cards for value."
+    },
+    "graveyard": {
+      "display_name": "Graveyard",
+      "rules_text": "Interacts with discarded or destroyed cards."
+    }
+  }
+}

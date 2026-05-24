@@ -1,0 +1,7 @@
+{
+  "default_formats": [
+    "png",
+    "json",
+    "csv"
+  ]
+}

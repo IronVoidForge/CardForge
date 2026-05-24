@@ -1,0 +1,95 @@
+{
+  "id": "WS-G1-016",
+  "asset_type": "worksheet_page",
+  "version": "4.0-simple-rules",
+  "title": "Dwarf Cart Tens",
+  "type": "practice_worksheet",
+  "act": "Act 2 Dwarf Path",
+  "story_context": "Dwarves count by tens and ones.",
+  "read_aloud": "Grimble flips to a crisp practice page. 'No overcomplication. Clean answers, clean equations, clean magic. Dwarf Cart Tens begins now.'",
+  "printed_instructions": [
+    "Solve using tens first.",
+    "Write answers clearly. Use counters only if you are stuck or the page asks for them.",
+    "Optional challenge: solve the first pass without counting objects one by one."
+  ],
+  "skills": [
+    "place_value"
+  ],
+  "math_scope_tags": [
+    "place_value"
+  ],
+  "difficulty": "normal",
+  "layout_description": "Black-and-white printable page themed around Dwarf Cart Tens; open writing space, large text, optional small art border, no dense background.",
+  "problems": [
+    {
+      "problem_number": 1,
+      "prompt": "20 + 5",
+      "answer": "25",
+      "skill": "place_value"
+    },
+    {
+      "problem_number": 2,
+      "prompt": "30 + 7",
+      "answer": "37",
+      "skill": "place_value"
+    },
+    {
+      "problem_number": 3,
+      "prompt": "40 + 2",
+      "answer": "42",
+      "skill": "place_value"
+    },
+    {
+      "problem_number": 4,
+      "prompt": "50 + 9",
+      "answer": "59",
+      "skill": "place_value"
+    },
+    {
+      "problem_number": 5,
+      "prompt": "60 + 0",
+      "answer": "60",
+      "skill": "place_value"
+    }
+  ],
+  "answer_key": [
+    {
+      "problem_number": 1,
+      "answer": "25"
+    },
+    {
+      "problem_number": 2,
+      "answer": "37"
+    },
+    {
+      "problem_number": 3,
+      "answer": "42"
+    },
+    {
+      "problem_number": 4,
+      "answer": "59"
+    },
+    {
+      "problem_number": 5,
+      "answer": "60"
+    }
+  ],
+  "art": {
+    "worksheet_art_prompt": "Child-friendly cozy fantasy worksheet art for 'Dwarf Cart Tens': black-and-white line art worksheet border for Dwarf Cart Tens, fantasy but clean and spacious. Bright storybook adventure style, expressive, non-scary, clear main subject, no text, no numerals, no equations, no copyrighted characters.",
+    "negative_prompt": "no dark horror, no dense background, no tiny writing, no equations embedded in artwork"
+  },
+  "status": {
+    "drafted": true,
+    "self_reviewed_v3": true,
+    "answer_checked_basic": true,
+    "human_playtested": false,
+    "final": false,
+    "self_reviewed_v4_simple_rules": true
+  },
+  "fail_forward_rule": "If this page becomes frustrating, solve one problem together, narrate partial success, and continue. Do not trap the story.",
+  "cardforge_import": {
+    "target_asset_type": "worksheet_page",
+    "service": "WorksheetService",
+    "source_id_preserved_as_worksheet_id": true
+  }
+}

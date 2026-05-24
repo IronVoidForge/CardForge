@@ -1,0 +1,85 @@
+{
+  "id": "WS-G1-023",
+  "asset_type": "worksheet_page",
+  "version": "4.0-simple-rules",
+  "title": "Giant’s Ladder",
+  "type": "practice_worksheet",
+  "act": "Act 3 Giant Path",
+  "story_context": "Fast counting up and down.",
+  "read_aloud": "Grimble flips to a crisp practice page. 'No overcomplication. Clean answers, clean equations, clean magic. Giant’s Ladder begins now.'",
+  "printed_instructions": [
+    "Fill the missing ladder rungs.",
+    "Write answers clearly. Use counters only if you are stuck or the page asks for them.",
+    "Optional challenge: solve the first pass without counting objects one by one."
+  ],
+  "skills": [
+    "counting_to_120_intro"
+  ],
+  "math_scope_tags": [
+    "counting_to_120_intro"
+  ],
+  "difficulty": "normal",
+  "layout_description": "Black-and-white printable page themed around Giant’s Ladder; open writing space, large text, optional small art border, no dense background.",
+  "problems": [
+    {
+      "problem_number": 1,
+      "prompt": "30, 31, __, 33",
+      "answer": "32",
+      "skill": "counting_to_120_intro"
+    },
+    {
+      "problem_number": 2,
+      "prompt": "40, __, 42",
+      "answer": "41",
+      "skill": "counting_to_120_intro"
+    },
+    {
+      "problem_number": 3,
+      "prompt": "50, 49, __, 47",
+      "answer": "48",
+      "skill": "counting_to_120_intro"
+    },
+    {
+      "problem_number": 4,
+      "prompt": "60, __, 62",
+      "answer": "61",
+      "skill": "counting_to_120_intro"
+    }
+  ],
+  "answer_key": [
+    {
+      "problem_number": 1,
+      "answer": "32"
+    },
+    {
+      "problem_number": 2,
+      "answer": "41"
+    },
+    {
+      "problem_number": 3,
+      "answer": "48"
+    },
+    {
+      "problem_number": 4,
+      "answer": "61"
+    }
+  ],
+  "art": {
+    "worksheet_art_prompt": "Child-friendly cozy fantasy worksheet art for 'Giant’s Ladder': black-and-white line art worksheet border for Giant’s Ladder, fantasy but clean and spacious. Bright storybook adventure style, expressive, non-scary, clear main subject, no text, no numerals, no equations, no copyrighted characters.",
+    "negative_prompt": "no dark horror, no dense background, no tiny writing, no equations embedded in artwork"
+  },
+  "status": {
+    "drafted": true,
+    "self_reviewed_v3": true,
+    "answer_checked_basic": true,
+    "human_playtested": false,
+    "final": false,
+    "self_reviewed_v4_simple_rules": true
+  },
+  "fail_forward_rule": "If this page becomes frustrating, solve one problem together, narrate partial success, and continue. Do not trap the story.",
+  "cardforge_import": {
+    "target_asset_type": "worksheet_page",
+    "service": "WorksheetService",
+    "source_id_preserved_as_worksheet_id": true
+  }
+}

@@ -1,0 +1,93 @@
+{
+  "id": 167,
+  "set_id": 2,
+  "batch_id": null,
+  "card_key": "MON-G1-017",
+  "name": "Crystal Spider",
+  "slug": "crystal_spider",
+  "card_number": "MON-G1-017",
+  "card_type": "mmm_monster",
+  "type_line": "boss",
+  "rarity": "common",
+  "faction": "",
+  "cost_json": "{\"generic\": 0, \"display\": \"0\"}",
+  "stats_json": "{\"attack\": 2, \"health\": null}",
+  "rules_text": "Attack: Pattern Web - 2 damage\nAbility: . Each round begins with a Web Fact: make 10, teen number, or comparison. If failed, boss has shield 2 this round.",
+  "flavor_text": "The web shatters into blue sparks and reveals the Blue Shard of Echoes.",
+  "keywords_json": "[]",
+  "mechanics_json": "[{\"source\": \"magic_math_monsters\", \"raw\": {\"id\": \"MON-G1-017\", \"asset_type\": \"monster_deck_card\", \"physical_deck\": \"Monster Deck\", \"version\": \"4.0-simple-rules\", \"name\": \"Crystal Spider\", \"act\": \"Act 2\", \"monster_type\": \"boss\", \"hp\": {\"base_two_heroes\": 16, \"one_hero\": 14, \"three_heroes\": 19, \"four_heroes\": 22, \"scaling_note\": \"Use base_two_heroes for 2 children. Adjust only if live playtests consistently run too short or long.\"}, \"attack\": {\"name\": \"Pattern Web\", \"damage\": 2, \"dodge_rule\": \"Targeted hero answers the Quick Dodge Rune strip from the top Player Deck card. Correct = no damage; wrong or heavily helped = lose 1 potion.\"}, \"special_ability\": {\"rules_text\": \"Each round begins with a Web Fact: make 10, teen number, or comparison. If failed, boss has shield 2 this round.\", \"educational_purpose\": \"Cumulative review under boss pressure.\"}, \"encounter_guidance\": {\"use_in_random_deck\": \"May be shuffled into the Monster Deck for its act or selected by the Adventure Book.\", \"kid_safety_tone\": \"Obstacle/cursed creature, not a horror monster. Defeat restores or redirects it.\", \"first_play_mode\": \"Ignore this monster special ability unless this is a boss fight. This keeps first games very simple.\"}, \"defeat_text\": \"The web shatters into blue sparks and reveals the Blue Shard of Echoes.\", \"art\": {\"art_window_prompt\": \"Child-friendly cozy fantasy monster card art for 'Crystal Spider': Crystal Spider, a cozy fantasy creature or obstacle from Act 2, expressive and exciting but safe for kids. Bright storybook adventure style, expressive, non-scary, clear main subject, no text, no numerals, no equations, no copyrighted characters.\", \"negative_prompt\": \"no gore, no horror, no realistic violence, no weapons pointed at viewer, no text, no numerals, no copyrighted characters\"}, \"status\": {\"drafted\": true, \"self_reviewed_v3\": true, \"math_checked\": true, \"human_playtested\": false, \"final\": false, \"self_reviewed_v4_simple_rules\": true}, \"title\": \"Crystal Spider\", \"cardforge_import\": {\"target_set_code\": \"MONSTER\", \"target_card_type\": \"mmm_monster\", \"target_template_id\": \"mmm_monster_front_v1\", \"target_back_template_id\": \"mmm_monster_back_v1\", \"source_id_preserved_as_card_key\": true}, \"hp_display\": 16}}]",
+  "design_notes": "",
+  "art_direction": "Child-friendly cozy fantasy monster card art for 'Crystal Spider': Crystal Spider, a cozy fantasy creature or obstacle from Act 2, expressive and exciting but safe for kids. Bright storybook adventure style, expressive, non-scary, clear main subject, no text, no numerals, no equations, no copyrighted characters.",
+  "template_id": "mmm_monster_front_v1",
+  "back_template_id": "mmm_monster_back_v1",
+  "status": "draft",
+  "current_version_id": 167,
+  "created_at": "2026-05-24 03:59:55",
+  "updated_at": "2026-05-24 03:59:55",
+  "cost": {
+    "generic": 0,
+    "display": "0"
+  },
+  "stats": {
+    "attack": 2,
+    "health": null
+  },
+  "keywords": [],
+  "mechanics": [
+    {
+      "source": "magic_math_monsters",
+      "raw": {
+        "id": "MON-G1-017",
+        "asset_type": "monster_deck_card",
+        "physical_deck": "Monster Deck",
+        "version": "4.0-simple-rules",
+        "name": "Crystal Spider",
+        "act": "Act 2",
+        "monster_type": "boss",
+        "hp": {
+          "base_two_heroes": 16,
+          "one_hero": 14,
+          "three_heroes": 19,
+          "four_heroes": 22,
+          "scaling_note": "Use base_two_heroes for 2 children. Adjust only if live playtests consistently run too short or long."
+        },
+        "attack": {
+          "name": "Pattern Web",
+          "damage": 2,
+          "dodge_rule": "Targeted hero answers the Quick Dodge Rune strip from the top Player Deck card. Correct = no damage; wrong or heavily helped = lose 1 potion."
+        },
+        "special_ability": {
+          "rules_text": "Each round begins with a Web Fact: make 10, teen number, or comparison. If failed, boss has shield 2 this round.",
+          "educational_purpose": "Cumulative review under boss pressure."
+        },
+        "encounter_guidance": {
+          "use_in_random_deck": "May be shuffled into the Monster Deck for its act or selected by the Adventure Book.",
+          "kid_safety_tone": "Obstacle/cursed creature, not a horror monster. Defeat restores or redirects it.",
+          "first_play_mode": "Ignore this monster special ability unless this is a boss fight. This keeps first games very simple."
+        },
+        "defeat_text": "The web shatters into blue sparks and reveals the Blue Shard of Echoes.",
+        "art": {
+          "art_window_prompt": "Child-friendly cozy fantasy monster card art for 'Crystal Spider': Crystal Spider, a cozy fantasy creature or obstacle from Act 2, expressive and exciting but safe for kids. Bright storybook adventure style, expressive, non-scary, clear main subject, no text, no numerals, no equations, no copyrighted characters.",
+          "negative_prompt": "no gore, no horror, no realistic violence, no weapons pointed at viewer, no text, no numerals, no copyrighted characters"
+        },
+        "status": {
+          "drafted": true,
+          "self_reviewed_v3": true,
+          "math_checked": true,
+          "human_playtested": false,
+          "final": false,
+          "self_reviewed_v4_simple_rules": true
+        },
+        "title": "Crystal Spider",
+        "cardforge_import": {
+          "target_set_code": "MONSTER",
+          "target_card_type": "mmm_monster",
+          "target_template_id": "mmm_monster_front_v1",
+          "target_back_template_id": "mmm_monster_back_v1",
+          "source_id_preserved_as_card_key": true
+        },
+        "hp_display": 16
+      }
+    }
+  ]
+}

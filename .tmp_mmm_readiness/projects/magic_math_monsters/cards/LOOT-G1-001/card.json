@@ -1,0 +1,123 @@
+{
+  "id": 121,
+  "set_id": 1,
+  "batch_id": null,
+  "card_key": "LOOT-G1-001",
+  "name": "Spark Pouch",
+  "slug": "spark_pouch",
+  "card_number": "LOOT-G1-001",
+  "card_type": "mmm_player_loot",
+  "type_line": "MMM Loot Insert",
+  "rarity": "common",
+  "faction": "",
+  "cost_json": "{\"generic\": 0, \"display\": \"0\"}",
+  "stats_json": "{\"attack\": null, \"health\": null}",
+  "rules_text": "After a correct spell, add 2 dice before rolling.\n{'prompt': '7 + 2 = __', 'answer': 9, 'display_answer': '9', 'skill_category': 'addition_fact', 'difficulty': 'easy', 'hint_1': 'Try to answer from memory or by one quick count-on/count-back step.', 'hint_2': 'Write the equation clearly before giving the answer.', 'hint_3': 'Use counters only if stuck; loot still works but no bonus Focus Star.'}\nAfter a correct spell, add 2 dice before rolling.\nActivation: 7 + 2 = __\nAnswer: 9",
+  "flavor_text": "",
+  "keywords_json": "[]",
+  "mechanics_json": "[{\"source\": \"magic_math_monsters\", \"raw\": {\"id\": \"LOOT-G1-001\", \"asset_type\": \"player_deck_loot_insert_card\", \"physical_deck\": \"Player Deck\", \"not_a_separate_deck\": true, \"version\": \"4.0-simple-rules\", \"pedagogy_profile\": \"fast_activation_puzzle_not_worksheet\", \"name\": \"Spark Pouch\", \"category\": \"attack_boost\", \"when_drawn_on_player_attack\": \"Keep this loot if you have fewer than 2 loot cards, then draw the next Player Deck card until a spell appears. If you already have 2 loot, discard or replace one.\", \"when_drawn_for_monster_dodge\": \"Use the Quick Dodge Rune strip on this card, then discard it as the dodge draw.\", \"front_text\": {\"item_effect\": \"After a correct spell, add 2 dice before rolling.\", \"timing\": \"Use at the timing named by the effect. One use, then discard.\", \"activation_rule\": \"Solve the activation puzzle. Correct = item works. Incorrect = item fizzles and is discarded. Rogue may bypass once per encounter.\"}, \"activation_puzzle\": {\"prompt\": \"7 + 2 = __\", \"answer\": 9, \"display_answer\": \"9\", \"skill_category\": \"addition_fact\", \"difficulty\": \"easy\", \"hint_1\": \"Try to answer from memory or by one quick count-on/count-back step.\", \"hint_2\": \"Write the equation clearly before giving the answer.\", \"hint_3\": \"Use counters only if stuck; loot still works but no bonus Focus Star.\"}, \"quick_dodge_rune\": {\"rune_id\": \"RUNE-G1-011\", \"prompt\": \"5 - 1 = __\", \"answer\": 4, \"skill_category\": \"subtraction_fact\", \"purpose\": \"Fast mental dodge. No drawing expected unless the child is stuck.\", \"max_time_suggestion_seconds\": 10, \"v4_dodge_rule\": \"Correct = dodge with no damage. Wrong or heavily helped = lose 1 potion. No extra dodge roll.\"}, \"balance_notes\": {\"active_deck_density\": \"Use 6-10 loot inserts in a normal session Player Deck recipe; keep the rest in the box until awarded or swapped in.\", \"power_level\": \"one_use\", \"child_experience_goal\": \"Loot should feel like a quick clever reward, not a full worksheet problem.\"}, \"art\": {\"art_window_prompt\": \"Child-friendly cozy fantasy loot card art for 'Spark Pouch': a magical item called Spark Pouch, cozy fantasy still life. Bright storybook adventure style, expressive, non-scary, clear main subject, no text, no numerals, no equations, no copyrighted characters.\", \"negative_prompt\": \"no text, no numerals, no equations, no gore, no horror, no copyrighted characters\"}, \"status\": {\"drafted\": true, \"self_reviewed_v3\": true, \"math_checked_basic_arithmetic\": true, \"human_playtested\": false, \"final\": false, \"self_reviewed_v4_simple_rules\": true}, \"title\": \"Spark Pouch\", \"effect\": \"After a correct spell, add 2 dice before rolling.\", \"activation_puzzle_text\": \"7 + 2 = __\", \"rules_text\": \"After a correct spell, add 2 dice before rolling.\\nActivation: 7 + 2 = __\\nAnswer: 9\", \"quick_dodge\": {\"rune_id\": \"RUNE-G1-011\", \"prompt\": \"5 - 1 = __\", \"answer\": 4, \"skill_category\": \"subtraction_fact\", \"purpose\": \"Fast mental dodge. No drawing expected unless the child is stuck.\", \"max_time_suggestion_seconds\": 10, \"v4_dodge_rule\": \"Correct = dodge with no damage. Wrong or heavily helped = lose 1 potion. No extra dodge roll.\"}, \"dodge_rune\": {\"rune_id\": \"RUNE-G1-011\", \"prompt\": \"5 - 1 = __\", \"answer\": 4, \"skill_category\": \"subtraction_fact\", \"purpose\": \"Fast mental dodge. No drawing expected unless the child is stuck.\", \"max_time_suggestion_seconds\": 10, \"v4_dodge_rule\": \"Correct = dodge with no damage. Wrong or heavily helped = lose 1 potion. No extra dodge roll.\"}, \"cardforge_import\": {\"target_set_code\": \"PLAYER\", \"target_card_type\": \"mmm_player_loot\", \"target_template_id\": \"mmm_player_loot_front_v1\", \"target_back_template_id\": \"mmm_player_back_v1\", \"source_id_preserved_as_card_key\": true}}}]",
+  "design_notes": "",
+  "art_direction": "Child-friendly cozy fantasy loot card art for 'Spark Pouch': a magical item called Spark Pouch, cozy fantasy still life. Bright storybook adventure style, expressive, non-scary, clear main subject, no text, no numerals, no equations, no copyrighted characters.",
+  "template_id": "mmm_player_loot_front_v1",
+  "back_template_id": "mmm_player_back_v1",
+  "status": "draft",
+  "current_version_id": 121,
+  "created_at": "2026-05-24 03:59:55",
+  "updated_at": "2026-05-24 03:59:55",
+  "cost": {
+    "generic": 0,
+    "display": "0"
+  },
+  "stats": {
+    "attack": null,
+    "health": null
+  },
+  "keywords": [],
+  "mechanics": [
+    {
+      "source": "magic_math_monsters",
+      "raw": {
+        "id": "LOOT-G1-001",
+        "asset_type": "player_deck_loot_insert_card",
+        "physical_deck": "Player Deck",
+        "not_a_separate_deck": true,
+        "version": "4.0-simple-rules",
+        "pedagogy_profile": "fast_activation_puzzle_not_worksheet",
+        "name": "Spark Pouch",
+        "category": "attack_boost",
+        "when_drawn_on_player_attack": "Keep this loot if you have fewer than 2 loot cards, then draw the next Player Deck card until a spell appears. If you already have 2 loot, discard or replace one.",
+        "when_drawn_for_monster_dodge": "Use the Quick Dodge Rune strip on this card, then discard it as the dodge draw.",
+        "front_text": {
+          "item_effect": "After a correct spell, add 2 dice before rolling.",
+          "timing": "Use at the timing named by the effect. One use, then discard.",
+          "activation_rule": "Solve the activation puzzle. Correct = item works. Incorrect = item fizzles and is discarded. Rogue may bypass once per encounter."
+        },
+        "activation_puzzle": {
+          "prompt": "7 + 2 = __",
+          "answer": 9,
+          "display_answer": "9",
+          "skill_category": "addition_fact",
+          "difficulty": "easy",
+          "hint_1": "Try to answer from memory or by one quick count-on/count-back step.",
+          "hint_2": "Write the equation clearly before giving the answer.",
+          "hint_3": "Use counters only if stuck; loot still works but no bonus Focus Star."
+        },
+        "quick_dodge_rune": {
+          "rune_id": "RUNE-G1-011",
+          "prompt": "5 - 1 = __",
+          "answer": 4,
+          "skill_category": "subtraction_fact",
+          "purpose": "Fast mental dodge. No drawing expected unless the child is stuck.",
+          "max_time_suggestion_seconds": 10,
+          "v4_dodge_rule": "Correct = dodge with no damage. Wrong or heavily helped = lose 1 potion. No extra dodge roll."
+        },
+        "balance_notes": {
+          "active_deck_density": "Use 6-10 loot inserts in a normal session Player Deck recipe; keep the rest in the box until awarded or swapped in.",
+          "power_level": "one_use",
+          "child_experience_goal": "Loot should feel like a quick clever reward, not a full worksheet problem."
+        },
+        "art": {
+          "art_window_prompt": "Child-friendly cozy fantasy loot card art for 'Spark Pouch': a magical item called Spark Pouch, cozy fantasy still life. Bright storybook adventure style, expressive, non-scary, clear main subject, no text, no numerals, no equations, no copyrighted characters.",
+          "negative_prompt": "no text, no numerals, no equations, no gore, no horror, no copyrighted characters"
+        },
+        "status": {
+          "drafted": true,
+          "self_reviewed_v3": true,
+          "math_checked_basic_arithmetic": true,
+          "human_playtested": false,
+          "final": false,
+          "self_reviewed_v4_simple_rules": true
+        },
+        "title": "Spark Pouch",
+        "effect": "After a correct spell, add 2 dice before rolling.",
+        "activation_puzzle_text": "7 + 2 = __",
+        "rules_text": "After a correct spell, add 2 dice before rolling.\nActivation: 7 + 2 = __\nAnswer: 9",
+        "quick_dodge": {
+          "rune_id": "RUNE-G1-011",
+          "prompt": "5 - 1 = __",
+          "answer": 4,
+          "skill_category": "subtraction_fact",
+          "purpose": "Fast mental dodge. No drawing expected unless the child is stuck.",
+          "max_time_suggestion_seconds": 10,
+          "v4_dodge_rule": "Correct = dodge with no damage. Wrong or heavily helped = lose 1 potion. No extra dodge roll."
+        },
+        "dodge_rune": {
+          "rune_id": "RUNE-G1-011",
+          "prompt": "5 - 1 = __",
+          "answer": 4,
+          "skill_category": "subtraction_fact",
+          "purpose": "Fast mental dodge. No drawing expected unless the child is stuck.",
+          "max_time_suggestion_seconds": 10,
+          "v4_dodge_rule": "Correct = dodge with no damage. Wrong or heavily helped = lose 1 potion. No extra dodge roll."
+        },
+        "cardforge_import": {
+          "target_set_code": "PLAYER",
+          "target_card_type": "mmm_player_loot",
+          "target_template_id": "mmm_player_loot_front_v1",
+          "target_back_template_id": "mmm_player_back_v1",
+          "source_id_preserved_as_card_key": true
+        }
+      }
+    }
+  ]
+}

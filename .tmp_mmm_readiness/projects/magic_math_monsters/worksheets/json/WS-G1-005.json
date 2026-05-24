@@ -1,0 +1,95 @@
+{
+  "id": "WS-G1-005",
+  "asset_type": "worksheet_page",
+  "version": "4.0-simple-rules",
+  "title": "Missing Stepping Stones",
+  "type": "practice_worksheet",
+  "act": "Act 1",
+  "story_context": "Number order unlocks the woods.",
+  "read_aloud": "Grimble flips to a crisp practice page. 'No overcomplication. Clean answers, clean equations, clean magic. Missing Stepping Stones begins now.'",
+  "printed_instructions": [
+    "Fill the missing stones.",
+    "Write answers clearly. Use counters only if you are stuck or the page asks for them.",
+    "Optional challenge: solve the first pass without counting objects one by one."
+  ],
+  "skills": [
+    "sequence"
+  ],
+  "math_scope_tags": [
+    "sequence"
+  ],
+  "difficulty": "normal",
+  "layout_description": "Black-and-white printable page themed around Missing Stepping Stones; open writing space, large text, optional small art border, no dense background.",
+  "problems": [
+    {
+      "problem_number": 1,
+      "prompt": "2, 3, __, 5",
+      "answer": "4",
+      "skill": "sequence"
+    },
+    {
+      "problem_number": 2,
+      "prompt": "8, 9, __, 11",
+      "answer": "10",
+      "skill": "sequence"
+    },
+    {
+      "problem_number": 3,
+      "prompt": "15, __, 17",
+      "answer": "16",
+      "skill": "sequence"
+    },
+    {
+      "problem_number": 4,
+      "prompt": "10, 9, __, 7",
+      "answer": "8",
+      "skill": "sequence"
+    },
+    {
+      "problem_number": 5,
+      "prompt": "20, 19, __, 17",
+      "answer": "18",
+      "skill": "sequence"
+    }
+  ],
+  "answer_key": [
+    {
+      "problem_number": 1,
+      "answer": "4"
+    },
+    {
+      "problem_number": 2,
+      "answer": "10"
+    },
+    {
+      "problem_number": 3,
+      "answer": "16"
+    },
+    {
+      "problem_number": 4,
+      "answer": "8"
+    },
+    {
+      "problem_number": 5,
+      "answer": "18"
+    }
+  ],
+  "art": {
+    "worksheet_art_prompt": "Child-friendly cozy fantasy worksheet art for 'Missing Stepping Stones': black-and-white line art worksheet border for Missing Stepping Stones, fantasy but clean and spacious. Bright storybook adventure style, expressive, non-scary, clear main subject, no text, no numerals, no equations, no copyrighted characters.",
+    "negative_prompt": "no dark horror, no dense background, no tiny writing, no equations embedded in artwork"
+  },
+  "status": {
+    "drafted": true,
+    "self_reviewed_v3": true,
+    "answer_checked_basic": true,
+    "human_playtested": false,
+    "final": false,
+    "self_reviewed_v4_simple_rules": true
+  },
+  "fail_forward_rule": "If this page becomes frustrating, solve one problem together, narrate partial success, and continue. Do not trap the story.",
+  "cardforge_import": {
+    "target_asset_type": "worksheet_page",
+    "service": "WorksheetService",
+    "source_id_preserved_as_worksheet_id": true
+  }
+}

@@ -1,0 +1,85 @@
+{
+  "id": "WS-G1-029",
+  "asset_type": "worksheet_page",
+  "version": "4.0-simple-rules",
+  "title": "Hall of Missing Numbers",
+  "type": "practice_worksheet",
+  "act": "Finale Room 1",
+  "story_context": "Numbers disappear from the hall.",
+  "read_aloud": "Grimble flips to a crisp practice page. 'No overcomplication. Clean answers, clean equations, clean magic. Hall of Missing Numbers begins now.'",
+  "printed_instructions": [
+    "Fill the missing numbers.",
+    "Write answers clearly. Use counters only if you are stuck or the page asks for them.",
+    "Optional challenge: solve the first pass without counting objects one by one."
+  ],
+  "skills": [
+    "sequence_review"
+  ],
+  "math_scope_tags": [
+    "sequence_review"
+  ],
+  "difficulty": "hard",
+  "layout_description": "Black-and-white printable page themed around Hall of Missing Numbers; open writing space, large text, optional small art border, no dense background.",
+  "problems": [
+    {
+      "problem_number": 1,
+      "prompt": "11, 12, __, 14",
+      "answer": "13",
+      "skill": "sequence_review"
+    },
+    {
+      "problem_number": 2,
+      "prompt": "25, __, 27",
+      "answer": "26",
+      "skill": "sequence_review"
+    },
+    {
+      "problem_number": 3,
+      "prompt": "5, 10, __, 20",
+      "answer": "15",
+      "skill": "sequence_review"
+    },
+    {
+      "problem_number": 4,
+      "prompt": "80, __, 82",
+      "answer": "81",
+      "skill": "sequence_review"
+    }
+  ],
+  "answer_key": [
+    {
+      "problem_number": 1,
+      "answer": "13"
+    },
+    {
+      "problem_number": 2,
+      "answer": "26"
+    },
+    {
+      "problem_number": 3,
+      "answer": "15"
+    },
+    {
+      "problem_number": 4,
+      "answer": "81"
+    }
+  ],
+  "art": {
+    "worksheet_art_prompt": "Child-friendly cozy fantasy worksheet art for 'Hall of Missing Numbers': black-and-white line art worksheet border for Hall of Missing Numbers, fantasy but clean and spacious. Bright storybook adventure style, expressive, non-scary, clear main subject, no text, no numerals, no equations, no copyrighted characters.",
+    "negative_prompt": "no dark horror, no dense background, no tiny writing, no equations embedded in artwork"
+  },
+  "status": {
+    "drafted": true,
+    "self_reviewed_v3": true,
+    "answer_checked_basic": true,
+    "human_playtested": false,
+    "final": false,
+    "self_reviewed_v4_simple_rules": true
+  },
+  "fail_forward_rule": "If this page becomes frustrating, solve one problem together, narrate partial success, and continue. Do not trap the story.",
+  "cardforge_import": {
+    "target_asset_type": "worksheet_page",
+    "service": "WorksheetService",
+    "source_id_preserved_as_worksheet_id": true
+  }
+}

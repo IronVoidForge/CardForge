@@ -1,0 +1,97 @@
+{
+  "id": "WS-G1-002",
+  "asset_type": "worksheet_page",
+  "version": "4.0-simple-rules",
+  "title": "Straight Equation Practice",
+  "type": "practice_worksheet",
+  "act": "Prologue",
+  "story_context": "Turn story facts into clean equations.",
+  "read_aloud": "Grimble flips to a crisp practice page. 'No overcomplication. Clean answers, clean equations, clean magic. Straight Equation Practice begins now.'",
+  "printed_instructions": [
+    "Write the equation, then answer.",
+    "Write answers clearly. Use counters only if you are stuck or the page asks for them.",
+    "Optional challenge: solve the first pass without counting objects one by one."
+  ],
+  "skills": [
+    "equation_notation",
+    "facts_to_10"
+  ],
+  "math_scope_tags": [
+    "equation_notation",
+    "facts_to_10"
+  ],
+  "difficulty": "normal",
+  "layout_description": "Black-and-white printable page themed around Straight Equation Practice; open writing space, large text, optional small art border, no dense background.",
+  "problems": [
+    {
+      "problem_number": 1,
+      "prompt": "4 + 3 = __",
+      "answer": "7",
+      "skill": "equation_notation"
+    },
+    {
+      "problem_number": 2,
+      "prompt": "8 - 2 = __",
+      "answer": "6",
+      "skill": "facts_to_10"
+    },
+    {
+      "problem_number": 3,
+      "prompt": "5 + 5 = __",
+      "answer": "10",
+      "skill": "facts_to_10"
+    },
+    {
+      "problem_number": 4,
+      "prompt": "9 - 4 = __",
+      "answer": "5",
+      "skill": "facts_to_10"
+    },
+    {
+      "problem_number": 5,
+      "prompt": "2 + 6 = __",
+      "answer": "8",
+      "skill": "facts_to_10"
+    }
+  ],
+  "answer_key": [
+    {
+      "problem_number": 1,
+      "answer": "7"
+    },
+    {
+      "problem_number": 2,
+      "answer": "6"
+    },
+    {
+      "problem_number": 3,
+      "answer": "10"
+    },
+    {
+      "problem_number": 4,
+      "answer": "5"
+    },
+    {
+      "problem_number": 5,
+      "answer": "8"
+    }
+  ],
+  "art": {
+    "worksheet_art_prompt": "Child-friendly cozy fantasy worksheet art for 'Straight Equation Practice': black-and-white line art worksheet border for Straight Equation Practice, fantasy but clean and spacious. Bright storybook adventure style, expressive, non-scary, clear main subject, no text, no numerals, no equations, no copyrighted characters.",
+    "negative_prompt": "no dark horror, no dense background, no tiny writing, no equations embedded in artwork"
+  },
+  "status": {
+    "drafted": true,
+    "self_reviewed_v3": true,
+    "answer_checked_basic": true,
+    "human_playtested": false,
+    "final": false,
+    "self_reviewed_v4_simple_rules": true
+  },
+  "fail_forward_rule": "If this page becomes frustrating, solve one problem together, narrate partial success, and continue. Do not trap the story.",
+  "cardforge_import": {
+    "target_asset_type": "worksheet_page",
+    "service": "WorksheetService",
+    "source_id_preserved_as_worksheet_id": true
+  }
+}

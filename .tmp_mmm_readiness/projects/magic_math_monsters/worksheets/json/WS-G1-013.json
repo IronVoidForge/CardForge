@@ -1,0 +1,85 @@
+{
+  "id": "WS-G1-013",
+  "asset_type": "worksheet_page",
+  "version": "4.0-simple-rules",
+  "title": "Echo Bridge",
+  "type": "practice_worksheet",
+  "act": "Act 2",
+  "story_context": "The cave echoes number patterns.",
+  "read_aloud": "Grimble flips to a crisp practice page. 'No overcomplication. Clean answers, clean equations, clean magic. Echo Bridge begins now.'",
+  "printed_instructions": [
+    "Fill in each missing number.",
+    "Write answers clearly. Use counters only if you are stuck or the page asks for them.",
+    "Optional challenge: solve the first pass without counting objects one by one."
+  ],
+  "skills": [
+    "sequence"
+  ],
+  "math_scope_tags": [
+    "sequence"
+  ],
+  "difficulty": "normal",
+  "layout_description": "Black-and-white printable page themed around Echo Bridge; open writing space, large text, optional small art border, no dense background.",
+  "problems": [
+    {
+      "problem_number": 1,
+      "prompt": "5, 6, __, 8",
+      "answer": "7",
+      "skill": "sequence"
+    },
+    {
+      "problem_number": 2,
+      "prompt": "10, 11, __, 13",
+      "answer": "12",
+      "skill": "sequence"
+    },
+    {
+      "problem_number": 3,
+      "prompt": "20, 19, __, 17",
+      "answer": "18",
+      "skill": "sequence"
+    },
+    {
+      "problem_number": 4,
+      "prompt": "14, 15, __, 17",
+      "answer": "16",
+      "skill": "sequence"
+    }
+  ],
+  "answer_key": [
+    {
+      "problem_number": 1,
+      "answer": "7"
+    },
+    {
+      "problem_number": 2,
+      "answer": "12"
+    },
+    {
+      "problem_number": 3,
+      "answer": "18"
+    },
+    {
+      "problem_number": 4,
+      "answer": "16"
+    }
+  ],
+  "art": {
+    "worksheet_art_prompt": "Child-friendly cozy fantasy worksheet art for 'Echo Bridge': black-and-white line art worksheet border for Echo Bridge, fantasy but clean and spacious. Bright storybook adventure style, expressive, non-scary, clear main subject, no text, no numerals, no equations, no copyrighted characters.",
+    "negative_prompt": "no dark horror, no dense background, no tiny writing, no equations embedded in artwork"
+  },
+  "status": {
+    "drafted": true,
+    "self_reviewed_v3": true,
+    "answer_checked_basic": true,
+    "human_playtested": false,
+    "final": false,
+    "self_reviewed_v4_simple_rules": true
+  },
+  "fail_forward_rule": "If this page becomes frustrating, solve one problem together, narrate partial success, and continue. Do not trap the story.",
+  "cardforge_import": {
+    "target_asset_type": "worksheet_page",
+    "service": "WorksheetService",
+    "source_id_preserved_as_worksheet_id": true
+  }
+}

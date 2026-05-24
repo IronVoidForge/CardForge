@@ -1,0 +1,105 @@
+{
+  "id": "WS-G1-003",
+  "asset_type": "worksheet_page",
+  "version": "4.0-simple-rules",
+  "title": "Lantern Fact Ladder",
+  "type": "practice_worksheet",
+  "act": "Prologue",
+  "story_context": "Fast addition/subtraction ladder.",
+  "read_aloud": "Grimble flips to a crisp practice page. 'No overcomplication. Clean answers, clean equations, clean magic. Lantern Fact Ladder begins now.'",
+  "printed_instructions": [
+    "Solve from bottom to top.",
+    "Write answers clearly. Use counters only if you are stuck or the page asks for them.",
+    "Optional challenge: solve the first pass without counting objects one by one."
+  ],
+  "skills": [
+    "fact_fluency"
+  ],
+  "math_scope_tags": [
+    "fact_fluency"
+  ],
+  "difficulty": "normal",
+  "layout_description": "Black-and-white printable page themed around Lantern Fact Ladder; open writing space, large text, optional small art border, no dense background.",
+  "problems": [
+    {
+      "problem_number": 1,
+      "prompt": "1 + 2",
+      "answer": "3",
+      "skill": "fact_fluency"
+    },
+    {
+      "problem_number": 2,
+      "prompt": "3 + 4",
+      "answer": "7",
+      "skill": "fact_fluency"
+    },
+    {
+      "problem_number": 3,
+      "prompt": "7 - 2",
+      "answer": "5",
+      "skill": "fact_fluency"
+    },
+    {
+      "problem_number": 4,
+      "prompt": "5 + 5",
+      "answer": "10",
+      "skill": "fact_fluency"
+    },
+    {
+      "problem_number": 5,
+      "prompt": "10 - 6",
+      "answer": "4",
+      "skill": "fact_fluency"
+    },
+    {
+      "problem_number": 6,
+      "prompt": "4 + 4",
+      "answer": "8",
+      "skill": "fact_fluency"
+    }
+  ],
+  "answer_key": [
+    {
+      "problem_number": 1,
+      "answer": "3"
+    },
+    {
+      "problem_number": 2,
+      "answer": "7"
+    },
+    {
+      "problem_number": 3,
+      "answer": "5"
+    },
+    {
+      "problem_number": 4,
+      "answer": "10"
+    },
+    {
+      "problem_number": 5,
+      "answer": "4"
+    },
+    {
+      "problem_number": 6,
+      "answer": "8"
+    }
+  ],
+  "art": {
+    "worksheet_art_prompt": "Child-friendly cozy fantasy worksheet art for 'Lantern Fact Ladder': black-and-white line art worksheet border for Lantern Fact Ladder, fantasy but clean and spacious. Bright storybook adventure style, expressive, non-scary, clear main subject, no text, no numerals, no equations, no copyrighted characters.",
+    "negative_prompt": "no dark horror, no dense background, no tiny writing, no equations embedded in artwork"
+  },
+  "status": {
+    "drafted": true,
+    "self_reviewed_v3": true,
+    "answer_checked_basic": true,
+    "human_playtested": false,
+    "final": false,
+    "self_reviewed_v4_simple_rules": true
+  },
+  "fail_forward_rule": "If this page becomes frustrating, solve one problem together, narrate partial success, and continue. Do not trap the story.",
+  "cardforge_import": {
+    "target_asset_type": "worksheet_page",
+    "service": "WorksheetService",
+    "source_id_preserved_as_worksheet_id": true
+  }
+}

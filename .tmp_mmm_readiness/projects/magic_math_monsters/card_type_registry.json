@@ -1,0 +1,140 @@
+{
+  "schema_version": "2026-05-card-type-registry-v1",
+  "types": {
+    "creature": {
+      "display_name": "Creature",
+      "required_fields": [
+        "name",
+        "cost",
+        "type_line",
+        "rules_text",
+        "attack",
+        "health",
+        "rarity"
+      ],
+      "optional_fields": [
+        "keywords",
+        "flavor_text",
+        "subtypes",
+        "faction"
+      ],
+      "template_id": "default_creature_front_v1",
+      "allows_stats": true
+    },
+    "spell": {
+      "display_name": "Spell",
+      "required_fields": [
+        "name",
+        "cost",
+        "type_line",
+        "rules_text",
+        "rarity"
+      ],
+      "optional_fields": [
+        "keywords",
+        "flavor_text",
+        "faction"
+      ],
+      "template_id": "default_spell_front_v1",
+      "allows_stats": false
+    },
+    "equipment": {
+      "display_name": "Equipment",
+      "required_fields": [
+        "name",
+        "cost",
+        "type_line",
+        "rules_text",
+        "rarity"
+      ],
+      "optional_fields": [
+        "keywords",
+        "flavor_text",
+        "faction"
+      ],
+      "template_id": "default_equipment_front_v1",
+      "allows_stats": false
+    },
+    "location": {
+      "display_name": "Location",
+      "required_fields": [
+        "name",
+        "type_line",
+        "rules_text",
+        "rarity"
+      ],
+      "optional_fields": [
+        "keywords",
+        "flavor_text",
+        "faction"
+      ],
+      "template_id": "default_location_front_v1",
+      "allows_stats": false
+    },
+    "legendary": {
+      "display_name": "Legendary",
+      "required_fields": [
+        "name",
+        "cost",
+        "type_line",
+        "rules_text",
+        "attack",
+        "health",
+        "rarity"
+      ],
+      "optional_fields": [
+        "keywords",
+        "flavor_text",
+        "subtypes",
+        "faction"
+      ],
+      "template_id": "default_legendary_front_v1",
+      "allows_stats": true
+    },
+    "mmm_player_spell": {
+      "display_name": "MMM Player Spell",
+      "required_fields": [
+        "name",
+        "type_line",
+        "rules_text",
+        "rarity"
+      ],
+      "optional_fields": [
+        "flavor_text",
+        "faction"
+      ],
+      "template_id": "mmm_player_spell_front_v1",
+      "allows_stats": false
+    },
+    "mmm_player_loot": {
+      "display_name": "MMM Player Loot",
+      "required_fields": [
+        "name",
+        "type_line",
+        "rules_text",
+        "rarity"
+      ],
+      "optional_fields": [
+        "flavor_text",
+        "faction"
+      ],
+      "template_id": "mmm_player_loot_front_v1",
+      "allows_stats": false
+    },
+    "mmm_monster": {
+      "display_name": "MMM Monster",
+      "required_fields": [
+        "name",
+        "type_line",
+        "rules_text",
+        "rarity"
+      ],
+      "optional_fields": [
+        "flavor_text",
+        "faction"
+      ],
+      "template_id": "mmm_monster_front_v1",
+      "allows_stats": true
+    }
+  }
+}

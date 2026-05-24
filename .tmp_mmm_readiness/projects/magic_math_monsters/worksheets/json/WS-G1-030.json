@@ -1,0 +1,85 @@
+{
+  "id": "WS-G1-030",
+  "asset_type": "worksheet_page",
+  "version": "4.0-simple-rules",
+  "title": "Room of Wrong Answers",
+  "type": "practice_worksheet",
+  "act": "Finale Room 2",
+  "story_context": "Fix Malakor’s wrong math.",
+  "read_aloud": "Grimble flips to a crisp practice page. 'No overcomplication. Clean answers, clean equations, clean magic. Room of Wrong Answers begins now.'",
+  "printed_instructions": [
+    "Correct each wrong answer.",
+    "Write answers clearly. Use counters only if you are stuck or the page asks for them.",
+    "Optional challenge: solve the first pass without counting objects one by one."
+  ],
+  "skills": [
+    "error_correction"
+  ],
+  "math_scope_tags": [
+    "error_correction"
+  ],
+  "difficulty": "hard",
+  "layout_description": "Black-and-white printable page themed around Room of Wrong Answers; open writing space, large text, optional small art border, no dense background.",
+  "problems": [
+    {
+      "problem_number": 1,
+      "prompt": "9 + 5 = 13",
+      "answer": "9 + 5 = 14",
+      "skill": "error_correction"
+    },
+    {
+      "problem_number": 2,
+      "prompt": "16 - 8 = 9",
+      "answer": "16 - 8 = 8",
+      "skill": "error_correction"
+    },
+    {
+      "problem_number": 3,
+      "prompt": "7 + 7 = 15",
+      "answer": "7 + 7 = 14",
+      "skill": "error_correction"
+    },
+    {
+      "problem_number": 4,
+      "prompt": "20 - 8 = 11",
+      "answer": "20 - 8 = 12",
+      "skill": "error_correction"
+    }
+  ],
+  "answer_key": [
+    {
+      "problem_number": 1,
+      "answer": "9 + 5 = 14"
+    },
+    {
+      "problem_number": 2,
+      "answer": "16 - 8 = 8"
+    },
+    {
+      "problem_number": 3,
+      "answer": "7 + 7 = 14"
+    },
+    {
+      "problem_number": 4,
+      "answer": "20 - 8 = 12"
+    }
+  ],
+  "art": {
+    "worksheet_art_prompt": "Child-friendly cozy fantasy worksheet art for 'Room of Wrong Answers': black-and-white line art worksheet border for Room of Wrong Answers, fantasy but clean and spacious. Bright storybook adventure style, expressive, non-scary, clear main subject, no text, no numerals, no equations, no copyrighted characters.",
+    "negative_prompt": "no dark horror, no dense background, no tiny writing, no equations embedded in artwork"
+  },
+  "status": {
+    "drafted": true,
+    "self_reviewed_v3": true,
+    "answer_checked_basic": true,
+    "human_playtested": false,
+    "final": false,
+    "self_reviewed_v4_simple_rules": true
+  },
+  "fail_forward_rule": "If this page becomes frustrating, solve one problem together, narrate partial success, and continue. Do not trap the story.",
+  "cardforge_import": {
+    "target_asset_type": "worksheet_page",
+    "service": "WorksheetService",
+    "source_id_preserved_as_worksheet_id": true
+  }
+}

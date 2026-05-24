@@ -1,0 +1,95 @@
+{
+  "id": "WS-G1-028",
+  "asset_type": "worksheet_page",
+  "version": "4.0-simple-rules",
+  "title": "Gold Shard Review",
+  "type": "practice_worksheet",
+  "act": "Act 3 Reward",
+  "story_context": "Cumulative review with challenge corner.",
+  "read_aloud": "Grimble flips to a crisp practice page. 'No overcomplication. Clean answers, clean equations, clean magic. Gold Shard Review begins now.'",
+  "printed_instructions": [
+    "Solve each.",
+    "Write answers clearly. Use counters only if you are stuck or the page asks for them.",
+    "Optional challenge: solve the first pass without counting objects one by one."
+  ],
+  "skills": [
+    "cumulative_review"
+  ],
+  "math_scope_tags": [
+    "cumulative_review"
+  ],
+  "difficulty": "hard",
+  "layout_description": "Black-and-white printable page themed around Gold Shard Review; open writing space, large text, optional small art border, no dense background.",
+  "problems": [
+    {
+      "problem_number": 1,
+      "prompt": "12 + 4",
+      "answer": "16",
+      "skill": "cumulative_review"
+    },
+    {
+      "problem_number": 2,
+      "prompt": "19 - 7",
+      "answer": "12",
+      "skill": "cumulative_review"
+    },
+    {
+      "problem_number": 3,
+      "prompt": "8 + __ = 10",
+      "answer": "2",
+      "skill": "cumulative_review"
+    },
+    {
+      "problem_number": 4,
+      "prompt": "53 + 4",
+      "answer": "57",
+      "skill": "cumulative_review"
+    },
+    {
+      "problem_number": 5,
+      "prompt": "45 + 10",
+      "answer": "55",
+      "skill": "cumulative_review"
+    }
+  ],
+  "answer_key": [
+    {
+      "problem_number": 1,
+      "answer": "16"
+    },
+    {
+      "problem_number": 2,
+      "answer": "12"
+    },
+    {
+      "problem_number": 3,
+      "answer": "2"
+    },
+    {
+      "problem_number": 4,
+      "answer": "57"
+    },
+    {
+      "problem_number": 5,
+      "answer": "55"
+    }
+  ],
+  "art": {
+    "worksheet_art_prompt": "Child-friendly cozy fantasy worksheet art for 'Gold Shard Review': black-and-white line art worksheet border for Gold Shard Review, fantasy but clean and spacious. Bright storybook adventure style, expressive, non-scary, clear main subject, no text, no numerals, no equations, no copyrighted characters.",
+    "negative_prompt": "no dark horror, no dense background, no tiny writing, no equations embedded in artwork"
+  },
+  "status": {
+    "drafted": true,
+    "self_reviewed_v3": true,
+    "answer_checked_basic": true,
+    "human_playtested": false,
+    "final": false,
+    "self_reviewed_v4_simple_rules": true
+  },
+  "fail_forward_rule": "If this page becomes frustrating, solve one problem together, narrate partial success, and continue. Do not trap the story.",
+  "cardforge_import": {
+    "target_asset_type": "worksheet_page",
+    "service": "WorksheetService",
+    "source_id_preserved_as_worksheet_id": true
+  }
+}

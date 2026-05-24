@@ -1,0 +1,164 @@
+{
+  "id": 4,
+  "set_id": 1,
+  "batch_id": null,
+  "card_key": "PLY-G1-004",
+  "name": "Star Jar",
+  "slug": "star_jar",
+  "card_number": "PLY-G1-004",
+  "card_type": "mmm_player_spell",
+  "type_line": "MMM Player Spell - Ember",
+  "rarity": "common",
+  "faction": "",
+  "cost_json": "{\"generic\": 0, \"display\": \"0\"}",
+  "stats_json": "{\"attack\": null, \"health\": null}",
+  "rules_text": "A full small star row shows ten marks: ★ ★ ★ ★ ★ ★ ★ ★ ★ ★. How many stars?\nRecognize the full row as 10, then write 10.\nAnswer: 10",
+  "flavor_text": "Quick Dodge: 5 + 2 = __",
+  "keywords_json": "[]",
+  "mechanics_json": "[{\"source\": \"magic_math_monsters\", \"raw\": {\"id\": \"PLY-G1-004\", \"asset_type\": \"player_deck_card\", \"physical_deck\": \"Player Deck\", \"rank_icon\": \"Ember\", \"rank_name\": \"Ember Rank\", \"not_a_separate_deck\": true, \"version\": \"4.0-simple-rules\", \"pedagogy_profile\": \"fluency_mastery_simple_table_rules\", \"setup_tag\": \"starter_first_grade\", \"primary_mode\": \"spell_attack_problem\", \"card_name\": \"Star Jar\", \"story_tags\": [\"Prologue\", \"Brightmeadow\"], \"front_text\": {\"spell_flavor\": \"Your Star Jar spell snaps into the air with bright sparks.\", \"problem\": \"A full small star row shows ten marks: ★ ★ ★ ★ ★ ★ ★ ★ ★ ★. How many stars?\", \"solve_path\": \"Recognize the full row as 10, then write 10.\", \"optional_support\": \"If needed, count 5 stars, then 5 more stars: 5 + 5 = 10.\", \"fluency_challenge\": \"For the Focus die, state the fact or method clearly. Do not use a timer unless the child enjoys speed challenges.\"}, \"math\": {\"skill_category\": \"counting_to_20\", \"math_scope_tags\": [\"counting\", \"five_and_ten_structure\"], \"operation\": null, \"numbers_used\": [10], \"model_type\": \"symbol_counting\", \"difficulty\": \"easy\", \"answer\": 10, \"answer_label\": \"stars\", \"equation\": \"10\", \"answer_type\": \"number\"}, \"guide_data\": {\"full_credit_requirements\": [\"correct answer\", \"correct equation, comparison, or standard notation when appropriate\", \"clear mental method, known fact, or short explanation\"], \"scoring_note\": \"Use v4 tiered scoring: Clean Solve = 3 dice, Solid Solve = 2 dice, Guided Solve = 1 die. Do not require a drawing unless the card explicitly calls for one or the child needs support.\", \"hint_1\": \"Read the equation or key numbers aloud once.\", \"hint_2\": \"Recognize the full row as 10, then write 10.\", \"hint_3\": \"If needed, count 5 stars, then 5 more stars: 5 + 5 = 10.\", \"common_mistake\": \"Guesses without writing the arithmetic sentence or loses track of the operation.\", \"display_answer\": \"10 stars\", \"read_aloud_tip\": \"Read the story problem. Let the child attempt the straight path first. Offer optional support only if needed.\", \"success_text\": \"The Star Jar spell fires clean and bright—quick thinking makes stronger magic.\", \"fail_forward_text\": \"Use one hint at a time. If the child needs heavy help, finish the problem together and roll 1 die.\"}, \"rewards\": {\"clean_solve_dice\": 3, \"solid_solve_dice\": 2, \"guided_solve_dice\": 1, \"stuck_or_refusal_dice\": 0, \"hit_rule\": \"4-6 on each d6 = 1 hit\", \"visual_model_required\": false}, \"quick_dodge_rune\": {\"rune_id\": \"RUNE-G1-004\", \"prompt\": \"5 + 2 = __\", \"answer\": 7, \"skill_category\": \"addition_fact\", \"purpose\": \"Fast mental dodge. No drawing expected unless the child is stuck.\", \"max_time_suggestion_seconds\": 10, \"v4_dodge_rule\": \"Correct = dodge with no damage. Wrong or heavily helped = lose 1 potion. No extra dodge roll.\"}, \"art\": {\"art_window_prompt\": \"Child-friendly cozy fantasy card art for 'Star Jar': a jar glowing with ten tiny stars. Bright storybook adventure style, expressive, non-scary, clear main subject, no text, no numerals, no equations, no copyrighted characters.\", \"negative_prompt\": \"no text, no numerals, no equations, no gore, no horror, no realistic violence, no copyrighted characters\"}, \"layout\": {\"template\": \"player_deck_attack_card_v3_fluency\", \"text_density\": \"medium\", \"requires_ten_ring_icon\": false, \"requires_dodge_rune_strip\": true}, \"status\": {\"drafted\": true, \"self_reviewed_v3\": true, \"math_checked_basic_arithmetic\": true, \"human_playtested\": false, \"final\": false, \"self_reviewed_v4_simple_rules\": true}, \"title\": \"Star Jar\", \"name\": \"Star Jar\", \"problem\": \"A full small star row shows ten marks: ★ ★ ★ ★ ★ ★ ★ ★ ★ ★. How many stars?\", \"solve_path\": \"Recognize the full row as 10, then write 10.\", \"quick_dodge\": {\"rune_id\": \"RUNE-G1-004\", \"prompt\": \"5 + 2 = __\", \"answer\": 7, \"skill_category\": \"addition_fact\", \"purpose\": \"Fast mental dodge. No drawing expected unless the child is stuck.\", \"max_time_suggestion_seconds\": 10, \"v4_dodge_rule\": \"Correct = dodge with no damage. Wrong or heavily helped = lose 1 potion. No extra dodge roll.\"}, \"dodge_rune\": {\"rune_id\": \"RUNE-G1-004\", \"prompt\": \"5 + 2 = __\", \"answer\": 7, \"skill_category\": \"addition_fact\", \"purpose\": \"Fast mental dodge. No drawing expected unless the child is stuck.\", \"max_time_suggestion_seconds\": 10, \"v4_dodge_rule\": \"Correct = dodge with no damage. Wrong or heavily helped = lose 1 potion. No extra dodge roll.\"}, \"answer\": 10, \"equation\": \"10\", \"cardforge_import\": {\"target_set_code\": \"PLAYER\", \"target_card_type\": \"mmm_player_spell\", \"target_template_id\": \"mmm_player_spell_front_v1\", \"target_back_template_id\": \"mmm_player_back_v1\", \"source_id_preserved_as_card_key\": true}}}]",
+  "design_notes": "",
+  "art_direction": "Child-friendly cozy fantasy card art for 'Star Jar': a jar glowing with ten tiny stars. Bright storybook adventure style, expressive, non-scary, clear main subject, no text, no numerals, no equations, no copyrighted characters.",
+  "template_id": "mmm_player_spell_front_v1",
+  "back_template_id": "mmm_player_back_v1",
+  "status": "draft",
+  "current_version_id": 4,
+  "created_at": "2026-05-24 03:59:54",
+  "updated_at": "2026-05-24 03:59:54",
+  "cost": {
+    "generic": 0,
+    "display": "0"
+  },
+  "stats": {
+    "attack": null,
+    "health": null
+  },
+  "keywords": [],
+  "mechanics": [
+    {
+      "source": "magic_math_monsters",
+      "raw": {
+        "id": "PLY-G1-004",
+        "asset_type": "player_deck_card",
+        "physical_deck": "Player Deck",
+        "rank_icon": "Ember",
+        "rank_name": "Ember Rank",
+        "not_a_separate_deck": true,
+        "version": "4.0-simple-rules",
+        "pedagogy_profile": "fluency_mastery_simple_table_rules",
+        "setup_tag": "starter_first_grade",
+        "primary_mode": "spell_attack_problem",
+        "card_name": "Star Jar",
+        "story_tags": [
+          "Prologue",
+          "Brightmeadow"
+        ],
+        "front_text": {
+          "spell_flavor": "Your Star Jar spell snaps into the air with bright sparks.",
+          "problem": "A full small star row shows ten marks: ★ ★ ★ ★ ★ ★ ★ ★ ★ ★. How many stars?",
+          "solve_path": "Recognize the full row as 10, then write 10.",
+          "optional_support": "If needed, count 5 stars, then 5 more stars: 5 + 5 = 10.",
+          "fluency_challenge": "For the Focus die, state the fact or method clearly. Do not use a timer unless the child enjoys speed challenges."
+        },
+        "math": {
+          "skill_category": "counting_to_20",
+          "math_scope_tags": [
+            "counting",
+            "five_and_ten_structure"
+          ],
+          "operation": null,
+          "numbers_used": [
+            10
+          ],
+          "model_type": "symbol_counting",
+          "difficulty": "easy",
+          "answer": 10,
+          "answer_label": "stars",
+          "equation": "10",
+          "answer_type": "number"
+        },
+        "guide_data": {
+          "full_credit_requirements": [
+            "correct answer",
+            "correct equation, comparison, or standard notation when appropriate",
+            "clear mental method, known fact, or short explanation"
+          ],
+          "scoring_note": "Use v4 tiered scoring: Clean Solve = 3 dice, Solid Solve = 2 dice, Guided Solve = 1 die. Do not require a drawing unless the card explicitly calls for one or the child needs support.",
+          "hint_1": "Read the equation or key numbers aloud once.",
+          "hint_2": "Recognize the full row as 10, then write 10.",
+          "hint_3": "If needed, count 5 stars, then 5 more stars: 5 + 5 = 10.",
+          "common_mistake": "Guesses without writing the arithmetic sentence or loses track of the operation.",
+          "display_answer": "10 stars",
+          "read_aloud_tip": "Read the story problem. Let the child attempt the straight path first. Offer optional support only if needed.",
+          "success_text": "The Star Jar spell fires clean and bright—quick thinking makes stronger magic.",
+          "fail_forward_text": "Use one hint at a time. If the child needs heavy help, finish the problem together and roll 1 die."
+        },
+        "rewards": {
+          "clean_solve_dice": 3,
+          "solid_solve_dice": 2,
+          "guided_solve_dice": 1,
+          "stuck_or_refusal_dice": 0,
+          "hit_rule": "4-6 on each d6 = 1 hit",
+          "visual_model_required": false
+        },
+        "quick_dodge_rune": {
+          "rune_id": "RUNE-G1-004",
+          "prompt": "5 + 2 = __",
+          "answer": 7,
+          "skill_category": "addition_fact",
+          "purpose": "Fast mental dodge. No drawing expected unless the child is stuck.",
+          "max_time_suggestion_seconds": 10,
+          "v4_dodge_rule": "Correct = dodge with no damage. Wrong or heavily helped = lose 1 potion. No extra dodge roll."
+        },
+        "art": {
+          "art_window_prompt": "Child-friendly cozy fantasy card art for 'Star Jar': a jar glowing with ten tiny stars. Bright storybook adventure style, expressive, non-scary, clear main subject, no text, no numerals, no equations, no copyrighted characters.",
+          "negative_prompt": "no text, no numerals, no equations, no gore, no horror, no realistic violence, no copyrighted characters"
+        },
+        "layout": {
+          "template": "player_deck_attack_card_v3_fluency",
+          "text_density": "medium",
+          "requires_ten_ring_icon": false,
+          "requires_dodge_rune_strip": true
+        },
+        "status": {
+          "drafted": true,
+          "self_reviewed_v3": true,
+          "math_checked_basic_arithmetic": true,
+          "human_playtested": false,
+          "final": false,
+          "self_reviewed_v4_simple_rules": true
+        },
+        "title": "Star Jar",
+        "name": "Star Jar",
+        "problem": "A full small star row shows ten marks: ★ ★ ★ ★ ★ ★ ★ ★ ★ ★. How many stars?",
+        "solve_path": "Recognize the full row as 10, then write 10.",
+        "quick_dodge": {
+          "rune_id": "RUNE-G1-004",
+          "prompt": "5 + 2 = __",
+          "answer": 7,
+          "skill_category": "addition_fact",
+          "purpose": "Fast mental dodge. No drawing expected unless the child is stuck.",
+          "max_time_suggestion_seconds": 10,
+          "v4_dodge_rule": "Correct = dodge with no damage. Wrong or heavily helped = lose 1 potion. No extra dodge roll."
+        },
+        "dodge_rune": {
+          "rune_id": "RUNE-G1-004",
+          "prompt": "5 + 2 = __",
+          "answer": 7,
+          "skill_category": "addition_fact",
+          "purpose": "Fast mental dodge. No drawing expected unless the child is stuck.",
+          "max_time_suggestion_seconds": 10,
+          "v4_dodge_rule": "Correct = dodge with no damage. Wrong or heavily helped = lose 1 potion. No extra dodge roll."
+        },
+        "answer": 10,
+        "equation": "10",
+        "cardforge_import": {
+          "target_set_code": "PLAYER",
+          "target_card_type": "mmm_player_spell",
+          "target_template_id": "mmm_player_spell_front_v1",
+          "target_back_template_id": "mmm_player_back_v1",
+          "source_id_preserved_as_card_key": true
+        }
+      }
+    }
+  ]
+}

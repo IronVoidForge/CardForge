@@ -1,0 +1,85 @@
+{
+  "id": "WS-G1-011",
+  "asset_type": "worksheet_page",
+  "version": "4.0-simple-rules",
+  "title": "Root Golem Vines",
+  "type": "practice_worksheet",
+  "act": "Act 1 Boss",
+  "story_context": "Clean equations free the golem.",
+  "read_aloud": "Grimble flips to a crisp practice page. 'No overcomplication. Clean answers, clean equations, clean magic. Root Golem Vines begins now.'",
+  "printed_instructions": [
+    "Write the equation and answer for each vine.",
+    "Write answers clearly. Use counters only if you are stuck or the page asks for them.",
+    "Optional challenge: solve the first pass without counting objects one by one."
+  ],
+  "skills": [
+    "story_to_equation"
+  ],
+  "math_scope_tags": [
+    "story_to_equation"
+  ],
+  "difficulty": "normal",
+  "layout_description": "Black-and-white printable page themed around Root Golem Vines; open writing space, large text, optional small art border, no dense background.",
+  "problems": [
+    {
+      "problem_number": 1,
+      "prompt": "5 carrots, 2 eaten",
+      "answer": "5 - 2 = 3",
+      "skill": "story_to_equation"
+    },
+    {
+      "problem_number": 2,
+      "prompt": "4 buttons, 3 more",
+      "answer": "4 + 3 = 7",
+      "skill": "story_to_equation"
+    },
+    {
+      "problem_number": 3,
+      "prompt": "8 gems, 6 square",
+      "answer": "8 - 6 = 2",
+      "skill": "story_to_equation"
+    },
+    {
+      "problem_number": 4,
+      "prompt": "3 notes, need 7",
+      "answer": "3 + 4 = 7",
+      "skill": "story_to_equation"
+    }
+  ],
+  "answer_key": [
+    {
+      "problem_number": 1,
+      "answer": "5 - 2 = 3"
+    },
+    {
+      "problem_number": 2,
+      "answer": "4 + 3 = 7"
+    },
+    {
+      "problem_number": 3,
+      "answer": "8 - 6 = 2"
+    },
+    {
+      "problem_number": 4,
+      "answer": "3 + 4 = 7"
+    }
+  ],
+  "art": {
+    "worksheet_art_prompt": "Child-friendly cozy fantasy worksheet art for 'Root Golem Vines': black-and-white line art worksheet border for Root Golem Vines, fantasy but clean and spacious. Bright storybook adventure style, expressive, non-scary, clear main subject, no text, no numerals, no equations, no copyrighted characters.",
+    "negative_prompt": "no dark horror, no dense background, no tiny writing, no equations embedded in artwork"
+  },
+  "status": {
+    "drafted": true,
+    "self_reviewed_v3": true,
+    "answer_checked_basic": true,
+    "human_playtested": false,
+    "final": false,
+    "self_reviewed_v4_simple_rules": true
+  },
+  "fail_forward_rule": "If this page becomes frustrating, solve one problem together, narrate partial success, and continue. Do not trap the story.",
+  "cardforge_import": {
+    "target_asset_type": "worksheet_page",
+    "service": "WorksheetService",
+    "source_id_preserved_as_worksheet_id": true
+  }
+}

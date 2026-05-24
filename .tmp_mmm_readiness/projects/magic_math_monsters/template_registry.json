@@ -1,0 +1,2031 @@
+{
+  "schema_version": "2026-05-template-registry-v2",
+  "templates": {
+    "default_creature_front_v1": {
+      "template_type": "front",
+      "canvas": {
+        "width": 750,
+        "height": 1050,
+        "bleed": 24,
+        "safe_margin": 52
+      },
+      "colors": {
+        "background": [
+          236,
+          232,
+          220
+        ],
+        "border": [
+          32,
+          28,
+          35
+        ],
+        "frame": [
+          70,
+          60,
+          82
+        ],
+        "panel": [
+          245,
+          241,
+          229
+        ],
+        "text": [
+          25,
+          20,
+          20
+        ],
+        "muted_text": [
+          55,
+          45,
+          55
+        ],
+        "art_placeholder": [
+          135,
+          125,
+          145
+        ]
+      },
+      "font_roles": {
+        "title": {
+          "size": 40,
+          "min_size": 24
+        },
+        "cost": {
+          "size": 30,
+          "min_size": 20
+        },
+        "type_line": {
+          "size": 28,
+          "min_size": 18
+        },
+        "rules": {
+          "size": 27,
+          "min_size": 17
+        },
+        "flavor": {
+          "size": 21,
+          "min_size": 15
+        },
+        "stats": {
+          "size": 32,
+          "min_size": 20
+        }
+      },
+      "layers": [
+        {
+          "id": "outer_frame",
+          "type": "rounded_rect",
+          "box": [
+            24,
+            24,
+            726,
+            1026
+          ],
+          "radius": 34
+        },
+        {
+          "id": "inner_frame",
+          "type": "rounded_rect",
+          "box": [
+            46,
+            46,
+            704,
+            1004
+          ],
+          "radius": 24
+        },
+        {
+          "id": "title",
+          "type": "text",
+          "source": "card.name",
+          "box": [
+            86,
+            82,
+            610,
+            142
+          ],
+          "max_lines": 1
+        },
+        {
+          "id": "cost",
+          "type": "cost",
+          "source": "card.cost",
+          "box": [
+            625,
+            78,
+            690,
+            143
+          ],
+          "max_lines": 1
+        },
+        {
+          "id": "title_bar",
+          "type": "rounded_rect",
+          "box": [
+            64,
+            64,
+            686,
+            150
+          ],
+          "radius": 14
+        },
+        {
+          "id": "art",
+          "type": "image_slot",
+          "source": "locked_art",
+          "box": [
+            78,
+            170,
+            672,
+            520
+          ],
+          "fit": "cover"
+        },
+        {
+          "id": "type_line",
+          "type": "text",
+          "source": "card.type_line",
+          "box": [
+            96,
+            542,
+            650,
+            586
+          ],
+          "max_lines": 1
+        },
+        {
+          "id": "type_bar",
+          "type": "rounded_rect",
+          "box": [
+            78,
+            535,
+            672,
+            590
+          ],
+          "radius": 8
+        },
+        {
+          "id": "rules_panel",
+          "type": "rounded_rect",
+          "box": [
+            78,
+            605,
+            672,
+            890
+          ],
+          "radius": 10
+        },
+        {
+          "id": "rules_text",
+          "type": "rich_text",
+          "source": "card.rules_text",
+          "box": [
+            92,
+            620,
+            658,
+            865
+          ],
+          "max_lines": 12
+        },
+        {
+          "id": "flavor_text",
+          "type": "rich_text",
+          "source": "card.flavor_text",
+          "box": [
+            94,
+            905,
+            634,
+            980
+          ],
+          "max_lines": 3
+        },
+        {
+          "id": "stats",
+          "type": "stats",
+          "source": "card.stats",
+          "box": [
+            560,
+            930,
+            680,
+            995
+          ]
+        }
+      ],
+      "template_key": "default_creature_front_v1",
+      "name": "Default Creature Front",
+      "card_type": "creature"
+    },
+    "default_spell_front_v1": {
+      "template_type": "front",
+      "canvas": {
+        "width": 750,
+        "height": 1050,
+        "bleed": 24,
+        "safe_margin": 52
+      },
+      "colors": {
+        "background": [
+          236,
+          232,
+          220
+        ],
+        "border": [
+          32,
+          28,
+          35
+        ],
+        "frame": [
+          45,
+          64,
+          106
+        ],
+        "panel": [
+          236,
+          242,
+          249
+        ],
+        "text": [
+          25,
+          20,
+          20
+        ],
+        "muted_text": [
+          55,
+          45,
+          55
+        ],
+        "art_placeholder": [
+          135,
+          125,
+          145
+        ]
+      },
+      "font_roles": {
+        "title": {
+          "size": 40,
+          "min_size": 24
+        },
+        "cost": {
+          "size": 30,
+          "min_size": 20
+        },
+        "type_line": {
+          "size": 28,
+          "min_size": 18
+        },
+        "rules": {
+          "size": 27,
+          "min_size": 17
+        },
+        "flavor": {
+          "size": 21,
+          "min_size": 15
+        },
+        "stats": {
+          "size": 32,
+          "min_size": 20
+        }
+      },
+      "layers": [
+        {
+          "id": "outer_frame",
+          "type": "rounded_rect",
+          "box": [
+            24,
+            24,
+            726,
+            1026
+          ],
+          "radius": 34
+        },
+        {
+          "id": "inner_frame",
+          "type": "rounded_rect",
+          "box": [
+            46,
+            46,
+            704,
+            1004
+          ],
+          "radius": 24
+        },
+        {
+          "id": "title",
+          "type": "text",
+          "source": "card.name",
+          "box": [
+            86,
+            82,
+            610,
+            142
+          ],
+          "max_lines": 1
+        },
+        {
+          "id": "cost",
+          "type": "cost",
+          "source": "card.cost",
+          "box": [
+            625,
+            78,
+            690,
+            143
+          ],
+          "max_lines": 1
+        },
+        {
+          "id": "title_bar",
+          "type": "rounded_rect",
+          "box": [
+            64,
+            64,
+            686,
+            150
+          ],
+          "radius": 14
+        },
+        {
+          "id": "art",
+          "type": "image_slot",
+          "source": "locked_art",
+          "box": [
+            78,
+            170,
+            672,
+            520
+          ],
+          "fit": "cover"
+        },
+        {
+          "id": "type_line",
+          "type": "text",
+          "source": "card.type_line",
+          "box": [
+            96,
+            542,
+            650,
+            586
+          ],
+          "max_lines": 1
+        },
+        {
+          "id": "type_bar",
+          "type": "rounded_rect",
+          "box": [
+            78,
+            535,
+            672,
+            590
+          ],
+          "radius": 8
+        },
+        {
+          "id": "rules_panel",
+          "type": "rounded_rect",
+          "box": [
+            78,
+            605,
+            672,
+            890
+          ],
+          "radius": 10
+        },
+        {
+          "id": "rules_text",
+          "type": "rich_text",
+          "source": "card.rules_text",
+          "box": [
+            92,
+            620,
+            658,
+            865
+          ],
+          "max_lines": 12
+        },
+        {
+          "id": "flavor_text",
+          "type": "rich_text",
+          "source": "card.flavor_text",
+          "box": [
+            94,
+            905,
+            634,
+            980
+          ],
+          "max_lines": 3
+        },
+        {
+          "id": "stats",
+          "type": "stats",
+          "source": "card.stats",
+          "box": [
+            560,
+            930,
+            680,
+            995
+          ]
+        }
+      ],
+      "template_key": "default_spell_front_v1",
+      "name": "Default Spell Front",
+      "card_type": "spell"
+    },
+    "default_equipment_front_v1": {
+      "template_type": "front",
+      "canvas": {
+        "width": 750,
+        "height": 1050,
+        "bleed": 24,
+        "safe_margin": 52
+      },
+      "colors": {
+        "background": [
+          236,
+          232,
+          220
+        ],
+        "border": [
+          32,
+          28,
+          35
+        ],
+        "frame": [
+          94,
+          72,
+          38
+        ],
+        "panel": [
+          246,
+          238,
+          219
+        ],
+        "text": [
+          25,
+          20,
+          20
+        ],
+        "muted_text": [
+          55,
+          45,
+          55
+        ],
+        "art_placeholder": [
+          135,
+          125,
+          145
+        ]
+      },
+      "font_roles": {
+        "title": {
+          "size": 40,
+          "min_size": 24
+        },
+        "cost": {
+          "size": 30,
+          "min_size": 20
+        },
+        "type_line": {
+          "size": 28,
+          "min_size": 18
+        },
+        "rules": {
+          "size": 27,
+          "min_size": 17
+        },
+        "flavor": {
+          "size": 21,
+          "min_size": 15
+        },
+        "stats": {
+          "size": 32,
+          "min_size": 20
+        }
+      },
+      "layers": [
+        {
+          "id": "outer_frame",
+          "type": "rounded_rect",
+          "box": [
+            24,
+            24,
+            726,
+            1026
+          ],
+          "radius": 34
+        },
+        {
+          "id": "inner_frame",
+          "type": "rounded_rect",
+          "box": [
+            46,
+            46,
+            704,
+            1004
+          ],
+          "radius": 24
+        },
+        {
+          "id": "title",
+          "type": "text",
+          "source": "card.name",
+          "box": [
+            86,
+            82,
+            610,
+            142
+          ],
+          "max_lines": 1
+        },
+        {
+          "id": "cost",
+          "type": "cost",
+          "source": "card.cost",
+          "box": [
+            625,
+            78,
+            690,
+            143
+          ],
+          "max_lines": 1
+        },
+        {
+          "id": "title_bar",
+          "type": "rounded_rect",
+          "box": [
+            64,
+            64,
+            686,
+            150
+          ],
+          "radius": 14
+        },
+        {
+          "id": "art",
+          "type": "image_slot",
+          "source": "locked_art",
+          "box": [
+            78,
+            170,
+            672,
+            520
+          ],
+          "fit": "cover"
+        },
+        {
+          "id": "type_line",
+          "type": "text",
+          "source": "card.type_line",
+          "box": [
+            96,
+            542,
+            650,
+            586
+          ],
+          "max_lines": 1
+        },
+        {
+          "id": "type_bar",
+          "type": "rounded_rect",
+          "box": [
+            78,
+            535,
+            672,
+            590
+          ],
+          "radius": 8
+        },
+        {
+          "id": "rules_panel",
+          "type": "rounded_rect",
+          "box": [
+            78,
+            605,
+            672,
+            890
+          ],
+          "radius": 10
+        },
+        {
+          "id": "rules_text",
+          "type": "rich_text",
+          "source": "card.rules_text",
+          "box": [
+            92,
+            620,
+            658,
+            865
+          ],
+          "max_lines": 12
+        },
+        {
+          "id": "flavor_text",
+          "type": "rich_text",
+          "source": "card.flavor_text",
+          "box": [
+            94,
+            905,
+            634,
+            980
+          ],
+          "max_lines": 3
+        },
+        {
+          "id": "stats",
+          "type": "stats",
+          "source": "card.stats",
+          "box": [
+            560,
+            930,
+            680,
+            995
+          ]
+        }
+      ],
+      "template_key": "default_equipment_front_v1",
+      "name": "Default Equipment Front",
+      "card_type": "equipment"
+    },
+    "default_location_front_v1": {
+      "template_type": "front",
+      "canvas": {
+        "width": 750,
+        "height": 1050,
+        "bleed": 24,
+        "safe_margin": 52
+      },
+      "colors": {
+        "background": [
+          236,
+          232,
+          220
+        ],
+        "border": [
+          32,
+          28,
+          35
+        ],
+        "frame": [
+          49,
+          91,
+          67
+        ],
+        "panel": [
+          230,
+          242,
+          228
+        ],
+        "text": [
+          25,
+          20,
+          20
+        ],
+        "muted_text": [
+          55,
+          45,
+          55
+        ],
+        "art_placeholder": [
+          135,
+          125,
+          145
+        ]
+      },
+      "font_roles": {
+        "title": {
+          "size": 40,
+          "min_size": 24
+        },
+        "cost": {
+          "size": 30,
+          "min_size": 20
+        },
+        "type_line": {
+          "size": 28,
+          "min_size": 18
+        },
+        "rules": {
+          "size": 27,
+          "min_size": 17
+        },
+        "flavor": {
+          "size": 21,
+          "min_size": 15
+        },
+        "stats": {
+          "size": 32,
+          "min_size": 20
+        }
+      },
+      "layers": [
+        {
+          "id": "outer_frame",
+          "type": "rounded_rect",
+          "box": [
+            24,
+            24,
+            726,
+            1026
+          ],
+          "radius": 34
+        },
+        {
+          "id": "inner_frame",
+          "type": "rounded_rect",
+          "box": [
+            46,
+            46,
+            704,
+            1004
+          ],
+          "radius": 24
+        },
+        {
+          "id": "title",
+          "type": "text",
+          "source": "card.name",
+          "box": [
+            86,
+            82,
+            610,
+            142
+          ],
+          "max_lines": 1
+        },
+        {
+          "id": "cost",
+          "type": "cost",
+          "source": "card.cost",
+          "box": [
+            625,
+            78,
+            690,
+            143
+          ],
+          "max_lines": 1
+        },
+        {
+          "id": "title_bar",
+          "type": "rounded_rect",
+          "box": [
+            64,
+            64,
+            686,
+            150
+          ],
+          "radius": 14
+        },
+        {
+          "id": "art",
+          "type": "image_slot",
+          "source": "locked_art",
+          "box": [
+            78,
+            170,
+            672,
+            520
+          ],
+          "fit": "cover"
+        },
+        {
+          "id": "type_line",
+          "type": "text",
+          "source": "card.type_line",
+          "box": [
+            96,
+            542,
+            650,
+            586
+          ],
+          "max_lines": 1
+        },
+        {
+          "id": "type_bar",
+          "type": "rounded_rect",
+          "box": [
+            78,
+            535,
+            672,
+            590
+          ],
+          "radius": 8
+        },
+        {
+          "id": "rules_panel",
+          "type": "rounded_rect",
+          "box": [
+            78,
+            605,
+            672,
+            890
+          ],
+          "radius": 10
+        },
+        {
+          "id": "rules_text",
+          "type": "rich_text",
+          "source": "card.rules_text",
+          "box": [
+            92,
+            620,
+            658,
+            865
+          ],
+          "max_lines": 12
+        },
+        {
+          "id": "flavor_text",
+          "type": "rich_text",
+          "source": "card.flavor_text",
+          "box": [
+            94,
+            905,
+            634,
+            980
+          ],
+          "max_lines": 3
+        },
+        {
+          "id": "stats",
+          "type": "stats",
+          "source": "card.stats",
+          "box": [
+            560,
+            930,
+            680,
+            995
+          ]
+        }
+      ],
+      "template_key": "default_location_front_v1",
+      "name": "Default Location Front",
+      "card_type": "location"
+    },
+    "default_legendary_front_v1": {
+      "template_type": "front",
+      "canvas": {
+        "width": 750,
+        "height": 1050,
+        "bleed": 24,
+        "safe_margin": 52
+      },
+      "colors": {
+        "background": [
+          236,
+          232,
+          220
+        ],
+        "border": [
+          32,
+          28,
+          35
+        ],
+        "frame": [
+          112,
+          70,
+          133
+        ],
+        "panel": [
+          247,
+          236,
+          250
+        ],
+        "text": [
+          25,
+          20,
+          20
+        ],
+        "muted_text": [
+          55,
+          45,
+          55
+        ],
+        "art_placeholder": [
+          135,
+          125,
+          145
+        ]
+      },
+      "font_roles": {
+        "title": {
+          "size": 40,
+          "min_size": 24
+        },
+        "cost": {
+          "size": 30,
+          "min_size": 20
+        },
+        "type_line": {
+          "size": 28,
+          "min_size": 18
+        },
+        "rules": {
+          "size": 27,
+          "min_size": 17
+        },
+        "flavor": {
+          "size": 21,
+          "min_size": 15
+        },
+        "stats": {
+          "size": 32,
+          "min_size": 20
+        }
+      },
+      "layers": [
+        {
+          "id": "outer_frame",
+          "type": "rounded_rect",
+          "box": [
+            24,
+            24,
+            726,
+            1026
+          ],
+          "radius": 34
+        },
+        {
+          "id": "inner_frame",
+          "type": "rounded_rect",
+          "box": [
+            46,
+            46,
+            704,
+            1004
+          ],
+          "radius": 24
+        },
+        {
+          "id": "title",
+          "type": "text",
+          "source": "card.name",
+          "box": [
+            86,
+            82,
+            610,
+            142
+          ],
+          "max_lines": 1
+        },
+        {
+          "id": "cost",
+          "type": "cost",
+          "source": "card.cost",
+          "box": [
+            625,
+            78,
+            690,
+            143
+          ],
+          "max_lines": 1
+        },
+        {
+          "id": "title_bar",
+          "type": "rounded_rect",
+          "box": [
+            64,
+            64,
+            686,
+            150
+          ],
+          "radius": 14
+        },
+        {
+          "id": "art",
+          "type": "image_slot",
+          "source": "locked_art",
+          "box": [
+            78,
+            170,
+            672,
+            520
+          ],
+          "fit": "cover"
+        },
+        {
+          "id": "type_line",
+          "type": "text",
+          "source": "card.type_line",
+          "box": [
+            96,
+            542,
+            650,
+            586
+          ],
+          "max_lines": 1
+        },
+        {
+          "id": "type_bar",
+          "type": "rounded_rect",
+          "box": [
+            78,
+            535,
+            672,
+            590
+          ],
+          "radius": 8
+        },
+        {
+          "id": "rules_panel",
+          "type": "rounded_rect",
+          "box": [
+            78,
+            605,
+            672,
+            890
+          ],
+          "radius": 10
+        },
+        {
+          "id": "rules_text",
+          "type": "rich_text",
+          "source": "card.rules_text",
+          "box": [
+            92,
+            620,
+            658,
+            865
+          ],
+          "max_lines": 12
+        },
+        {
+          "id": "flavor_text",
+          "type": "rich_text",
+          "source": "card.flavor_text",
+          "box": [
+            94,
+            905,
+            634,
+            980
+          ],
+          "max_lines": 3
+        },
+        {
+          "id": "stats",
+          "type": "stats",
+          "source": "card.stats",
+          "box": [
+            560,
+            930,
+            680,
+            995
+          ]
+        }
+      ],
+      "template_key": "default_legendary_front_v1",
+      "name": "Default Legendary Front",
+      "card_type": "legendary"
+    },
+    "default_card_back_v1": {
+      "template_type": "back",
+      "card_type": "any",
+      "canvas": {
+        "width": 750,
+        "height": 1050,
+        "bleed": 24,
+        "safe_margin": 52
+      },
+      "colors": {
+        "background": [
+          40,
+          33,
+          52
+        ],
+        "border": [
+          210,
+          185,
+          110
+        ],
+        "secondary": [
+          120,
+          83,
+          185
+        ],
+        "text": [
+          230,
+          215,
+          160
+        ]
+      },
+      "font_roles": {
+        "title": {
+          "size": 58,
+          "min_size": 36
+        },
+        "subtitle": {
+          "size": 24,
+          "min_size": 18
+        }
+      },
+      "layers": [
+        {
+          "id": "outer_frame",
+          "type": "rounded_rect",
+          "box": [
+            40,
+            40,
+            710,
+            1010
+          ],
+          "radius": 42
+        },
+        {
+          "id": "inner_frame",
+          "type": "rounded_rect",
+          "box": [
+            74,
+            74,
+            676,
+            976
+          ],
+          "radius": 30
+        },
+        {
+          "id": "emblem",
+          "type": "ellipse",
+          "box": [
+            190,
+            310,
+            560,
+            680
+          ]
+        },
+        {
+          "id": "title",
+          "type": "text",
+          "source": "project.name",
+          "box": [
+            80,
+            700,
+            670,
+            800
+          ],
+          "max_lines": 1
+        },
+        {
+          "id": "subtitle",
+          "type": "text",
+          "source": "static.prototype",
+          "box": [
+            80,
+            800,
+            670,
+            850
+          ],
+          "max_lines": 1
+        }
+      ],
+      "template_key": "default_card_back_v1",
+      "name": "Default Card Back"
+    },
+    "mmm_player_spell_front_v1": {
+      "template_type": "front",
+      "canvas": {
+        "width": 750,
+        "height": 1050,
+        "bleed": 24,
+        "safe_margin": 52
+      },
+      "colors": {
+        "background": [
+          236,
+          232,
+          220
+        ],
+        "border": [
+          32,
+          28,
+          35
+        ],
+        "frame": [
+          45,
+          64,
+          106
+        ],
+        "panel": [
+          236,
+          242,
+          249
+        ],
+        "text": [
+          25,
+          20,
+          20
+        ],
+        "muted_text": [
+          55,
+          45,
+          55
+        ],
+        "art_placeholder": [
+          135,
+          125,
+          145
+        ]
+      },
+      "font_roles": {
+        "title": {
+          "size": 40,
+          "min_size": 24
+        },
+        "cost": {
+          "size": 30,
+          "min_size": 20
+        },
+        "type_line": {
+          "size": 28,
+          "min_size": 18
+        },
+        "rules": {
+          "size": 27,
+          "min_size": 17
+        },
+        "flavor": {
+          "size": 21,
+          "min_size": 15
+        },
+        "stats": {
+          "size": 32,
+          "min_size": 20
+        }
+      },
+      "layers": [
+        {
+          "id": "outer_frame",
+          "type": "rounded_rect",
+          "box": [
+            24,
+            24,
+            726,
+            1026
+          ],
+          "radius": 34
+        },
+        {
+          "id": "inner_frame",
+          "type": "rounded_rect",
+          "box": [
+            46,
+            46,
+            704,
+            1004
+          ],
+          "radius": 24
+        },
+        {
+          "id": "title",
+          "type": "text",
+          "source": "card.name",
+          "box": [
+            86,
+            82,
+            610,
+            142
+          ],
+          "max_lines": 1
+        },
+        {
+          "id": "cost",
+          "type": "cost",
+          "source": "card.cost",
+          "box": [
+            625,
+            78,
+            690,
+            143
+          ],
+          "max_lines": 1
+        },
+        {
+          "id": "title_bar",
+          "type": "rounded_rect",
+          "box": [
+            64,
+            64,
+            686,
+            150
+          ],
+          "radius": 14
+        },
+        {
+          "id": "art",
+          "type": "image_slot",
+          "source": "locked_art",
+          "box": [
+            78,
+            170,
+            672,
+            520
+          ],
+          "fit": "cover"
+        },
+        {
+          "id": "type_line",
+          "type": "text",
+          "source": "card.type_line",
+          "box": [
+            96,
+            542,
+            650,
+            586
+          ],
+          "max_lines": 1
+        },
+        {
+          "id": "type_bar",
+          "type": "rounded_rect",
+          "box": [
+            78,
+            535,
+            672,
+            590
+          ],
+          "radius": 8
+        },
+        {
+          "id": "rules_panel",
+          "type": "rounded_rect",
+          "box": [
+            78,
+            605,
+            672,
+            890
+          ],
+          "radius": 10
+        },
+        {
+          "id": "rules_text",
+          "type": "rich_text",
+          "source": "card.rules_text",
+          "box": [
+            92,
+            620,
+            658,
+            865
+          ],
+          "max_lines": 12
+        },
+        {
+          "id": "flavor_text",
+          "type": "rich_text",
+          "source": "card.flavor_text",
+          "box": [
+            94,
+            905,
+            634,
+            980
+          ],
+          "max_lines": 3
+        },
+        {
+          "id": "stats",
+          "type": "stats",
+          "source": "card.stats",
+          "box": [
+            560,
+            930,
+            680,
+            995
+          ]
+        }
+      ],
+      "template_key": "mmm_player_spell_front_v1",
+      "name": "Mmm Player Spell Front V1",
+      "card_type": "spell"
+    },
+    "mmm_player_loot_front_v1": {
+      "template_type": "front",
+      "canvas": {
+        "width": 750,
+        "height": 1050,
+        "bleed": 24,
+        "safe_margin": 52
+      },
+      "colors": {
+        "background": [
+          236,
+          232,
+          220
+        ],
+        "border": [
+          32,
+          28,
+          35
+        ],
+        "frame": [
+          94,
+          72,
+          38
+        ],
+        "panel": [
+          246,
+          238,
+          219
+        ],
+        "text": [
+          25,
+          20,
+          20
+        ],
+        "muted_text": [
+          55,
+          45,
+          55
+        ],
+        "art_placeholder": [
+          135,
+          125,
+          145
+        ]
+      },
+      "font_roles": {
+        "title": {
+          "size": 40,
+          "min_size": 24
+        },
+        "cost": {
+          "size": 30,
+          "min_size": 20
+        },
+        "type_line": {
+          "size": 28,
+          "min_size": 18
+        },
+        "rules": {
+          "size": 27,
+          "min_size": 17
+        },
+        "flavor": {
+          "size": 21,
+          "min_size": 15
+        },
+        "stats": {
+          "size": 32,
+          "min_size": 20
+        }
+      },
+      "layers": [
+        {
+          "id": "outer_frame",
+          "type": "rounded_rect",
+          "box": [
+            24,
+            24,
+            726,
+            1026
+          ],
+          "radius": 34
+        },
+        {
+          "id": "inner_frame",
+          "type": "rounded_rect",
+          "box": [
+            46,
+            46,
+            704,
+            1004
+          ],
+          "radius": 24
+        },
+        {
+          "id": "title",
+          "type": "text",
+          "source": "card.name",
+          "box": [
+            86,
+            82,
+            610,
+            142
+          ],
+          "max_lines": 1
+        },
+        {
+          "id": "cost",
+          "type": "cost",
+          "source": "card.cost",
+          "box": [
+            625,
+            78,
+            690,
+            143
+          ],
+          "max_lines": 1
+        },
+        {
+          "id": "title_bar",
+          "type": "rounded_rect",
+          "box": [
+            64,
+            64,
+            686,
+            150
+          ],
+          "radius": 14
+        },
+        {
+          "id": "art",
+          "type": "image_slot",
+          "source": "locked_art",
+          "box": [
+            78,
+            170,
+            672,
+            520
+          ],
+          "fit": "cover"
+        },
+        {
+          "id": "type_line",
+          "type": "text",
+          "source": "card.type_line",
+          "box": [
+            96,
+            542,
+            650,
+            586
+          ],
+          "max_lines": 1
+        },
+        {
+          "id": "type_bar",
+          "type": "rounded_rect",
+          "box": [
+            78,
+            535,
+            672,
+            590
+          ],
+          "radius": 8
+        },
+        {
+          "id": "rules_panel",
+          "type": "rounded_rect",
+          "box": [
+            78,
+            605,
+            672,
+            890
+          ],
+          "radius": 10
+        },
+        {
+          "id": "rules_text",
+          "type": "rich_text",
+          "source": "card.rules_text",
+          "box": [
+            92,
+            620,
+            658,
+            865
+          ],
+          "max_lines": 12
+        },
+        {
+          "id": "flavor_text",
+          "type": "rich_text",
+          "source": "card.flavor_text",
+          "box": [
+            94,
+            905,
+            634,
+            980
+          ],
+          "max_lines": 3
+        },
+        {
+          "id": "stats",
+          "type": "stats",
+          "source": "card.stats",
+          "box": [
+            560,
+            930,
+            680,
+            995
+          ]
+        }
+      ],
+      "template_key": "mmm_player_loot_front_v1",
+      "name": "Mmm Player Loot Front V1",
+      "card_type": "equipment"
+    },
+    "mmm_monster_front_v1": {
+      "template_type": "front",
+      "canvas": {
+        "width": 750,
+        "height": 1050,
+        "bleed": 24,
+        "safe_margin": 52
+      },
+      "colors": {
+        "background": [
+          236,
+          232,
+          220
+        ],
+        "border": [
+          32,
+          28,
+          35
+        ],
+        "frame": [
+          70,
+          60,
+          82
+        ],
+        "panel": [
+          245,
+          241,
+          229
+        ],
+        "text": [
+          25,
+          20,
+          20
+        ],
+        "muted_text": [
+          55,
+          45,
+          55
+        ],
+        "art_placeholder": [
+          135,
+          125,
+          145
+        ]
+      },
+      "font_roles": {
+        "title": {
+          "size": 40,
+          "min_size": 24
+        },
+        "cost": {
+          "size": 30,
+          "min_size": 20
+        },
+        "type_line": {
+          "size": 28,
+          "min_size": 18
+        },
+        "rules": {
+          "size": 27,
+          "min_size": 17
+        },
+        "flavor": {
+          "size": 21,
+          "min_size": 15
+        },
+        "stats": {
+          "size": 32,
+          "min_size": 20
+        }
+      },
+      "layers": [
+        {
+          "id": "outer_frame",
+          "type": "rounded_rect",
+          "box": [
+            24,
+            24,
+            726,
+            1026
+          ],
+          "radius": 34
+        },
+        {
+          "id": "inner_frame",
+          "type": "rounded_rect",
+          "box": [
+            46,
+            46,
+            704,
+            1004
+          ],
+          "radius": 24
+        },
+        {
+          "id": "title",
+          "type": "text",
+          "source": "card.name",
+          "box": [
+            86,
+            82,
+            610,
+            142
+          ],
+          "max_lines": 1
+        },
+        {
+          "id": "cost",
+          "type": "cost",
+          "source": "card.cost",
+          "box": [
+            625,
+            78,
+            690,
+            143
+          ],
+          "max_lines": 1
+        },
+        {
+          "id": "title_bar",
+          "type": "rounded_rect",
+          "box": [
+            64,
+            64,
+            686,
+            150
+          ],
+          "radius": 14
+        },
+        {
+          "id": "art",
+          "type": "image_slot",
+          "source": "locked_art",
+          "box": [
+            78,
+            170,
+            672,
+            520
+          ],
+          "fit": "cover"
+        },
+        {
+          "id": "type_line",
+          "type": "text",
+          "source": "card.type_line",
+          "box": [
+            96,
+            542,
+            650,
+            586
+          ],
+          "max_lines": 1
+        },
+        {
+          "id": "type_bar",
+          "type": "rounded_rect",
+          "box": [
+            78,
+            535,
+            672,
+            590
+          ],
+          "radius": 8
+        },
+        {
+          "id": "rules_panel",
+          "type": "rounded_rect",
+          "box": [
+            78,
+            605,
+            672,
+            890
+          ],
+          "radius": 10
+        },
+        {
+          "id": "rules_text",
+          "type": "rich_text",
+          "source": "card.rules_text",
+          "box": [
+            92,
+            620,
+            658,
+            865
+          ],
+          "max_lines": 12
+        },
+        {
+          "id": "flavor_text",
+          "type": "rich_text",
+          "source": "card.flavor_text",
+          "box": [
+            94,
+            905,
+            634,
+            980
+          ],
+          "max_lines": 3
+        },
+        {
+          "id": "stats",
+          "type": "stats",
+          "source": "card.stats",
+          "box": [
+            560,
+            930,
+            680,
+            995
+          ]
+        }
+      ],
+      "template_key": "mmm_monster_front_v1",
+      "name": "Mmm Monster Front V1",
+      "card_type": "creature"
+    },
+    "mmm_player_back_v1": {
+      "template_type": "back",
+      "card_type": "any",
+      "canvas": {
+        "width": 750,
+        "height": 1050,
+        "bleed": 24,
+        "safe_margin": 52
+      },
+      "colors": {
+        "background": [
+          40,
+          33,
+          52
+        ],
+        "border": [
+          210,
+          185,
+          110
+        ],
+        "secondary": [
+          120,
+          83,
+          185
+        ],
+        "text": [
+          230,
+          215,
+          160
+        ]
+      },
+      "font_roles": {
+        "title": {
+          "size": 58,
+          "min_size": 36
+        },
+        "subtitle": {
+          "size": 24,
+          "min_size": 18
+        }
+      },
+      "layers": [
+        {
+          "id": "outer_frame",
+          "type": "rounded_rect",
+          "box": [
+            40,
+            40,
+            710,
+            1010
+          ],
+          "radius": 42
+        },
+        {
+          "id": "inner_frame",
+          "type": "rounded_rect",
+          "box": [
+            74,
+            74,
+            676,
+            976
+          ],
+          "radius": 30
+        },
+        {
+          "id": "emblem",
+          "type": "ellipse",
+          "box": [
+            190,
+            310,
+            560,
+            680
+          ]
+        },
+        {
+          "id": "title",
+          "type": "text",
+          "source": "project.name",
+          "box": [
+            80,
+            700,
+            670,
+            800
+          ],
+          "max_lines": 1
+        },
+        {
+          "id": "subtitle",
+          "type": "text",
+          "source": "static.prototype",
+          "box": [
+            80,
+            800,
+            670,
+            850
+          ],
+          "max_lines": 1
+        }
+      ],
+      "template_key": "mmm_player_back_v1",
+      "name": "Magic, Math, & Monsters Player Deck"
+    },
+    "mmm_monster_back_v1": {
+      "template_type": "back",
+      "card_type": "any",
+      "canvas": {
+        "width": 750,
+        "height": 1050,
+        "bleed": 24,
+        "safe_margin": 52
+      },
+      "colors": {
+        "background": [
+          40,
+          33,
+          52
+        ],
+        "border": [
+          210,
+          185,
+          110
+        ],
+        "secondary": [
+          120,
+          83,
+          185
+        ],
+        "text": [
+          230,
+          215,
+          160
+        ]
+      },
+      "font_roles": {
+        "title": {
+          "size": 58,
+          "min_size": 36
+        },
+        "subtitle": {
+          "size": 24,
+          "min_size": 18
+        }
+      },
+      "layers": [
+        {
+          "id": "outer_frame",
+          "type": "rounded_rect",
+          "box": [
+            40,
+            40,
+            710,
+            1010
+          ],
+          "radius": 42
+        },
+        {
+          "id": "inner_frame",
+          "type": "rounded_rect",
+          "box": [
+            74,
+            74,
+            676,
+            976
+          ],
+          "radius": 30
+        },
+        {
+          "id": "emblem",
+          "type": "ellipse",
+          "box": [
+            190,
+            310,
+            560,
+            680
+          ]
+        },
+        {
+          "id": "title",
+          "type": "text",
+          "source": "project.name",
+          "box": [
+            80,
+            700,
+            670,
+            800
+          ],
+          "max_lines": 1
+        },
+        {
+          "id": "subtitle",
+          "type": "text",
+          "source": "static.prototype",
+          "box": [
+            80,
+            800,
+            670,
+            850
+          ],
+          "max_lines": 1
+        }
+      ],
+      "template_key": "mmm_monster_back_v1",
+      "name": "Magic, Math, & Monsters Monster Deck"
+    }
+  }
+}

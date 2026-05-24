@@ -1,0 +1,167 @@
+{
+  "id": 70,
+  "set_id": 1,
+  "batch_id": null,
+  "card_key": "PLY-G1-070",
+  "name": "Empty Ten-Key",
+  "slug": "empty_ten_key",
+  "card_number": "PLY-G1-070",
+  "card_type": "mmm_player_spell",
+  "type_line": "MMM Player Spell - Ten-Ring",
+  "rarity": "common",
+  "faction": "",
+  "cost_json": "{\"generic\": 0, \"display\": \"0\"}",
+  "stats_json": "{\"attack\": null, \"health\": null}",
+  "rules_text": "A Prism lock has 0 glowing keys and needs 10 keys lit. How many more keys light the lock?\nUse the ten fact: 0 + 10 = 10. Write 10.\nAnswer: 10",
+  "flavor_text": "Quick Dodge: 16 __ 18",
+  "keywords_json": "[]",
+  "mechanics_json": "[{\"source\": \"magic_math_monsters\", \"raw\": {\"id\": \"PLY-G1-070\", \"asset_type\": \"player_deck_card\", \"physical_deck\": \"Player Deck\", \"rank_icon\": \"Ten-Ring\", \"rank_name\": \"Ten-Ring Rank\", \"not_a_separate_deck\": true, \"version\": \"4.0-simple-rules\", \"pedagogy_profile\": \"fluency_mastery_simple_table_rules\", \"setup_tag\": \"advanced_first_grade\", \"primary_mode\": \"spell_attack_problem\", \"card_name\": \"Empty Ten-Key\", \"story_tags\": [\"Act 2\", \"Prism Road\"], \"front_text\": {\"spell_flavor\": \"Your Empty Ten-Key spell snaps into the air with bright sparks.\", \"problem\": \"A Prism lock has 0 glowing keys and needs 10 keys lit. How many more keys light the lock?\", \"solve_path\": \"Use the ten fact: 0 + 10 = 10. Write 10.\", \"optional_support\": \"Look at a Ten-Ring only if needed: fill 0 spaces and count the empty spaces.\", \"fluency_challenge\": \"For the Focus die, state the fact or method clearly. Do not use a timer unless the child enjoys speed challenges.\"}, \"math\": {\"skill_category\": \"make_ten_complement\", \"math_scope_tags\": [\"make_ten\", \"fact_fluency\", \"mental_complement\"], \"operation\": \"missing_addend\", \"numbers_used\": [0, 10, 10], \"model_type\": \"ten_ring_optional\", \"difficulty\": \"easy\", \"answer\": 10, \"answer_label\": \"more keys\", \"equation\": \"0 + 10 = 10\", \"answer_type\": \"number\"}, \"guide_data\": {\"full_credit_requirements\": [\"correct answer\", \"correct equation, comparison, or standard notation when appropriate\", \"clear mental method, known fact, or short explanation\"], \"scoring_note\": \"Use v4 tiered scoring: Clean Solve = 3 dice, Solid Solve = 2 dice, Guided Solve = 1 die. Do not require a drawing unless the card explicitly calls for one or the child needs support.\", \"hint_1\": \"Think: what number completes 10?\", \"hint_2\": \"Use the ten fact: 0 + 10 = 10. Write 10.\", \"hint_3\": \"Look at a Ten-Ring only if needed: fill 0 spaces and count the empty spaces.\", \"common_mistake\": \"Counts from 1 instead of recognizing the partner that makes 10.\", \"display_answer\": \"10 more keys\", \"read_aloud_tip\": \"Read the story problem. Let the child attempt the straight path first. Offer optional support only if needed.\", \"success_text\": \"The Empty Ten-Key spell fires clean and bright—quick thinking makes stronger magic.\", \"fail_forward_text\": \"Use one hint at a time. If the child needs heavy help, finish the problem together and roll 1 die.\"}, \"rewards\": {\"clean_solve_dice\": 3, \"solid_solve_dice\": 2, \"guided_solve_dice\": 1, \"stuck_or_refusal_dice\": 0, \"hit_rule\": \"4-6 on each d6 = 1 hit\", \"visual_model_required\": false}, \"quick_dodge_rune\": {\"rune_id\": \"RUNE-G1-034\", \"prompt\": \"16 __ 18\", \"answer\": \"<\", \"skill_category\": \"compare_numbers\", \"purpose\": \"Fast mental dodge. No drawing expected unless the child is stuck.\", \"max_time_suggestion_seconds\": 15, \"v4_dodge_rule\": \"Correct = dodge with no damage. Wrong or heavily helped = lose 1 potion. No extra dodge roll.\"}, \"art\": {\"art_window_prompt\": \"Child-friendly cozy fantasy card art for 'Empty Ten-Key': a prism lock with 0 glowing keyholes and magical empty spaces. Bright storybook adventure style, expressive, non-scary, clear main subject, no text, no numerals, no equations, no copyrighted characters.\", \"negative_prompt\": \"no text, no numerals, no equations, no gore, no horror, no realistic violence, no copyrighted characters\"}, \"layout\": {\"template\": \"player_deck_attack_card_v3_fluency\", \"text_density\": \"medium\", \"requires_ten_ring_icon\": true, \"requires_dodge_rune_strip\": true}, \"status\": {\"drafted\": true, \"self_reviewed_v3\": true, \"math_checked_basic_arithmetic\": true, \"human_playtested\": false, \"final\": false, \"self_reviewed_v4_simple_rules\": true}, \"title\": \"Empty Ten-Key\", \"name\": \"Empty Ten-Key\", \"problem\": \"A Prism lock has 0 glowing keys and needs 10 keys lit. How many more keys light the lock?\", \"solve_path\": \"Use the ten fact: 0 + 10 = 10. Write 10.\", \"quick_dodge\": {\"rune_id\": \"RUNE-G1-034\", \"prompt\": \"16 __ 18\", \"answer\": \"<\", \"skill_category\": \"compare_numbers\", \"purpose\": \"Fast mental dodge. No drawing expected unless the child is stuck.\", \"max_time_suggestion_seconds\": 15, \"v4_dodge_rule\": \"Correct = dodge with no damage. Wrong or heavily helped = lose 1 potion. No extra dodge roll.\"}, \"dodge_rune\": {\"rune_id\": \"RUNE-G1-034\", \"prompt\": \"16 __ 18\", \"answer\": \"<\", \"skill_category\": \"compare_numbers\", \"purpose\": \"Fast mental dodge. No drawing expected unless the child is stuck.\", \"max_time_suggestion_seconds\": 15, \"v4_dodge_rule\": \"Correct = dodge with no damage. Wrong or heavily helped = lose 1 potion. No extra dodge roll.\"}, \"answer\": 10, \"equation\": \"0 + 10 = 10\", \"cardforge_import\": {\"target_set_code\": \"PLAYER\", \"target_card_type\": \"mmm_player_spell\", \"target_template_id\": \"mmm_player_spell_front_v1\", \"target_back_template_id\": \"mmm_player_back_v1\", \"source_id_preserved_as_card_key\": true}}}]",
+  "design_notes": "",
+  "art_direction": "Child-friendly cozy fantasy card art for 'Empty Ten-Key': a prism lock with 0 glowing keyholes and magical empty spaces. Bright storybook adventure style, expressive, non-scary, clear main subject, no text, no numerals, no equations, no copyrighted characters.",
+  "template_id": "mmm_player_spell_front_v1",
+  "back_template_id": "mmm_player_back_v1",
+  "status": "draft",
+  "current_version_id": 70,
+  "created_at": "2026-05-24 03:59:54",
+  "updated_at": "2026-05-24 03:59:54",
+  "cost": {
+    "generic": 0,
+    "display": "0"
+  },
+  "stats": {
+    "attack": null,
+    "health": null
+  },
+  "keywords": [],
+  "mechanics": [
+    {
+      "source": "magic_math_monsters",
+      "raw": {
+        "id": "PLY-G1-070",
+        "asset_type": "player_deck_card",
+        "physical_deck": "Player Deck",
+        "rank_icon": "Ten-Ring",
+        "rank_name": "Ten-Ring Rank",
+        "not_a_separate_deck": true,
+        "version": "4.0-simple-rules",
+        "pedagogy_profile": "fluency_mastery_simple_table_rules",
+        "setup_tag": "advanced_first_grade",
+        "primary_mode": "spell_attack_problem",
+        "card_name": "Empty Ten-Key",
+        "story_tags": [
+          "Act 2",
+          "Prism Road"
+        ],
+        "front_text": {
+          "spell_flavor": "Your Empty Ten-Key spell snaps into the air with bright sparks.",
+          "problem": "A Prism lock has 0 glowing keys and needs 10 keys lit. How many more keys light the lock?",
+          "solve_path": "Use the ten fact: 0 + 10 = 10. Write 10.",
+          "optional_support": "Look at a Ten-Ring only if needed: fill 0 spaces and count the empty spaces.",
+          "fluency_challenge": "For the Focus die, state the fact or method clearly. Do not use a timer unless the child enjoys speed challenges."
+        },
+        "math": {
+          "skill_category": "make_ten_complement",
+          "math_scope_tags": [
+            "make_ten",
+            "fact_fluency",
+            "mental_complement"
+          ],
+          "operation": "missing_addend",
+          "numbers_used": [
+            0,
+            10,
+            10
+          ],
+          "model_type": "ten_ring_optional",
+          "difficulty": "easy",
+          "answer": 10,
+          "answer_label": "more keys",
+          "equation": "0 + 10 = 10",
+          "answer_type": "number"
+        },
+        "guide_data": {
+          "full_credit_requirements": [
+            "correct answer",
+            "correct equation, comparison, or standard notation when appropriate",
+            "clear mental method, known fact, or short explanation"
+          ],
+          "scoring_note": "Use v4 tiered scoring: Clean Solve = 3 dice, Solid Solve = 2 dice, Guided Solve = 1 die. Do not require a drawing unless the card explicitly calls for one or the child needs support.",
+          "hint_1": "Think: what number completes 10?",
+          "hint_2": "Use the ten fact: 0 + 10 = 10. Write 10.",
+          "hint_3": "Look at a Ten-Ring only if needed: fill 0 spaces and count the empty spaces.",
+          "common_mistake": "Counts from 1 instead of recognizing the partner that makes 10.",
+          "display_answer": "10 more keys",
+          "read_aloud_tip": "Read the story problem. Let the child attempt the straight path first. Offer optional support only if needed.",
+          "success_text": "The Empty Ten-Key spell fires clean and bright—quick thinking makes stronger magic.",
+          "fail_forward_text": "Use one hint at a time. If the child needs heavy help, finish the problem together and roll 1 die."
+        },
+        "rewards": {
+          "clean_solve_dice": 3,
+          "solid_solve_dice": 2,
+          "guided_solve_dice": 1,
+          "stuck_or_refusal_dice": 0,
+          "hit_rule": "4-6 on each d6 = 1 hit",
+          "visual_model_required": false
+        },
+        "quick_dodge_rune": {
+          "rune_id": "RUNE-G1-034",
+          "prompt": "16 __ 18",
+          "answer": "<",
+          "skill_category": "compare_numbers",
+          "purpose": "Fast mental dodge. No drawing expected unless the child is stuck.",
+          "max_time_suggestion_seconds": 15,
+          "v4_dodge_rule": "Correct = dodge with no damage. Wrong or heavily helped = lose 1 potion. No extra dodge roll."
+        },
+        "art": {
+          "art_window_prompt": "Child-friendly cozy fantasy card art for 'Empty Ten-Key': a prism lock with 0 glowing keyholes and magical empty spaces. Bright storybook adventure style, expressive, non-scary, clear main subject, no text, no numerals, no equations, no copyrighted characters.",
+          "negative_prompt": "no text, no numerals, no equations, no gore, no horror, no realistic violence, no copyrighted characters"
+        },
+        "layout": {
+          "template": "player_deck_attack_card_v3_fluency",
+          "text_density": "medium",
+          "requires_ten_ring_icon": true,
+          "requires_dodge_rune_strip": true
+        },
+        "status": {
+          "drafted": true,
+          "self_reviewed_v3": true,
+          "math_checked_basic_arithmetic": true,
+          "human_playtested": false,
+          "final": false,
+          "self_reviewed_v4_simple_rules": true
+        },
+        "title": "Empty Ten-Key",
+        "name": "Empty Ten-Key",
+        "problem": "A Prism lock has 0 glowing keys and needs 10 keys lit. How many more keys light the lock?",
+        "solve_path": "Use the ten fact: 0 + 10 = 10. Write 10.",
+        "quick_dodge": {
+          "rune_id": "RUNE-G1-034",
+          "prompt": "16 __ 18",
+          "answer": "<",
+          "skill_category": "compare_numbers",
+          "purpose": "Fast mental dodge. No drawing expected unless the child is stuck.",
+          "max_time_suggestion_seconds": 15,
+          "v4_dodge_rule": "Correct = dodge with no damage. Wrong or heavily helped = lose 1 potion. No extra dodge roll."
+        },
+        "dodge_rune": {
+          "rune_id": "RUNE-G1-034",
+          "prompt": "16 __ 18",
+          "answer": "<",
+          "skill_category": "compare_numbers",
+          "purpose": "Fast mental dodge. No drawing expected unless the child is stuck.",
+          "max_time_suggestion_seconds": 15,
+          "v4_dodge_rule": "Correct = dodge with no damage. Wrong or heavily helped = lose 1 potion. No extra dodge roll."
+        },
+        "answer": 10,
+        "equation": "0 + 10 = 10",
+        "cardforge_import": {
+          "target_set_code": "PLAYER",
+          "target_card_type": "mmm_player_spell",
+          "target_template_id": "mmm_player_spell_front_v1",
+          "target_back_template_id": "mmm_player_back_v1",
+          "source_id_preserved_as_card_key": true
+        }
+      }
+    }
+  ]
+}

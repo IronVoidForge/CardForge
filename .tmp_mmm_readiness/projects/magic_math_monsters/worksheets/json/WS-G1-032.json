@@ -1,0 +1,85 @@
+{
+  "id": "WS-G1-032",
+  "asset_type": "worksheet_page",
+  "version": "4.0-simple-rules",
+  "title": "Prism Lock",
+  "type": "boss_or_practice_worksheet",
+  "act": "Final Boss Door",
+  "story_context": "One problem from each color rebuilds the Prism.",
+  "read_aloud": "Grimble flips to a crisp practice page. 'No overcomplication. Clean answers, clean equations, clean magic. Prism Lock begins now.'",
+  "printed_instructions": [
+    "Solve all colors.",
+    "Write answers clearly. Use counters only if you are stuck or the page asks for them.",
+    "Optional challenge: solve the first pass without counting objects one by one."
+  ],
+  "skills": [
+    "final_review"
+  ],
+  "math_scope_tags": [
+    "final_review"
+  ],
+  "difficulty": "hard",
+  "layout_description": "Black-and-white printable page themed around Prism Lock; open writing space, large text, optional small art border, no dense background.",
+  "problems": [
+    {
+      "problem_number": 1,
+      "prompt": "Green: 6 + 4",
+      "answer": "10",
+      "skill": "final_review"
+    },
+    {
+      "problem_number": 2,
+      "prompt": "Blue: 14 - 5",
+      "answer": "9",
+      "skill": "final_review"
+    },
+    {
+      "problem_number": 3,
+      "prompt": "Gold: 10 + 8",
+      "answer": "18",
+      "skill": "final_review"
+    },
+    {
+      "problem_number": 4,
+      "prompt": "Clear: 43 __ 34",
+      "answer": ">",
+      "skill": "final_review"
+    }
+  ],
+  "answer_key": [
+    {
+      "problem_number": 1,
+      "answer": "10"
+    },
+    {
+      "problem_number": 2,
+      "answer": "9"
+    },
+    {
+      "problem_number": 3,
+      "answer": "18"
+    },
+    {
+      "problem_number": 4,
+      "answer": ">"
+    }
+  ],
+  "art": {
+    "worksheet_art_prompt": "Child-friendly cozy fantasy worksheet art for 'Prism Lock': black-and-white line art worksheet border for Prism Lock, fantasy but clean and spacious. Bright storybook adventure style, expressive, non-scary, clear main subject, no text, no numerals, no equations, no copyrighted characters.",
+    "negative_prompt": "no dark horror, no dense background, no tiny writing, no equations embedded in artwork"
+  },
+  "status": {
+    "drafted": true,
+    "self_reviewed_v3": true,
+    "answer_checked_basic": true,
+    "human_playtested": false,
+    "final": false,
+    "self_reviewed_v4_simple_rules": true
+  },
+  "fail_forward_rule": "If this page becomes frustrating, solve one problem together, narrate partial success, and continue. Do not trap the story.",
+  "cardforge_import": {
+    "target_asset_type": "worksheet_page",
+    "service": "WorksheetService",
+    "source_id_preserved_as_worksheet_id": true
+  }
+}

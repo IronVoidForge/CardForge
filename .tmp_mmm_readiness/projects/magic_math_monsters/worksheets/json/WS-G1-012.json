@@ -1,0 +1,105 @@
+{
+  "id": "WS-G1-012",
+  "asset_type": "worksheet_page",
+  "version": "4.0-simple-rules",
+  "title": "Green Shard Review Sprint",
+  "type": "practice_worksheet",
+  "act": "Act 1 Reward",
+  "story_context": "A quick mixed review.",
+  "read_aloud": "Grimble flips to a crisp practice page. 'No overcomplication. Clean answers, clean equations, clean magic. Green Shard Review Sprint begins now.'",
+  "printed_instructions": [
+    "Solve without counters if you can.",
+    "Write answers clearly. Use counters only if you are stuck or the page asks for them.",
+    "Optional challenge: solve the first pass without counting objects one by one."
+  ],
+  "skills": [
+    "cumulative_review"
+  ],
+  "math_scope_tags": [
+    "cumulative_review"
+  ],
+  "difficulty": "normal",
+  "layout_description": "Black-and-white printable page themed around Green Shard Review Sprint; open writing space, large text, optional small art border, no dense background.",
+  "problems": [
+    {
+      "problem_number": 1,
+      "prompt": "6 + 2",
+      "answer": "8",
+      "skill": "cumulative_review"
+    },
+    {
+      "problem_number": 2,
+      "prompt": "9 - 4",
+      "answer": "5",
+      "skill": "cumulative_review"
+    },
+    {
+      "problem_number": 3,
+      "prompt": "5 + __ = 10",
+      "answer": "5",
+      "skill": "cumulative_review"
+    },
+    {
+      "problem_number": 4,
+      "prompt": "7 - 1",
+      "answer": "6",
+      "skill": "cumulative_review"
+    },
+    {
+      "problem_number": 5,
+      "prompt": "3 + 6",
+      "answer": "9",
+      "skill": "cumulative_review"
+    },
+    {
+      "problem_number": 6,
+      "prompt": "10 - 8",
+      "answer": "2",
+      "skill": "cumulative_review"
+    }
+  ],
+  "answer_key": [
+    {
+      "problem_number": 1,
+      "answer": "8"
+    },
+    {
+      "problem_number": 2,
+      "answer": "5"
+    },
+    {
+      "problem_number": 3,
+      "answer": "5"
+    },
+    {
+      "problem_number": 4,
+      "answer": "6"
+    },
+    {
+      "problem_number": 5,
+      "answer": "9"
+    },
+    {
+      "problem_number": 6,
+      "answer": "2"
+    }
+  ],
+  "art": {
+    "worksheet_art_prompt": "Child-friendly cozy fantasy worksheet art for 'Green Shard Review Sprint': black-and-white line art worksheet border for Green Shard Review Sprint, fantasy but clean and spacious. Bright storybook adventure style, expressive, non-scary, clear main subject, no text, no numerals, no equations, no copyrighted characters.",
+    "negative_prompt": "no dark horror, no dense background, no tiny writing, no equations embedded in artwork"
+  },
+  "status": {
+    "drafted": true,
+    "self_reviewed_v3": true,
+    "answer_checked_basic": true,
+    "human_playtested": false,
+    "final": false,
+    "self_reviewed_v4_simple_rules": true
+  },
+  "fail_forward_rule": "If this page becomes frustrating, solve one problem together, narrate partial success, and continue. Do not trap the story.",
+  "cardforge_import": {
+    "target_asset_type": "worksheet_page",
+    "service": "WorksheetService",
+    "source_id_preserved_as_worksheet_id": true
+  }
+}

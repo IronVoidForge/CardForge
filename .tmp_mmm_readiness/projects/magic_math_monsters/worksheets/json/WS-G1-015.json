@@ -1,0 +1,97 @@
+{
+  "id": "WS-G1-015",
+  "asset_type": "worksheet_page",
+  "version": "4.0-simple-rules",
+  "title": "Piper Rhythm Facts",
+  "type": "practice_worksheet",
+  "act": "Act 2 Piper Path",
+  "story_context": "Songs use doubles and near doubles.",
+  "read_aloud": "Grimble flips to a crisp practice page. 'No overcomplication. Clean answers, clean equations, clean magic. Piper Rhythm Facts begins now.'",
+  "printed_instructions": [
+    "Solve the rhythm facts.",
+    "Write answers clearly. Use counters only if you are stuck or the page asks for them.",
+    "Optional challenge: solve the first pass without counting objects one by one."
+  ],
+  "skills": [
+    "doubles",
+    "near_doubles"
+  ],
+  "math_scope_tags": [
+    "doubles",
+    "near_doubles"
+  ],
+  "difficulty": "normal",
+  "layout_description": "Black-and-white printable page themed around Piper Rhythm Facts; open writing space, large text, optional small art border, no dense background.",
+  "problems": [
+    {
+      "problem_number": 1,
+      "prompt": "6 + 6",
+      "answer": "12",
+      "skill": "doubles"
+    },
+    {
+      "problem_number": 2,
+      "prompt": "7 + 7",
+      "answer": "14",
+      "skill": "near_doubles"
+    },
+    {
+      "problem_number": 3,
+      "prompt": "8 + 8",
+      "answer": "16",
+      "skill": "near_doubles"
+    },
+    {
+      "problem_number": 4,
+      "prompt": "6 + 7",
+      "answer": "13",
+      "skill": "near_doubles"
+    },
+    {
+      "problem_number": 5,
+      "prompt": "8 + 7",
+      "answer": "15",
+      "skill": "near_doubles"
+    }
+  ],
+  "answer_key": [
+    {
+      "problem_number": 1,
+      "answer": "12"
+    },
+    {
+      "problem_number": 2,
+      "answer": "14"
+    },
+    {
+      "problem_number": 3,
+      "answer": "16"
+    },
+    {
+      "problem_number": 4,
+      "answer": "13"
+    },
+    {
+      "problem_number": 5,
+      "answer": "15"
+    }
+  ],
+  "art": {
+    "worksheet_art_prompt": "Child-friendly cozy fantasy worksheet art for 'Piper Rhythm Facts': black-and-white line art worksheet border for Piper Rhythm Facts, fantasy but clean and spacious. Bright storybook adventure style, expressive, non-scary, clear main subject, no text, no numerals, no equations, no copyrighted characters.",
+    "negative_prompt": "no dark horror, no dense background, no tiny writing, no equations embedded in artwork"
+  },
+  "status": {
+    "drafted": true,
+    "self_reviewed_v3": true,
+    "answer_checked_basic": true,
+    "human_playtested": false,
+    "final": false,
+    "self_reviewed_v4_simple_rules": true
+  },
+  "fail_forward_rule": "If this page becomes frustrating, solve one problem together, narrate partial success, and continue. Do not trap the story.",
+  "cardforge_import": {
+    "target_asset_type": "worksheet_page",
+    "service": "WorksheetService",
+    "source_id_preserved_as_worksheet_id": true
+  }
+}

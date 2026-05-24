@@ -1,0 +1,87 @@
+{
+  "id": "WS-G1-021",
+  "asset_type": "worksheet_page",
+  "version": "4.0-simple-rules",
+  "title": "Cloud Tile Count",
+  "type": "practice_worksheet",
+  "act": "Act 3",
+  "story_context": "Count organized rows without one-by-one chaos.",
+  "read_aloud": "Grimble flips to a crisp practice page. 'No overcomplication. Clean answers, clean equations, clean magic. Cloud Tile Count begins now.'",
+  "printed_instructions": [
+    "Find the total for each row group.",
+    "Write answers clearly. Use counters only if you are stuck or the page asks for them.",
+    "Optional challenge: solve the first pass without counting objects one by one."
+  ],
+  "skills": [
+    "organized_counting",
+    "repeated_addition_intro"
+  ],
+  "math_scope_tags": [
+    "organized_counting",
+    "repeated_addition_intro"
+  ],
+  "difficulty": "normal",
+  "layout_description": "Black-and-white printable page themed around Cloud Tile Count; open writing space, large text, optional small art border, no dense background.",
+  "problems": [
+    {
+      "problem_number": 1,
+      "prompt": "5 + 5",
+      "answer": "10",
+      "skill": "organized_counting"
+    },
+    {
+      "problem_number": 2,
+      "prompt": "4 + 4",
+      "answer": "8",
+      "skill": "repeated_addition_intro"
+    },
+    {
+      "problem_number": 3,
+      "prompt": "3 + 3 + 3",
+      "answer": "9",
+      "skill": "repeated_addition_intro"
+    },
+    {
+      "problem_number": 4,
+      "prompt": "2 + 2 + 2 + 2",
+      "answer": "8",
+      "skill": "repeated_addition_intro"
+    }
+  ],
+  "answer_key": [
+    {
+      "problem_number": 1,
+      "answer": "10"
+    },
+    {
+      "problem_number": 2,
+      "answer": "8"
+    },
+    {
+      "problem_number": 3,
+      "answer": "9"
+    },
+    {
+      "problem_number": 4,
+      "answer": "8"
+    }
+  ],
+  "art": {
+    "worksheet_art_prompt": "Child-friendly cozy fantasy worksheet art for 'Cloud Tile Count': black-and-white line art worksheet border for Cloud Tile Count, fantasy but clean and spacious. Bright storybook adventure style, expressive, non-scary, clear main subject, no text, no numerals, no equations, no copyrighted characters.",
+    "negative_prompt": "no dark horror, no dense background, no tiny writing, no equations embedded in artwork"
+  },
+  "status": {
+    "drafted": true,
+    "self_reviewed_v3": true,
+    "answer_checked_basic": true,
+    "human_playtested": false,
+    "final": false,
+    "self_reviewed_v4_simple_rules": true
+  },
+  "fail_forward_rule": "If this page becomes frustrating, solve one problem together, narrate partial success, and continue. Do not trap the story.",
+  "cardforge_import": {
+    "target_asset_type": "worksheet_page",
+    "service": "WorksheetService",
+    "source_id_preserved_as_worksheet_id": true
+  }
+}

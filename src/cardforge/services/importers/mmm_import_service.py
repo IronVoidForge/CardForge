@@ -210,6 +210,9 @@ class MMMImportService:
             (root / rel).mkdir(parents=True, exist_ok=True)
 
     def _extract_items(self, payload: dict[str, Any], keys: tuple[str, ...]) -> list[dict[str, Any]]:
+        items = payload.get("items")
+        if isinstance(items, list):
+            return [item for item in items if isinstance(item, dict)]
         for key in keys:
             value = payload.get(key)
             if isinstance(value, list):

@@ -1,0 +1,21 @@
+{
+  "schema_version": "2026-05-prompt-template-registry-v1",
+  "templates": {
+    "card_batch_generation_v1": {
+      "path": "prompt_templates/card_batch_generation_v1.md",
+      "status": "active"
+    },
+    "card_autofill_v1": {
+      "path": "prompt_templates/card_autofill_v1.md",
+      "status": "active"
+    },
+    "card_refinement_v1": {
+      "path": "prompt_templates/card_refinement_v1.md",
+      "status": "active"
+    },
+    "auto_review_v1": {
+      "path": "prompt_templates/auto_review_v1.md",
+      "status": "active"
+    }
+  }
+}

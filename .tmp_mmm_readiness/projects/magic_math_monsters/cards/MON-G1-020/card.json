@@ -1,0 +1,93 @@
+{
+  "id": 170,
+  "set_id": 2,
+  "batch_id": null,
+  "card_key": "MON-G1-020",
+  "name": "Thunder Sprite",
+  "slug": "thunder_sprite",
+  "card_number": "MON-G1-020",
+  "card_type": "mmm_monster",
+  "type_line": "standard",
+  "rarity": "common",
+  "faction": "",
+  "cost_json": "{\"generic\": 0, \"display\": \"0\"}",
+  "stats_json": "{\"attack\": 1, \"health\": null}",
+  "rules_text": "Attack: Thunder Tap - 1 damage\nAbility: . If the attacking card is addition, hero may name a related subtraction fact for +1 damage.",
+  "flavor_text": "The sprite crackles into friendly blue lightning.",
+  "keywords_json": "[]",
+  "mechanics_json": "[{\"source\": \"magic_math_monsters\", \"raw\": {\"id\": \"MON-G1-020\", \"asset_type\": \"monster_deck_card\", \"physical_deck\": \"Monster Deck\", \"version\": \"4.0-simple-rules\", \"name\": \"Thunder Sprite\", \"act\": \"Act 3\", \"monster_type\": \"standard\", \"hp\": {\"base_two_heroes\": 8, \"one_hero\": 6, \"three_heroes\": 11, \"four_heroes\": 14, \"scaling_note\": \"Use base_two_heroes for 2 children. Adjust only if live playtests consistently run too short or long.\"}, \"attack\": {\"name\": \"Thunder Tap\", \"damage\": 1, \"dodge_rule\": \"Targeted hero answers the Quick Dodge Rune strip from the top Player Deck card. Correct = no damage; wrong or heavily helped = lose 1 potion.\"}, \"special_ability\": {\"rules_text\": \"If the attacking card is addition, hero may name a related subtraction fact for +1 damage.\", \"educational_purpose\": \"Early inverse-operation strength.\"}, \"encounter_guidance\": {\"use_in_random_deck\": \"May be shuffled into the Monster Deck for its act or selected by the Adventure Book.\", \"kid_safety_tone\": \"Obstacle/cursed creature, not a horror monster. Defeat restores or redirects it.\", \"first_play_mode\": \"Ignore this monster special ability unless this is a boss fight. This keeps first games very simple.\"}, \"defeat_text\": \"The sprite crackles into friendly blue lightning.\", \"art\": {\"art_window_prompt\": \"Child-friendly cozy fantasy monster card art for 'Thunder Sprite': Thunder Sprite, a cozy fantasy creature or obstacle from Act 3, expressive and exciting but safe for kids. Bright storybook adventure style, expressive, non-scary, clear main subject, no text, no numerals, no equations, no copyrighted characters.\", \"negative_prompt\": \"no gore, no horror, no realistic violence, no weapons pointed at viewer, no text, no numerals, no copyrighted characters\"}, \"status\": {\"drafted\": true, \"self_reviewed_v3\": true, \"math_checked\": true, \"human_playtested\": false, \"final\": false, \"self_reviewed_v4_simple_rules\": true}, \"title\": \"Thunder Sprite\", \"cardforge_import\": {\"target_set_code\": \"MONSTER\", \"target_card_type\": \"mmm_monster\", \"target_template_id\": \"mmm_monster_front_v1\", \"target_back_template_id\": \"mmm_monster_back_v1\", \"source_id_preserved_as_card_key\": true}, \"hp_display\": 8}}]",
+  "design_notes": "",
+  "art_direction": "Child-friendly cozy fantasy monster card art for 'Thunder Sprite': Thunder Sprite, a cozy fantasy creature or obstacle from Act 3, expressive and exciting but safe for kids. Bright storybook adventure style, expressive, non-scary, clear main subject, no text, no numerals, no equations, no copyrighted characters.",
+  "template_id": "mmm_monster_front_v1",
+  "back_template_id": "mmm_monster_back_v1",
+  "status": "draft",
+  "current_version_id": 170,
+  "created_at": "2026-05-24 03:59:55",
+  "updated_at": "2026-05-24 03:59:55",
+  "cost": {
+    "generic": 0,
+    "display": "0"
+  },
+  "stats": {
+    "attack": 1,
+    "health": null
+  },
+  "keywords": [],
+  "mechanics": [
+    {
+      "source": "magic_math_monsters",
+      "raw": {
+        "id": "MON-G1-020",
+        "asset_type": "monster_deck_card",
+        "physical_deck": "Monster Deck",
+        "version": "4.0-simple-rules",
+        "name": "Thunder Sprite",
+        "act": "Act 3",
+        "monster_type": "standard",
+        "hp": {
+          "base_two_heroes": 8,
+          "one_hero": 6,
+          "three_heroes": 11,
+          "four_heroes": 14,
+          "scaling_note": "Use base_two_heroes for 2 children. Adjust only if live playtests consistently run too short or long."
+        },
+        "attack": {
+          "name": "Thunder Tap",
+          "damage": 1,
+          "dodge_rule": "Targeted hero answers the Quick Dodge Rune strip from the top Player Deck card. Correct = no damage; wrong or heavily helped = lose 1 potion."
+        },
+        "special_ability": {
+          "rules_text": "If the attacking card is addition, hero may name a related subtraction fact for +1 damage.",
+          "educational_purpose": "Early inverse-operation strength."
+        },
+        "encounter_guidance": {
+          "use_in_random_deck": "May be shuffled into the Monster Deck for its act or selected by the Adventure Book.",
+          "kid_safety_tone": "Obstacle/cursed creature, not a horror monster. Defeat restores or redirects it.",
+          "first_play_mode": "Ignore this monster special ability unless this is a boss fight. This keeps first games very simple."
+        },
+        "defeat_text": "The sprite crackles into friendly blue lightning.",
+        "art": {
+          "art_window_prompt": "Child-friendly cozy fantasy monster card art for 'Thunder Sprite': Thunder Sprite, a cozy fantasy creature or obstacle from Act 3, expressive and exciting but safe for kids. Bright storybook adventure style, expressive, non-scary, clear main subject, no text, no numerals, no equations, no copyrighted characters.",
+          "negative_prompt": "no gore, no horror, no realistic violence, no weapons pointed at viewer, no text, no numerals, no copyrighted characters"
+        },
+        "status": {
+          "drafted": true,
+          "self_reviewed_v3": true,
+          "math_checked": true,
+          "human_playtested": false,
+          "final": false,
+          "self_reviewed_v4_simple_rules": true
+        },
+        "title": "Thunder Sprite",
+        "cardforge_import": {
+          "target_set_code": "MONSTER",
+          "target_card_type": "mmm_monster",
+          "target_template_id": "mmm_monster_front_v1",
+          "target_back_template_id": "mmm_monster_back_v1",
+          "source_id_preserved_as_card_key": true
+        },
+        "hp_display": 8
+      }
+    }
+  ]
+}

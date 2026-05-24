@@ -1,0 +1,75 @@
+{
+  "id": "WS-G1-022",
+  "asset_type": "worksheet_page",
+  "version": "4.0-simple-rules",
+  "title": "Goose Egg Nests",
+  "type": "practice_worksheet",
+  "act": "Act 3 Goose Path",
+  "story_context": "Fair sharing intuition.",
+  "read_aloud": "Grimble flips to a crisp practice page. 'No overcomplication. Clean answers, clean equations, clean magic. Goose Egg Nests begins now.'",
+  "printed_instructions": [
+    "Share equally and write how many in each nest.",
+    "Write answers clearly. Use counters only if you are stuck or the page asks for them.",
+    "Optional challenge: solve the first pass without counting objects one by one."
+  ],
+  "skills": [
+    "equal_sharing_intro"
+  ],
+  "math_scope_tags": [
+    "equal_sharing_intro"
+  ],
+  "difficulty": "normal",
+  "layout_description": "Black-and-white printable page themed around Goose Egg Nests; open writing space, large text, optional small art border, no dense background.",
+  "problems": [
+    {
+      "problem_number": 1,
+      "prompt": "6 eggs into 2 nests",
+      "answer": "3 each",
+      "skill": "equal_sharing_intro"
+    },
+    {
+      "problem_number": 2,
+      "prompt": "8 eggs into 4 nests",
+      "answer": "2 each",
+      "skill": "equal_sharing_intro"
+    },
+    {
+      "problem_number": 3,
+      "prompt": "10 eggs into 2 nests",
+      "answer": "5 each",
+      "skill": "equal_sharing_intro"
+    }
+  ],
+  "answer_key": [
+    {
+      "problem_number": 1,
+      "answer": "3 each"
+    },
+    {
+      "problem_number": 2,
+      "answer": "2 each"
+    },
+    {
+      "problem_number": 3,
+      "answer": "5 each"
+    }
+  ],
+  "art": {
+    "worksheet_art_prompt": "Child-friendly cozy fantasy worksheet art for 'Goose Egg Nests': black-and-white line art worksheet border for Goose Egg Nests, fantasy but clean and spacious. Bright storybook adventure style, expressive, non-scary, clear main subject, no text, no numerals, no equations, no copyrighted characters.",
+    "negative_prompt": "no dark horror, no dense background, no tiny writing, no equations embedded in artwork"
+  },
+  "status": {
+    "drafted": true,
+    "self_reviewed_v3": true,
+    "answer_checked_basic": true,
+    "human_playtested": false,
+    "final": false,
+    "self_reviewed_v4_simple_rules": true
+  },
+  "fail_forward_rule": "If this page becomes frustrating, solve one problem together, narrate partial success, and continue. Do not trap the story.",
+  "cardforge_import": {
+    "target_asset_type": "worksheet_page",
+    "service": "WorksheetService",
+    "source_id_preserved_as_worksheet_id": true
+  }
+}
