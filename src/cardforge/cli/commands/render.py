@@ -2,6 +2,7 @@ from __future__ import annotations
 
 from cardforge.cli.bootstrap import echo_json, ensure_db
 from cardforge.services.render.card_renderer import CardRenderer
+from cardforge.services.render.set_renderer import RenderSetService
 
 import typer
 
@@ -12,3 +13,9 @@ app = typer.Typer(help="Render commands")
 def render_card(project_slug: str, card_key: str, placeholder_art: bool = True) -> None:
     ensure_db()
     echo_json(CardRenderer().render_card(project_slug, card_key, placeholder_art=placeholder_art))
+
+
+@app.command("set")
+def render_set(project_slug: str, set_code: str, placeholder_art: bool = True) -> None:
+    ensure_db()
+    echo_json(RenderSetService().render_set(project_slug, set_code, placeholder_art=placeholder_art))
