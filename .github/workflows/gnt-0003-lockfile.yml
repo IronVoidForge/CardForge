@@ -1,0 +1,45 @@
+name: Temporary GNT-0003 lockfile control
+
+on:
+  pull_request:
+    paths:
+      - "tools/gnt-0003/**"
+      - ".github/workflows/gnt-0003-lockfile.yml"
+
+permissions:
+  contents: write
+
+jobs:
+  generate:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.head_ref }}
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22.13.1"
+      - name: Install exact pnpm
+        run: npm install --global pnpm@11.20.0
+      - name: Generate and verify exact workspace lockfile
+        run: bash tools/gnt-0003/generate-lockfile.sh "$RUNNER_TEMP/spoolmark"
+      - name: Publish generated lockfile on control branch
+        run: |
+          cp "$RUNNER_TEMP/spoolmark/pnpm-lock.yaml" tools/gnt-0003/generated-pnpm-lock.yaml
+          if [[ -z "$(git status --porcelain -- tools/gnt-0003/generated-pnpm-lock.yaml)" ]]; then
+            echo "Generated lockfile is already current."
+          else
+            git config user.name "github-actions[bot]"
+            git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+            git add tools/gnt-0003/generated-pnpm-lock.yaml
+            git commit -m "chore: publish temporary GNT-0003 lockfile"
+            git push origin "HEAD:${{ github.head_ref }}"
+          fi
+      - name: Upload lockfile
+        uses: actions/upload-artifact@v4
+        with:
+          name: spoolmark-gnt-0003-lockfile-${{ github.sha }}
+          path: ${{ runner.temp }}/spoolmark/pnpm-lock.yaml
+          if-no-files-found: error
+          retention-days: 3
