@@ -27,7 +27,7 @@ jobs:
       - name: Publish generated lockfile on control branch
         run: |
           cp "$RUNNER_TEMP/spoolmark/pnpm-lock.yaml" tools/gnt-0003/generated-pnpm-lock.yaml
-          if git diff --quiet -- tools/gnt-0003/generated-pnpm-lock.yaml; then
+          if [[ -z "$(git status --porcelain -- tools/gnt-0003/generated-pnpm-lock.yaml)" ]]; then
             echo "Generated lockfile is already current."
           else
             git config user.name "github-actions[bot]"
