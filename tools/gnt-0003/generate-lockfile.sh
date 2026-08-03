@@ -26,6 +26,7 @@ shared-workspace-lockfile=true
 strict-peer-dependencies=true
 link-workspace-packages=true
 prefer-workspace-packages=true
+peers-suffix-max-length=32
 EOF
 cat > "$ROOT/apps/client/package.json" <<'JSON'
 {
