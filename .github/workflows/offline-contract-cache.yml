@@ -1,0 +1,54 @@
+name: Prepare public contract dependency cache
+on:
+  push:
+    branches: [infra/offline-graphics-toolchain]
+    paths: [.github/workflows/offline-contract-cache.yml]
+permissions:
+  contents: read
+jobs:
+  prepare:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      # Public npm packages only. No repository checkout or private source.
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+        with:
+          node-version: 22.16.0
+      - name: Prepare exact schema and compiler cache
+        shell: bash
+        run: |
+          set -euo pipefail
+          test "$(node --version)" = v22.16.0
+          test "$(npm --version)" = 10.9.2
+          mkdir prepared output
+          cd prepared
+          printf '%s\n' '{"name":"offline-contract-cache","version":"1.0.0","private":true,"type":"module","dependencies":{"zod":"4.1.12"},"devDependencies":{"typescript":"5.9.3"}}' > package.json
+          npm install --ignore-scripts --no-audit --no-fund --cache ../npm-cache
+          node --input-type=module <<'JS'
+          import assert from 'node:assert/strict';
+          import fs from 'node:fs';
+          import {z} from 'zod';
+          import ts from 'typescript';
+          const lock=JSON.parse(fs.readFileSync('package-lock.json','utf8'));
+          assert.equal(ts.version,'5.9.3');
+          assert.equal(lock.packages['node_modules/typescript'].integrity,'sha512-jl1vZzPDinLr9eUt3J/t7V6FgNEw9QjvBPdysz9KfQDD41fQrC2Y4vKQdiaUpFT4bXlb1RHhLpp8wtm6M5TgSw==');
+          assert.equal(lock.packages['node_modules/zod'].integrity,'sha512-JInaHOamG8pt5+Ey8kGmdcAcg3OL9reK8ltczgHTAwNhMys/6ThXHityHxVV2p3fkw/c+MAvBHFVYHFZDmjMCQ==');
+          assert.equal(z.strictObject({n:z.int().nonnegative()}).safeParse({n:-1}).success,false);
+          for(const [name,pkg] of Object.entries(lock.packages)) if(name) assert.ok(pkg.resolved.startsWith('https://registry.npmjs.org/')&&pkg.integrity.startsWith('sha512-'));
+          fs.writeFileSync('CACHE_RECEIPT.json',JSON.stringify({node:process.version,npm:'10.9.2',typescript:ts.version,zod:'4.1.12',source:'public npm packages only'},null,2));
+          JS
+          mkdir licenses
+          cp node_modules/zod/LICENSE licenses/zod-LICENSE
+          cp node_modules/typescript/LICENSE.txt licenses/typescript-LICENSE.txt
+          npm ci --offline --ignore-scripts --no-audit --no-fund --cache ../npm-cache
+          ./node_modules/.bin/tsc --version
+          cd ..
+          tar -czf output/offline-contract-cache.tar.gz prepared/package.json prepared/package-lock.json prepared/CACHE_RECEIPT.json prepared/licenses npm-cache/_cacache
+          cd output
+          sha256sum offline-contract-cache.tar.gz > SHA256SUMS.txt
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: offline-contract-cache
+          path: output/
+          if-no-files-found: error
+          retention-days: 14
