@@ -1,0 +1,31 @@
+name: Preserve pinned public curriculum
+on:
+  push:
+    branches: [infra/offline-graphics-toolchain]
+    paths: [.github/workflows/offline-marble-curriculum.yml]
+permissions:
+  contents: read
+jobs:
+  preserve:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    steps:
+      - name: Acquire public source only
+        shell: bash
+        run: |
+          set -euo pipefail
+          git init source
+          git -C source remote add origin https://github.com/withmarbleapp/os-taxonomy.git
+          git -C source fetch --depth 1 origin 96a7933754af672e1bfdbf7ecb05c325860c6e0d
+          git -C source checkout --detach FETCH_HEAD
+          test "$(git -C source rev-parse HEAD)" = 96a7933754af672e1bfdbf7ecb05c325860c6e0d
+          mkdir output
+          git -C source archive --format=tar HEAD data schema LICENSE LICENSE-CONTENT PROVENANCE.md README.md CITATION.cff | gzip -n > output/marble-96a7933-source.tar.gz
+          git -C source ls-tree -r HEAD data schema LICENSE LICENSE-CONTENT PROVENANCE.md README.md CITATION.cff > output/GIT_BLOBS.txt
+          (cd output && sha256sum marble-96a7933-source.tar.gz > SHA256SUMS.txt)
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: marble-96a7933-source
+          path: output/
+          if-no-files-found: error
+          retention-days: 30
