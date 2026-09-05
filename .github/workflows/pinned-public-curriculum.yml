@@ -1,0 +1,35 @@
+name: Preserve pinned public curriculum
+on:
+  push:
+    branches: [infra/offline-graphics-toolchain]
+    paths: [.github/workflows/pinned-public-curriculum.yml]
+permissions:
+  contents: read
+jobs:
+  preserve:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    steps:
+      # Public curriculum only. No application checkout, private source, or learner data.
+      - name: Retrieve and verify exact public source
+        shell: bash
+        run: |
+          set -euo pipefail
+          git init marble
+          git -C marble remote add origin https://github.com/withmarbleapp/os-taxonomy.git
+          git -C marble fetch --depth=1 origin 96a7933754af672e1bfdbf7ecb05c325860c6e0d
+          git -C marble checkout --detach FETCH_HEAD
+          test "$(git -C marble rev-parse HEAD)" = 96a7933754af672e1bfdbf7ecb05c325860c6e0d
+          test "$(git -C marble hash-object data/topics.json)" = 3988c71f577812373f7bca256360be1b1294e733
+          test "$(git -C marble hash-object data/dependencies.json)" = 255e93d203c5557f04f1c08cc642e9d8775e2de3
+          git -C marble ls-tree -r HEAD > marble/SOURCE_BLOBS.txt
+          git -C marble rev-parse HEAD > marble/SOURCE_COMMIT.txt
+          mkdir output
+          tar -czf output/marble-96a7933-public-source.tar.gz -C marble data schema LICENSE LICENSE-CONTENT PROVENANCE.md CITATION.cff README.md SOURCE_BLOBS.txt SOURCE_COMMIT.txt
+          cd output && sha256sum marble-96a7933-public-source.tar.gz > SHA256SUMS.txt
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: marble-96a7933-public-source
+          path: output/
+          retention-days: 14
+          if-no-files-found: error
