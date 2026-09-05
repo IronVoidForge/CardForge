@@ -1,0 +1,63 @@
+name: Prepare public graphics toolchain cache
+on:
+  push:
+    branches: [infra/offline-graphics-toolchain]
+    paths: [.github/workflows/offline-graphics-toolchain.yml]
+permissions:
+  contents: read
+concurrency:
+  group: offline-graphics-toolchain
+  cancel-in-progress: false
+jobs:
+  prepare:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 12
+    steps:
+      # No checkout, repository source, credentials or private data enters this cache.
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+        with:
+          node-version: 22.16.0
+      - name: Acquire exact public packages and prove cold offline installation
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir prepared output
+          cd prepared
+          # Both supported candidates are explicit pins; never resolve a latest tag.
+          THREE=0.185.1
+          if ! npm view three@0.185.1 version --fetch-retries=0 --fetch-timeout=15000 >/dev/null 2>&1; then THREE=0.180.0; fi
+          TYPES_THREE="$THREE"
+          if ! npm view "@types/three@$TYPES_THREE" version --fetch-retries=0 --fetch-timeout=15000 >/dev/null 2>&1; then TYPES_THREE=0.180.0; fi
+          export THREE TYPES_THREE
+          node <<'JS'
+          const fs=require('node:fs');
+          fs.writeFileSync('package.json',JSON.stringify({name:'offline-graphics-cache',version:'1.0.0',private:true,type:'module',packageManager:'npm@10.9.2',dependencies:{three:process.env.THREE},devDependencies:{typescript:'5.9.3','@types/three':process.env.TYPES_THREE,'@types/node':'22.16.0',esbuild:'0.25.10'}},null,2));
+          JS
+          npm install --ignore-scripts --no-audit --no-fund --cache ../npm-cache
+          node --input-type=module <<'JS'
+          import fs from 'node:fs';
+          import assert from 'node:assert/strict';
+          const lock=JSON.parse(fs.readFileSync('package-lock.json','utf8'));
+          assert.equal(lock.packages['node_modules/typescript'].integrity,'sha512-jl1vZzPDinLr9eUt3J/t7V6FgNEw9QjvBPdysz9KfQDD41fQrC2Y4vKQdiaUpFT4bXlb1RHhLpp8wtm6M5TgSw==');
+          for(const [name,pkg] of Object.entries(lock.packages)) if(name) assert.ok(pkg.resolved.startsWith('https://registry.npmjs.org/')&&pkg.integrity.startsWith('sha512-'));
+          const {Vector3}=await import('three');
+          const {GLTFLoader}=await import('three/addons/loaders/GLTFLoader.js');
+          assert.equal(new Vector3(1,2,3).lengthSq(),14); assert.equal(typeof new GLTFLoader().parse,'function');
+          const esbuild=await import('esbuild'); assert.ok(esbuild.transformSync('const n: number = 1',{loader:'ts'}).code.includes('const n = 1'));
+          const ts=await import('typescript'); assert.equal(ts.default.version,'5.9.3');
+          fs.writeFileSync('CACHE_RECEIPT.json',JSON.stringify({node:process.version,npm:'10.9.2',three:process.env.THREE,typesThree:process.env.TYPES_THREE,typescript:'5.9.3',source:'public npm packages only',initialSmoke:'PASS'},null,2));
+          JS
+          mkdir licenses
+          find node_modules -maxdepth 4 -type f \( -iname 'license' -o -iname 'license.txt' -o -iname 'license.md' \) -print0 | tar --null -T - -czf licenses/package-notices.tar.gz
+          npm ci --offline --ignore-scripts --no-audit --no-fund --cache ../npm-cache
+          ./node_modules/.bin/tsc --version
+          cd ..
+          tar -czf output/offline-graphics-cache-linux-x64.tar.gz prepared/package.json prepared/package-lock.json prepared/CACHE_RECEIPT.json prepared/licenses npm-cache/_cacache
+          cd output
+          sha256sum offline-graphics-cache-linux-x64.tar.gz > SHA256SUMS.txt
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: offline-graphics-cache-linux-x64
+          path: output/
+          if-no-files-found: error
+          retention-days: 7
